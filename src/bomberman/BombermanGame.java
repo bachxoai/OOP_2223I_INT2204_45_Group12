@@ -1,3 +1,5 @@
+package bomberman;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -5,11 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
-import entities.Bomber;
-import entities.Entity;
-import entities.Grass;
-import entities.Wall;
-import graphics.Sprite;
+import bomberman.entities.Bomber;
+import bomberman.entities.Entity;
+import bomberman.entities.Grass;
+import bomberman.entities.Wall;
+import bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
 import java.util.List;
