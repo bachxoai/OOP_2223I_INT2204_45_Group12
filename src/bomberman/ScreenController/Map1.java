@@ -1,42 +1,86 @@
 package bomberman.ScreenController;
 
-import bomberman.entities.Bomber;
-import bomberman.entities.Entity;
-import bomberman.entities.Grass;
-import bomberman.entities.Wall;
+import bomberman.managers.CollisionChecker;
+import bomberman.entities.tileEntities.Item.Item;
+import bomberman.managers.TileEntityManager;
 import bomberman.graphics.Sprite;
-import bomberman.entities.Bomber;
+import bomberman.entities.movingEntities.Bomber;
 import bomberman.entities.Entity;
-import bomberman.entities.Grass;
-import bomberman.entities.Wall;
-import bomberman.graphics.Sprite;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 
-import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Map1 extends Screen {
-  public static final int WIDTH = 20;
-  public static final int HEIGHT = 15;
+  //Chiều rộng của map
+  private int width;
+
+  //Chiều cao của map
+  private int height;
   private GraphicsContext gc;
   private Canvas canvas;
   private ArrayList<Entity> entities = new ArrayList<>();
   private ArrayList<Entity> stillObjects = new ArrayList<>();
-  Label l;
-  Button b;
 
-  public Map1(String currentScreen) {
+  private Item items[] = new Item[10];
+  private Label l;
+  private Button b;
+
+  //Nhân vật người chơi, khởi tạo trong Constructor
+  public Bomber bomberman;
+
+  //Quản lý các đối tượng trong map + đọc map
+  private TileEntityManager tileEntityManager = new TileEntityManager(this);
+
+  //Kiểm tra va chạm
+  private CollisionChecker collisionChecker = new CollisionChecker(this);
+
+  //Một biến đếm số frame của từng giây, sẽ sử dụng kết hợp với MovingEntity để tạo Animation
+  public static int frameCount = 0;
+
+  public Map1(String currentScreen) throws IOException {
     super(currentScreen);
+    tileEntityManager.loadMap("res/levels/Level1.txt");
     createScene();
+  }
+
+  public void setWidth(int width) {
+    this.width = width;
+  }
+
+  public void setHeight(int height) {
+    this.height = height;
+  }
+
+  public ArrayList<Entity> getStillObjects() {
+    return stillObjects;
+  }
+
+  public TileEntityManager getTileEntityManager() {
+    return tileEntityManager;
+  }
+
+  public CollisionChecker getCollisionChecker() {
+    return collisionChecker;
+  }
+
+  public Item[] getItems() {
+    return items;
+  }
+
+  public ArrayList<Entity> getEntities() {
+    return entities;
+  }
+
+  public Bomber getBomberman() {
+    return bomberman;
   }
 
   public void createLabel() {
@@ -56,42 +100,27 @@ public class Map1 extends Screen {
   }
 
   public void createScene() {
-    canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+    canvas = new Canvas(Sprite.SCALED_SIZE * width, Sprite.SCALED_SIZE * height);
     gc = canvas.getGraphicsContext2D();
     Group root = new Group();
     root.getChildren().add(canvas);
     createButton();
     root.getChildren().add(b);
     scene = new Scene(root);
-    handleEvent();
 
     AnimationTimer timer = new AnimationTimer() {
       @Override
       public void handle(long l) {
+        //Mỗi khung hình (frame) thì biến frameCount sẽ tăng lên 1 đơn vị
+        //Nếu frameCount >=60 thì frameCount sẽ được gán lại = 0.
+        //1s có 60 frame -> 60 lần gọi
+        frameCount = (frameCount+1)%60;
+        handleEvent();
         render();
         update();
       }
     };
     timer.start();
-
-    createMap();
-
-    Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-    entities.add(bomberman);
-  }
-  public void createMap() {
-    for (int i = 0; i < WIDTH; i++) {
-      for (int j = 0; j < HEIGHT; j++) {
-        Entity object;
-        if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-          object = new Wall(i, j, Sprite.wall.getFxImage());
-        }
-        else {
-          object = new Grass(i, j, Sprite.grass.getFxImage());
-        }
-        stillObjects.add(object);
-      }
-    }
   }
 
   public void update() {
@@ -104,13 +133,15 @@ public class Map1 extends Screen {
     entities.forEach(g -> g.render(gc));
   }
 
+  //Phương thức handleEvent cho người chơi.
   public void handleEvent() {
     scene.setOnKeyPressed(keyEvent -> {
-      switch(keyEvent.getCode()) {
-        case UP:
-          System.out.println("Upp");
-          break;
-      }
+      bomberman.handleEvent(keyEvent);
+    });
+
+    scene.setOnKeyReleased(keyEvent -> {
+      bomberman.handleReleasedEvent(keyEvent);
     });
   }
+
 }
