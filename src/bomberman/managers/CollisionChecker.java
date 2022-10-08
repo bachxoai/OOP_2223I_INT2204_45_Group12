@@ -1,6 +1,6 @@
 package bomberman.managers;
 
-import bomberman.ScreenController.Map1;
+import bomberman.ScreenController.ClassicMap;
 import bomberman.entities.Entity;
 import bomberman.entities.movingEntities.MovingEntity;
 import bomberman.entities.tileEntities.Grass;
@@ -11,8 +11,8 @@ import bomberman.graphics.Sprite;
 public class CollisionChecker {
 
     //Liên kết với một map cụ thể
-    private Map1 map;
-    public CollisionChecker(Map1 map) {
+    private ClassicMap map;
+    public CollisionChecker(ClassicMap map) {
         this.map = map;
     }
 

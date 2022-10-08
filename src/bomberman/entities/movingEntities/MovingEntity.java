@@ -1,9 +1,9 @@
 package bomberman.entities.movingEntities;
 
-import bomberman.ScreenController.Map1;
+import bomberman.ScreenController.ClassicMap;
 import bomberman.entities.Entity;
 import bomberman.graphics.Sprite;
-import javafx.scene.image.Image;
+
 import java.awt.*;
 
 //Đây là một Class chung cho các Entity có thể di chuyển.
@@ -33,7 +33,7 @@ public abstract class MovingEntity extends Entity {
 //        map.getEntities().add(this);
 //    }
 
-    public MovingEntity(int xUnit, int yUnit, Map1 map) {
+    public MovingEntity(int xUnit, int yUnit, ClassicMap map) {
         super(xUnit, yUnit, map);
         direction = "none";
         map.getEntities().add(this);
@@ -71,7 +71,7 @@ public abstract class MovingEntity extends Entity {
 
     //Các phương thức thay đổi img của Entity để tạo ra Animation cho nó.
     protected void animatedRight() {
-        int n = Map1.frameCount/(60/ANIMATED_FRAME);
+        int n = ClassicMap.frameCount/(60/ANIMATED_FRAME);
         if (n % 2 == 0) {
             img = Sprite.player_right_1.getFxImage();
         } else {
@@ -80,7 +80,7 @@ public abstract class MovingEntity extends Entity {
     }
 
     protected void animatedLeft() {
-        int n = Map1.frameCount/(60/ANIMATED_FRAME);
+        int n = ClassicMap.frameCount/(60/ANIMATED_FRAME);
         if (n % 2 == 0) {
             img = Sprite.player_left_1.getFxImage();
         } else {
@@ -89,7 +89,7 @@ public abstract class MovingEntity extends Entity {
     }
 
     protected void animatedDown() {
-        int n = Map1.frameCount/(60/ANIMATED_FRAME);
+        int n = ClassicMap.frameCount/(60/ANIMATED_FRAME);
         if (n % 2 == 0) {
             img = Sprite.player_down_1.getFxImage();
         } else {
@@ -98,7 +98,7 @@ public abstract class MovingEntity extends Entity {
     }
 
     protected void animatedUp() {
-        int n = Map1.frameCount/(60/ANIMATED_FRAME);
+        int n = ClassicMap.frameCount/(60/ANIMATED_FRAME);
         if (n % 2 == 0) {
             img = Sprite.player_up_1.getFxImage();
         } else {

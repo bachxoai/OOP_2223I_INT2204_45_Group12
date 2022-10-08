@@ -1,12 +1,8 @@
 package bomberman.entities;
 
-import bomberman.ScreenController.Map1;
-import javafx.scene.SnapshotParameters;
+import bomberman.ScreenController.ClassicMap;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 import bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -19,7 +15,7 @@ public abstract class Entity {
     protected Image img;
 
     //Map chứa entity đó.
-    protected Map1 map;
+    protected ClassicMap map;
 
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
@@ -31,7 +27,7 @@ public abstract class Entity {
 //    }
 
     //Các đối tượng đều biết img cụ thể nên không cần truyền vào img nữa
-    public Entity( int xUnit, int yUnit, Map1 map) {
+    public Entity( int xUnit, int yUnit, ClassicMap map) {
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.map = map;

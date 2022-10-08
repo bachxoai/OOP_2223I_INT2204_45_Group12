@@ -1,12 +1,12 @@
 package bomberman.entities.tileEntities;
 
-import bomberman.ScreenController.Map1;
+import bomberman.ScreenController.ClassicMap;
 import bomberman.graphics.Sprite;
 
 //Grass là một vật thể đứng yên nên kế thừa TileEntity
 public class Grass extends TileEntity {
 
-    public Grass(int x, int y, Map1 map) {
+    public Grass(int x, int y, ClassicMap map) {
         super(x, y, map);
         img = Sprite.grass.getFxImage();
         collision = 0; //Cỏ cho người chơi đi qua

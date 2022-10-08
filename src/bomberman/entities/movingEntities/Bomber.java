@@ -1,6 +1,6 @@
 package bomberman.entities.movingEntities;
 
-import bomberman.ScreenController.Map1;
+import bomberman.ScreenController.ClassicMap;
 import bomberman.graphics.Sprite;
 import javafx.scene.input.KeyEvent;
 
@@ -16,8 +16,7 @@ public class Bomber extends MovingEntity {
     //Thời gian hiệu lực của vật phẩm tăng tốc
     private int speedTimer = 0;
 
-
-    public Bomber(int x, int y, Map1 map) {
+    public Bomber(int x, int y, ClassicMap map) {
         super(x, y, map);
         img = Sprite.player_down.getFxImage();
         //Thêm các Spite animation cho Bomber
@@ -162,7 +161,7 @@ public class Bomber extends MovingEntity {
 
     //Hàm đếm ngược + tăng tốc độ di chuyển
     public void speedCountdown() {
-        if (Map1.frameCount == 59) {
+        if (ClassicMap.frameCount == 59) {
             speedTimer--;
         }
     }

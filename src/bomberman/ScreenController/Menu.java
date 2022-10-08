@@ -1,50 +1,69 @@
 package bomberman.ScreenController;
 
+import bomberman.UI.Buttons.ExitButton;
+import bomberman.UI.Buttons.SwitchPaneButton;
+import bomberman.UI.Buttons.SwitchScreenButton;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.WeakEventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+
 public class Menu extends Screen {
-  int k = 0;
-  Label l;
-  Button b;
+    HashMap<String, Pane> optionPanes;
+    Pane root;
 
-  public Menu(String currentScreen) {
-    super(currentScreen);
-    createLable();
-    createButton();
-    createScene();
-  }
+    public Menu(String currentScreen) {
+        super(currentScreen);
+        optionPanes = new HashMap<>();
+        optionPanes.put("Menu", new VBox());
+        optionPanes.put("ChooseMap", new VBox());
+        createScene();
+    }
 
-  public void createLable() {
-    l = new Label("Click to switch to Map1");
-  }
+    public Scene createScene() {
+        root = new HBox();
+        createChooseMapPane();
+        createMenuPane();
+        createRoot();
 
-  public void createButton() {
-    b = new Button("Switch to map1");
-    b.setOnAction(actionEvent -> {
-      k += 1;
-      System.out.println(currentScreen);
-      System.out.println(k);
-      currentScreen = "Map1";
-      Stage s = (Stage) b.getScene().getWindow();
-      s.setScene(allScreens.get(currentScreen).getScene());
-    });
-    b.setLayoutX(100);
-    b.setLayoutY(100);
-  }
+        scene = new Scene(root);
+        return scene;
+    }
 
-  public void createScene() {
-    VBox root = new VBox();
-    root.getChildren().addAll(l, b);
-    scene = new Scene(root);
-    scene.setOnKeyPressed(keyEvent -> {
-      switch (keyEvent.getCode()) {
-        case A:
-          System.out.println("Up");
-      }
-    });
-  }
+    public void createMenuPane() {
+        //optionPanes.replace("Menu", new VBox());
+        SwitchPaneButton toChooseMap = new SwitchPaneButton("Play", optionPanes.get("Menu"), optionPanes.get("ChooseMap"), root);
+        System.out.println(toChooseMap);
+        Button exit = new ExitButton();
+        optionPanes.get("Menu").getChildren().addAll(toChooseMap, exit);
+    }
+
+    public void createChooseMapPane() {
+        //optionPanes.replace("ChooseMap", new VBox());
+        Pane p = optionPanes.get("ChooseMap");
+        SwitchScreenButton map1 = new SwitchScreenButton("Map1", "Menu", "Map1");
+        p.getChildren().addAll(map1,
+                new SwitchPaneButton("Back", optionPanes.get("ChooseMap"), optionPanes.get("Menu"), root),
+                new ExitButton());
+    }
+
+    public void createRoot() {
+        //root = new Pane();
+        root.getChildren().add(optionPanes.get("Menu"));
+        Color color = Color.YELLOW;
+        CornerRadii cornerRadii = new CornerRadii(5);
+        Insets insets = new Insets(5, 2, 3, 3);
+        BackgroundFill backgroundFill = new BackgroundFill(color, cornerRadii, insets);
+        Background background = new Background(backgroundFill);
+        root.setBackground(background);
+    }
 }

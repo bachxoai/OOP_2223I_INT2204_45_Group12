@@ -1,6 +1,6 @@
 package bomberman.managers;
 
-import bomberman.ScreenController.Map1;
+import bomberman.ScreenController.ClassicMap;
 import bomberman.entities.Entity;
 import bomberman.entities.movingEntities.Balloom;
 import bomberman.entities.movingEntities.Bomber;
@@ -18,7 +18,7 @@ import java.io.*;
 //Đây là một Class để đọc Map, quản lý các đối tượng trong Map. Class này sẽ cần đổi tên lại sau.
 public class TileEntityManager {
     //Liên kết Class quản lý map với một map nào đó.
-    private Map1 map;
+    private ClassicMap map;
 
     //Level, số hàng, cột được đọc vào từ File Level.txt
     private int level, row, col;
@@ -26,7 +26,7 @@ public class TileEntityManager {
     //Các Entity được load vào map, các Entity này sẽ được khởi tạo trong phuong thức loadMap()
     private Entity entityMatrix[][];
 
-    public TileEntityManager(Map1 map) {
+    public TileEntityManager(ClassicMap map) {
         this.map = map;
     }
 
@@ -67,7 +67,8 @@ public class TileEntityManager {
 ////                    entityMatrix[i][j] = new Brick(j, i, map);
                 } else if (x == 'p') {
                     entityMatrix[i][j] = new Grass(j, i, map);
-                    map.bomberman = new Bomber(j, i, map);
+                    map.setBomberman(new Bomber(j, i, map));
+                    //map.getBomberman() = new Bomber(j, i, map);
                 } else if (x == '1') {
                     entityMatrix[i][j] = new Balloom(j, i, map);
                 } else if (x == '2') {

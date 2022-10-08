@@ -1,8 +1,7 @@
 package bomberman.entities.tileEntities;
 
-import bomberman.ScreenController.Map1;
+import bomberman.ScreenController.ClassicMap;
 import bomberman.entities.Entity;
-import javafx.scene.image.Image;
 
 //Đây là Class chung cho các Entity đứng yên.
 public class TileEntity extends Entity {
@@ -14,7 +13,7 @@ public class TileEntity extends Entity {
 //        //Sau khi tạo đối tượng đứng yên, đối tượng đó sẽ được lập tức thêm vào Mảng stillObject trong map.
 //        map.getStillObjects().add(this);
 //    }
-    public TileEntity(int xUnit, int yUnit, Map1 map) {
+    public TileEntity(int xUnit, int yUnit, ClassicMap map) {
         super(xUnit, yUnit, map);
         //Sau khi tạo đối tượng đứng yên, đối tượng đó sẽ được lập tức thêm vào Mảng stillObject trong map.
         map.getStillObjects().add(this);
