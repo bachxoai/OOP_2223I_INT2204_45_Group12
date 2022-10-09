@@ -18,14 +18,6 @@ public abstract class Entity {
     protected ClassicMap map;
 
 
-    //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
-//    public Entity( int xUnit, int yUnit, Image img, Map1 map) {
-//        this.x = xUnit * Sprite.SCALED_SIZE;
-//        this.y = yUnit * Sprite.SCALED_SIZE;
-//        this.img = img;
-//        this.map = map;
-//    }
-
     //Các đối tượng đều biết img cụ thể nên không cần truyền vào img nữa
     public Entity( int xUnit, int yUnit, ClassicMap map) {
         this.x = xUnit * Sprite.SCALED_SIZE;

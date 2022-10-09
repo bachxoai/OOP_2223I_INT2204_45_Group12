@@ -36,56 +36,66 @@ public class TileEntityManager {
 
     //Hàm đọc map từ File, sẽ được gọi trong Constructor của Map1. Hàm này sẽ cần xử lý lại các Exception.
     public void loadMap(String path) throws IOException {
-        Reader reader = new FileReader(path);
-        BufferedReader bufferedReader = new BufferedReader(reader);
+        Reader reader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            reader = new FileReader(path);
+            bufferedReader = new BufferedReader(reader);
 
-        String firstLine = bufferedReader.readLine();
-        String[] tokens = firstLine.split("\\s");
-        level = Integer.parseInt(tokens[0]);
-        row = Integer.parseInt(tokens[1]);
-        col = Integer.parseInt(tokens[2]);
+            String firstLine = bufferedReader.readLine();
+            String[] tokens = firstLine.split("\\s");
+            level = Integer.parseInt(tokens[0]);
+            row = Integer.parseInt(tokens[1]);
+            col = Integer.parseInt(tokens[2]);
 
-        //Thay đổi kích thước của map dựa theo dữ liệu trong file.
-        map.setWidth(col);
-        map.setHeight(row);
+            //Thay đổi kích thước của map dựa theo dữ liệu trong file.
+            map.setWidth(col);
+            map.setHeight(row);
 
-        //Khởi tạo mảng các đối tượng trong Map
-        entityMatrix = new Entity[row][col];
+            //Khởi tạo mảng các đối tượng trong Map
+            entityMatrix = new Entity[row][col];
 
-        //Đọc file rồi tạo đối tượng trong Map, thêm các đối tượng vào các Array stillObject,...
-        for (int i = 0; i < row; i++) {
-            String rowText = bufferedReader.readLine();
-            for (int j = 0; j < col; j++) {
-                char x = rowText.charAt(j);
-                Entity temp = new Grass(j, i, map);
-                if (x == '#') {
-                    entityMatrix[i][j] = new Wall(j, i, map);
-                } else if (x == '*') {
-                    entityMatrix[i][j] = new Brick(j, i, map);
-                } else if (x == 'x') {
-                    entityMatrix[i][j] = new Portal(j, i, map);
+            //Đọc file rồi tạo đối tượng trong Map, thêm các đối tượng vào các Array stillObject,...
+            for (int i = 0; i < row; i++) {
+                String rowText = bufferedReader.readLine();
+                for (int j = 0; j < col; j++) {
+                    char x = rowText.charAt(j);
+                    Entity temp = new Grass(j, i, map);
+                    if (x == '#') {
+                        entityMatrix[i][j] = new Wall(j, i, map);
+                    } else if (x == '*') {
+                        entityMatrix[i][j] = new Brick(j, i, map);
+                    } else if (x == 'x') {
+                        entityMatrix[i][j] = new Portal(j, i, map);
 ////                    entityMatrix[i][j] = new Brick(j, i, map);
-                } else if (x == 'p') {
-                    entityMatrix[i][j] = new Grass(j, i, map);
-                    map.setBomberman(new Bomber(j, i, map));
-                    //map.getBomberman() = new Bomber(j, i, map);
-                } else if (x == '1') {
-                    entityMatrix[i][j] = new Balloom(j, i, map);
-                } else if (x == '2') {
-                    entityMatrix[i][j] = new Oneal(j, i, map);
-                } else if (x == 'b') {
-                    entityMatrix[i][j] = new Bombs(j, i, map);
-                } else if (x == 'f') {
-                    entityMatrix[i][j] = new Flames(j, i, map);
-                } else if (x == 's') {
-                    entityMatrix[i][j] = new Speed(j, i, map);
-                }
-                else {
-                    entityMatrix[i][j] = new Grass(j, i, map);
+                    } else if (x == 'p') {
+                        entityMatrix[i][j] = new Grass(j, i, map);
+                        map.setBomberman(new Bomber(j, i, map));
+                    } else if (x == '1') {
+                        entityMatrix[i][j] = new Balloom(j, i, map);
+                    } else if (x == '2') {
+                        entityMatrix[i][j] = new Oneal(j, i, map);
+                    } else if (x == 'b') {
+                        entityMatrix[i][j] = new Bombs(j, i, map);
+                    } else if (x == 'f') {
+                        entityMatrix[i][j] = new Flames(j, i, map);
+                    } else if (x == 's') {
+                        entityMatrix[i][j] = new Speed(j, i, map);
+                    }
+                    else {
+                        entityMatrix[i][j] = new Grass(j, i, map);
+                    }
                 }
             }
+        } catch (Exception e) {
+            System.err.println("File path error from loadMap() Tile EntityManager.java");
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
         }
-        reader.close();
-        bufferedReader.close();
     }
 }

@@ -20,12 +20,31 @@ public class Bomber extends MovingEntity {
         super(x, y, map);
         img = Sprite.player_down.getFxImage();
         //Thêm các Spite animation cho Bomber
-        setSprite(Sprite.player_up, Sprite.player_up_1, Sprite.player_up_2, Sprite.player_down,
-                Sprite.player_down_1, Sprite.player_down_2, Sprite.player_left, Sprite.player_left_1,
-                Sprite.player_left_2, Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2);
+        Sprite[] up = new Sprite[3];
+        up[0] = Sprite.player_up;
+        up[1] = Sprite.player_up_1;
+        up[2] = Sprite.player_up_2;
+        Sprite[] down = new Sprite[3];
+        down[0] = Sprite.player_down;
+        down[1] = Sprite.player_down_1;
+        down[2] = Sprite.player_down_2;
+        Sprite[] right = new Sprite[3];
+        right[0] = Sprite.player_right;
+        right[1] = Sprite.player_right_1;
+        right[2] = Sprite.player_right_2;
+        Sprite[] left = new Sprite[3];
+        left[0] = Sprite.player_left;
+        left[1] = Sprite.player_left_1;
+        left[2] = Sprite.player_left_2;
+        Sprite[] dead = new Sprite[3];
+        dead[0] = Sprite.player_dead1;
+        dead[1] = Sprite.player_dead2;
+        dead[2] = Sprite.player_dead3;
+
+        setSprite(up, down, left, right, dead);
         solidArea = new Rectangle(0,12,20,20); //Cài đặt thông số cho hitbox của Bomber
         super.map = map;
-        Velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
+        velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
     }
 
     @Override
@@ -68,19 +87,19 @@ public class Bomber extends MovingEntity {
             }
             switch (direction) {
                 case "up": {
-                    y -= Velocity;
+                    y -= velocity;
                     break;
                 }
                 case "down": {
-                    y += Velocity;
+                    y += velocity;
                     break;
                 }
                 case "left": {
-                    x -= Velocity;
+                    x -= velocity;
                     break;
                 }
                 case "right": {
-                    x += Velocity;
+                    x += velocity;
                     break;
                 }
             }
@@ -88,10 +107,10 @@ public class Bomber extends MovingEntity {
 
         //Nếu thời gian hiệu lực tăng tốc khác 0 thì gọi hàm để (bắt đầu đếm ngược và tăng tốc độ)
         if (speedTimer != 0) {
-            Velocity = 5;
+            velocity = 5;
             speedCountdown();
         } else {
-            Velocity = 2;
+            velocity = 2;
         }
     }
 

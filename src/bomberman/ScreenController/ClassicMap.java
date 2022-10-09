@@ -28,11 +28,15 @@ public class ClassicMap extends Map {
     //Kiểm tra va chạm
     private CollisionChecker collisionChecker;// = new CollisionChecker(this);
 
-    public ClassicMap(String currentScreen) throws IOException {
+    public ClassicMap(String currentScreen) {
         super(currentScreen);
         tileEntityManager = new TileEntityManager(this);
         collisionChecker = new CollisionChecker(this);
-        tileEntityManager.loadMap("res/levels/Level1.txt");
+        try {
+            tileEntityManager.loadMap("res/levels/Level1.txt");
+        } catch (Exception e) {
+            System.err.println("IOException at loadmap() from Map Constructor");
+        }
 
         createScene();
     }
