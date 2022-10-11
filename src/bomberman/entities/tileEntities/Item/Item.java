@@ -10,5 +10,6 @@ public abstract class Item extends TileEntity {
 //    }
     public Item(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
+        gamePlay.addStillObject(this);
     }
 }

@@ -10,6 +10,7 @@ public class Grass extends TileEntity {
         super(x, y, gamePlay);
         img = Sprite.grass.getFxImage();
         collision = 0; //Cỏ cho người chơi đi qua
+        gamePlay.getGrassObjects().add(this);
     }
 
     @Override

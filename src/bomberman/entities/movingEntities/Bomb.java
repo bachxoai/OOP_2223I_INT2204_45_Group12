@@ -47,8 +47,9 @@ public class Bomb extends Entity {
             img = explosion[explodingTime/5].getFxImage();
         } else {
             Grass g = new Grass(5, 5, gamePlay);
-            gamePlay.getTileEntityManager().getEntityMatrix()[5][5] = g;
-            gamePlay.getStillObjects().add(g);
+//            gamePlay.getMapManager().getEntityMatrix()[5][5] = g;
+            gamePlay.setStillObjectAt(5, 5, g);
+            gamePlay.addStillObject(this);
             //gamePlay.getEntities().remove(this);
         }
     }

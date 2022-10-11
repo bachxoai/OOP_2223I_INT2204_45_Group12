@@ -9,6 +9,7 @@ public class Wall extends TileEntity {
         super(x, y, gamePlay);
         img = Sprite.wall.getFxImage();
         collision = 1; //Tường không cho người chơi đi qua
+        gamePlay.addStillObject(this);
     }
 
     @Override

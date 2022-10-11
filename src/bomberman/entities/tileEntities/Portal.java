@@ -7,5 +7,6 @@ public class Portal extends TileEntity {
     public Portal(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.portal.getFxImage();
+        gamePlay.addStillObject(this);
     }
 }
