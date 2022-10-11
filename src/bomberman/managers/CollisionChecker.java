@@ -1,6 +1,5 @@
 package bomberman.managers;
 
-import bomberman.ScreenController.ClassicMap;
 import bomberman.entities.Entity;
 import bomberman.entities.movingEntities.MovingEntity;
 import bomberman.entities.tileEntities.Grass;
@@ -11,9 +10,9 @@ import bomberman.graphics.Sprite;
 public class CollisionChecker {
 
     //Liên kết với một map cụ thể
-    private ClassicMap map;
-    public CollisionChecker(ClassicMap map) {
-        this.map = map;
+    private GamePlay gamePlay;
+    public CollisionChecker(GamePlay gamePlay) {
+        this.gamePlay = gamePlay;
     }
 
     public void checkTile(MovingEntity entity) {
@@ -40,8 +39,8 @@ public class CollisionChecker {
                 entityTopRow = (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE;
 
                 //Tạo ra hai Entity phụ (ở bên trái và phải của nhân vật) để lưu Entity trong Map mà nhân vật sắp va chạm.
-                tileEntity1 = (TileEntity) map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
-                tileEntity2 = (TileEntity) map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityRightCol];
+                tileEntity1 = (TileEntity) gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
+                tileEntity2 = (TileEntity) gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityRightCol];
 
                 //Nếu một trong hai tileEntity.getCollision() == 1 nghĩa là một trong hai Entity nhân vật
                 //sắp va chạm có collision = 1 (ngăn cản người chơi đi qua)
@@ -55,9 +54,9 @@ public class CollisionChecker {
                         entity.setCollisionOn(tileEntity1.getCollision());
                         //Nếu là tín hiệu nhặt được vật phẩm thì vật phẩm đó sẽ bị xóa, thay thế bằng một ô Grass;
                         if (tileEntity1.getCollision() == 2 || tileEntity1.getCollision() == 3 || tileEntity1.getCollision() == 4){
-                            Entity temp = map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
-                            map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol] = new Grass(entityLeftCol, entityTopRow, map);
-                            map.getStillObjects().remove(temp);
+                            Entity temp = gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
+                            gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol] = new Grass(entityLeftCol, entityTopRow, gamePlay);
+                            gamePlay.getStillObjects().remove(temp);
                         }
                     }
                 }
@@ -65,17 +64,17 @@ public class CollisionChecker {
             }
             case "down": {
                 entityBottomRow = (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE;
-                tileEntity1 = (TileEntity) map.getTileEntityManager().getEntityMatrix()[entityBottomRow][entityLeftCol];
-                tileEntity2 = (TileEntity) map.getTileEntityManager().getEntityMatrix()[entityBottomRow][entityRightCol];
+                tileEntity1 = (TileEntity) gamePlay.getTileEntityManager().getEntityMatrix()[entityBottomRow][entityLeftCol];
+                tileEntity2 = (TileEntity) gamePlay.getTileEntityManager().getEntityMatrix()[entityBottomRow][entityRightCol];
                 if (tileEntity1.getCollision() == 1 || tileEntity2.getCollision() == 1) {
                     entity.setCollisionOn(1);
                 } else {
                     if (entityLeftCol == entityRightCol) {
                         entity.setCollisionOn(tileEntity1.getCollision());
                         if (tileEntity1.getCollision() == 2 || tileEntity1.getCollision() == 3 || tileEntity1.getCollision() == 4){
-                            Entity temp = map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
-                            map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol] = new Grass(entityLeftCol, entityTopRow, map);
-                            map.getStillObjects().remove(temp);
+                            Entity temp = gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
+                            gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol] = new Grass(entityLeftCol, entityTopRow, gamePlay);
+                            gamePlay.getStillObjects().remove(temp);
                         }
                     }
                 }
@@ -83,17 +82,17 @@ public class CollisionChecker {
             }
             case "left": {
                 entityLeftCol = (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE;
-                tileEntity1 = (TileEntity) map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
-                tileEntity2 = (TileEntity) map.getTileEntityManager().getEntityMatrix()[entityBottomRow][entityLeftCol];
+                tileEntity1 = (TileEntity) gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
+                tileEntity2 = (TileEntity) gamePlay.getTileEntityManager().getEntityMatrix()[entityBottomRow][entityLeftCol];
                 if (tileEntity1.getCollision() == 1 || tileEntity2.getCollision() == 1) {
                     entity.setCollisionOn(1);
                 } else {
                     if (entityTopRow == entityBottomRow) {
                         entity.setCollisionOn(tileEntity1.getCollision());
                         if (tileEntity1.getCollision() == 2 || tileEntity1.getCollision() == 3 || tileEntity1.getCollision() == 4){
-                            Entity temp = map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
-                            map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol] = new Grass(entityLeftCol, entityTopRow, map);
-                            map.getStillObjects().remove(temp);
+                            Entity temp = gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
+                            gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol] = new Grass(entityLeftCol, entityTopRow, gamePlay);
+                            gamePlay.getStillObjects().remove(temp);
                         }
                     }
                 }
@@ -101,17 +100,17 @@ public class CollisionChecker {
             }
             case "right": {
                 entityRightCol = (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE;
-                tileEntity1 = (TileEntity) map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityRightCol];
-                tileEntity2 = (TileEntity) map.getTileEntityManager().getEntityMatrix()[entityBottomRow][entityRightCol];
+                tileEntity1 = (TileEntity) gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityRightCol];
+                tileEntity2 = (TileEntity) gamePlay.getTileEntityManager().getEntityMatrix()[entityBottomRow][entityRightCol];
                 if (tileEntity1.getCollision() == 1 || tileEntity2.getCollision() == 1) {
                     entity.setCollisionOn(1);
                 } else {
                     if (entityTopRow == entityBottomRow) {
                         entity.setCollisionOn(tileEntity1.getCollision());
                         if (tileEntity1.getCollision() == 2 || tileEntity1.getCollision() == 3 || tileEntity1.getCollision() == 4){
-                            Entity temp = map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
-                            map.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol] = new Grass(entityLeftCol, entityTopRow, map);
-                            map.getStillObjects().remove(temp);
+                            Entity temp = gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol];
+                            gamePlay.getTileEntityManager().getEntityMatrix()[entityTopRow][entityLeftCol] = new Grass(entityLeftCol, entityTopRow, gamePlay);
+                            gamePlay.getStillObjects().remove(temp);
                         }
                     }
                 }

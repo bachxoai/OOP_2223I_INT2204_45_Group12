@@ -1,15 +1,14 @@
 package bomberman.managers;
 
-import bomberman.ScreenController.ClassicMap;
 import bomberman.entities.Entity;
 import bomberman.entities.movingEntities.Balloom;
 import bomberman.entities.movingEntities.Bomber;
 import bomberman.entities.movingEntities.Oneal;
 import bomberman.entities.tileEntities.Brick;
 import bomberman.entities.tileEntities.Grass;
-import bomberman.entities.tileEntities.Item.Bombs;
-import bomberman.entities.tileEntities.Item.Flames;
-import bomberman.entities.tileEntities.Item.Speed;
+import bomberman.entities.tileEntities.Item.BombsItem;
+import bomberman.entities.tileEntities.Item.FlamesItem;
+import bomberman.entities.tileEntities.Item.SpeedItem;
 import bomberman.entities.tileEntities.Portal;
 import bomberman.entities.tileEntities.Wall;
 
@@ -18,7 +17,7 @@ import java.io.*;
 //Đây là một Class để đọc Map, quản lý các đối tượng trong Map. Class này sẽ cần đổi tên lại sau.
 public class TileEntityManager {
     //Liên kết Class quản lý map với một map nào đó.
-    private ClassicMap map;
+    private GamePlay gamePlay;
 
     //Level, số hàng, cột được đọc vào từ File Level.txt
     private int level, row, col;
@@ -26,8 +25,8 @@ public class TileEntityManager {
     //Các Entity được load vào map, các Entity này sẽ được khởi tạo trong phuong thức loadMap()
     private Entity entityMatrix[][];
 
-    public TileEntityManager(ClassicMap map) {
-        this.map = map;
+    public TileEntityManager(GamePlay gamePlay) {
+        this.gamePlay = gamePlay;
     }
 
     public Entity[][] getEntityMatrix() {
@@ -35,12 +34,10 @@ public class TileEntityManager {
     }
 
     //Hàm đọc map từ File, sẽ được gọi trong Constructor của Map1. Hàm này sẽ cần xử lý lại các Exception.
-    public void loadMap(String path) throws IOException {
-        Reader reader = null;
-        BufferedReader bufferedReader = null;
+    public void loadMap(String path) {//throws IOException {
         try {
-            reader = new FileReader(path);
-            bufferedReader = new BufferedReader(reader);
+            Reader reader = new FileReader(path);
+            BufferedReader bufferedReader = new BufferedReader(reader);
 
             String firstLine = bufferedReader.readLine();
             String[] tokens = firstLine.split("\\s");
@@ -49,8 +46,8 @@ public class TileEntityManager {
             col = Integer.parseInt(tokens[2]);
 
             //Thay đổi kích thước của map dựa theo dữ liệu trong file.
-            map.setWidth(col);
-            map.setHeight(row);
+            gamePlay.setWidth(col);
+            gamePlay.setHeight(row);
 
             //Khởi tạo mảng các đối tượng trong Map
             entityMatrix = new Entity[row][col];
@@ -60,42 +57,37 @@ public class TileEntityManager {
                 String rowText = bufferedReader.readLine();
                 for (int j = 0; j < col; j++) {
                     char x = rowText.charAt(j);
-                    Entity temp = new Grass(j, i, map);
+                    Entity temp = new Grass(j, i, gamePlay);
                     if (x == '#') {
-                        entityMatrix[i][j] = new Wall(j, i, map);
+                        entityMatrix[i][j] = new Wall(j, i, gamePlay);
                     } else if (x == '*') {
-                        entityMatrix[i][j] = new Brick(j, i, map);
+                        entityMatrix[i][j] = new Brick(j, i, gamePlay);
                     } else if (x == 'x') {
-                        entityMatrix[i][j] = new Portal(j, i, map);
+                        entityMatrix[i][j] = new Portal(j, i, gamePlay);
 ////                    entityMatrix[i][j] = new Brick(j, i, map);
                     } else if (x == 'p') {
-                        entityMatrix[i][j] = new Grass(j, i, map);
-                        map.setBomberman(new Bomber(j, i, map));
+                        entityMatrix[i][j] = new Grass(j, i, gamePlay);
+                        gamePlay.setBomberman(new Bomber(j, i, gamePlay));
+                        //map.getBomberman() = new Bomber(j, i, map);
                     } else if (x == '1') {
-                        entityMatrix[i][j] = new Balloom(j, i, map);
+                        entityMatrix[i][j] = new Balloom(j, i, gamePlay);
                     } else if (x == '2') {
-                        entityMatrix[i][j] = new Oneal(j, i, map);
+                        entityMatrix[i][j] = new Oneal(j, i, gamePlay);
                     } else if (x == 'b') {
-                        entityMatrix[i][j] = new Bombs(j, i, map);
+                        entityMatrix[i][j] = new BombsItem(j, i, gamePlay);
                     } else if (x == 'f') {
-                        entityMatrix[i][j] = new Flames(j, i, map);
+                        entityMatrix[i][j] = new FlamesItem(j, i, gamePlay);
                     } else if (x == 's') {
-                        entityMatrix[i][j] = new Speed(j, i, map);
-                    }
-                    else {
-                        entityMatrix[i][j] = new Grass(j, i, map);
+                        entityMatrix[i][j] = new SpeedItem(j, i, gamePlay);
+                    } else {
+                        entityMatrix[i][j] = new Grass(j, i, gamePlay);
                     }
                 }
             }
-        } catch (Exception e) {
-            System.err.println("File path error from loadMap() Tile EntityManager.java");
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
+            reader.close();
+            bufferedReader.close();
+        } catch (IOException e) {
+            System.out.println("Cannot read map");
         }
     }
 }

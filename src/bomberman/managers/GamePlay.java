@@ -1,19 +1,28 @@
-package bomberman.ScreenController;
+package bomberman.managers;
 
+import bomberman.ScreenController.LevelScreen;
 import bomberman.managers.CollisionChecker;
 import bomberman.entities.tileEntities.Item.Item;
 import bomberman.managers.TileEntityManager;
 import bomberman.graphics.Sprite;
 import bomberman.entities.movingEntities.Bomber;
 import bomberman.entities.Entity;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.canvas.Canvas;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class ClassicMap extends Map {
+public class GamePlay {
+    AnimationTimer timer;
+
+    //Một biến đếm số frame của từng giây, sẽ sử dụng kết hợp với MovingEntity để tạo Animation
+    public static int frameCount = 0;
+    LevelScreen containedLevelScreen;
+    Group root;
+    int width;
+    int height;
     Bomber bomberman;
     private GraphicsContext gc;
     private Canvas canvas;
@@ -28,17 +37,41 @@ public class ClassicMap extends Map {
     //Kiểm tra va chạm
     private CollisionChecker collisionChecker;// = new CollisionChecker(this);
 
-    public ClassicMap(String currentScreen) {
-        super(currentScreen);
+    public GamePlay(LevelScreen containedLevelScreen) {//throws IOException {
+        this.containedLevelScreen = containedLevelScreen;
         tileEntityManager = new TileEntityManager(this);
         collisionChecker = new CollisionChecker(this);
-        try {
-            tileEntityManager.loadMap("res/levels/Level1.txt");
-        } catch (Exception e) {
-            System.err.println("IOException at loadmap() from Map Constructor");
-        }
+        tileEntityManager.loadMap("res/levels/Level1.txt");
+        createGamePlay();
+    }
 
-        createScene();
+    public Group createGamePlay() {
+        canvas = new Canvas(Sprite.SCALED_SIZE * width, Sprite.SCALED_SIZE * height);
+        gc = canvas.getGraphicsContext2D();
+        root = new Group();
+        root.getChildren().add(canvas);
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                //Mỗi khung hình (frame) thì biến frameCount sẽ tăng lên 1 đơn vị
+                //Nếu frameCount >=60 thì frameCount sẽ được gán lại = 0.
+                //1s có 60 frame -> 60 lần gọi
+                frameCount = (frameCount+1)%60;
+                handleEvent();
+                render();
+                update();
+            }
+        };
+        timer.start();
+        return root;
+    }
+
+    public void startTimer() {
+        timer.start();
+    }
+
+    public void stopTimer() {
+        timer.stop();
     }
 
     public void setWidth(int width) {
@@ -76,15 +109,6 @@ public class ClassicMap extends Map {
     public void setBomberman(Bomber bomberman) {
         this.bomberman = bomberman;
     }
-
-    @Override
-    public Group createGamePlay() {
-        canvas = new Canvas(Sprite.SCALED_SIZE * width, Sprite.SCALED_SIZE * height);
-        gc = canvas.getGraphicsContext2D();
-        Group gamePlay = new Group();
-        gamePlay.getChildren().add(canvas);
-        return gamePlay;
-    }
     public void update() {
         entities.forEach(Entity::update);
     }
@@ -97,14 +121,20 @@ public class ClassicMap extends Map {
 
     //Phương thức handleEvent cho người chơi.
     public void handleEvent() {
-        scene.setOnKeyPressed(keyEvent -> {
+        containedLevelScreen.getScene().setOnKeyPressed(keyEvent -> {
             bomberman.handleEvent(keyEvent);
         });
 
-        scene.setOnKeyReleased(keyEvent -> {
+        containedLevelScreen.getScene().setOnKeyReleased(keyEvent -> {
             bomberman.handleReleasedEvent(keyEvent);
         });
     }
 
+    public Group getRoot() {
+        return root;
+    }
 
+    public void setRoot(Group root) {
+        this.root = root;
+    }
 }

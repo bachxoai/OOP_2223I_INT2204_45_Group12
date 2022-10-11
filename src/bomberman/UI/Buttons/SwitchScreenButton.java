@@ -1,6 +1,6 @@
-package bomberman.UI.Buttons;
+package bomberman.UI.buttons;
 
-import bomberman.ScreenController.ClassicMap;
+import bomberman.ScreenController.LevelScreen;
 import bomberman.ScreenController.Screen;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -20,8 +20,8 @@ public class SwitchScreenButton extends Button {
         System.out.println("cc");
         Stage s = (Stage) this.getScene().getWindow();
         s.setScene(Screen.allScreens.get(screenToSwitchTo).getScene());
-        if (Screen.allScreens.get(screenToSwitchTo) instanceof ClassicMap) {
-            ((ClassicMap) Screen.allScreens.get(screenToSwitchTo)).startTimer();
+        if (Screen.allScreens.get(screenToSwitchTo) instanceof LevelScreen) {
+            ((LevelScreen) Screen.allScreens.get(screenToSwitchTo)).startTimer();
         }
     }
 }

@@ -1,9 +1,6 @@
-package bomberman.UI.Buttons;
+package bomberman.UI.buttons;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 public class SwitchPaneButton extends Button {

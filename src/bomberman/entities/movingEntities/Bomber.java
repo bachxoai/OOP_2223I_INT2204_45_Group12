@@ -1,12 +1,13 @@
 package bomberman.entities.movingEntities;
 
-import bomberman.ScreenController.ClassicMap;
+import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 import javafx.scene.input.KeyEvent;
 
 import java.awt.*;
 
 public class Bomber extends MovingEntity {
+    int bombNo;
     //Kiểm tra xem nút Up có đang được bấm hay không? Các nút còn lại tương tự.
     private boolean upPressed = false;
     private boolean downPressed = false;
@@ -16,35 +17,16 @@ public class Bomber extends MovingEntity {
     //Thời gian hiệu lực của vật phẩm tăng tốc
     private int speedTimer = 0;
 
-    public Bomber(int x, int y, ClassicMap map) {
-        super(x, y, map);
+    public Bomber(int x, int y, GamePlay gamePlay) {
+        super(x, y, gamePlay);
         img = Sprite.player_down.getFxImage();
         //Thêm các Spite animation cho Bomber
-        Sprite[] up = new Sprite[3];
-        up[0] = Sprite.player_up;
-        up[1] = Sprite.player_up_1;
-        up[2] = Sprite.player_up_2;
-        Sprite[] down = new Sprite[3];
-        down[0] = Sprite.player_down;
-        down[1] = Sprite.player_down_1;
-        down[2] = Sprite.player_down_2;
-        Sprite[] right = new Sprite[3];
-        right[0] = Sprite.player_right;
-        right[1] = Sprite.player_right_1;
-        right[2] = Sprite.player_right_2;
-        Sprite[] left = new Sprite[3];
-        left[0] = Sprite.player_left;
-        left[1] = Sprite.player_left_1;
-        left[2] = Sprite.player_left_2;
-        Sprite[] dead = new Sprite[3];
-        dead[0] = Sprite.player_dead1;
-        dead[1] = Sprite.player_dead2;
-        dead[2] = Sprite.player_dead3;
-
-        setSprite(up, down, left, right, dead);
+        setSprite(Sprite.player_up, Sprite.player_up_1, Sprite.player_up_2, Sprite.player_down,
+                Sprite.player_down_1, Sprite.player_down_2, Sprite.player_left, Sprite.player_left_1,
+                Sprite.player_left_2, Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2);
         solidArea = new Rectangle(0,12,20,20); //Cài đặt thông số cho hitbox của Bomber
-        super.map = map;
-        velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
+        super.gamePlay = gamePlay;
+        Velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
     }
 
     @Override
@@ -74,7 +56,7 @@ public class Bomber extends MovingEntity {
 
         //Kiểm tra xem nhân vật có bị kẹt tường không.
         collisionOn = 0;
-        map.getCollisionChecker().checkTile(this);
+        gamePlay.getCollisionChecker().checkTile(this);
 
         //Nếu nhân vật không bị kẹt tường thì thay đổi vị trí theo hướng (direction)
         if (collisionOn != 1) {
@@ -87,19 +69,19 @@ public class Bomber extends MovingEntity {
             }
             switch (direction) {
                 case "up": {
-                    y -= velocity;
+                    y -= Velocity;
                     break;
                 }
                 case "down": {
-                    y += velocity;
+                    y += Velocity;
                     break;
                 }
                 case "left": {
-                    x -= velocity;
+                    x -= Velocity;
                     break;
                 }
                 case "right": {
-                    x += velocity;
+                    x += Velocity;
                     break;
                 }
             }
@@ -107,10 +89,10 @@ public class Bomber extends MovingEntity {
 
         //Nếu thời gian hiệu lực tăng tốc khác 0 thì gọi hàm để (bắt đầu đếm ngược và tăng tốc độ)
         if (speedTimer != 0) {
-            velocity = 5;
+            Velocity = 5;
             speedCountdown();
         } else {
-            velocity = 2;
+            Velocity = 1;
         }
     }
 
@@ -144,6 +126,12 @@ public class Bomber extends MovingEntity {
                 downPressed = false;
                 leftPressed = false;
                 rightPressed = true;
+                break;
+            }
+            case B: {
+                Bomb b = new Bomb(5, 5, gamePlay);
+                gamePlay.getEntities().add(b);
+                gamePlay.getTileEntityManager().getEntityMatrix()[5][5] = b;
                 break;
             }
         }
@@ -180,7 +168,7 @@ public class Bomber extends MovingEntity {
 
     //Hàm đếm ngược + tăng tốc độ di chuyển
     public void speedCountdown() {
-        if (ClassicMap.frameCount == 59) {
+        if (GamePlay.frameCount == 59) {
             speedTimer--;
         }
     }

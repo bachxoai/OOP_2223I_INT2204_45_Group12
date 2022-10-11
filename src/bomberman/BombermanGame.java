@@ -1,6 +1,6 @@
 package bomberman;
 
-import bomberman.ScreenController.ClassicMap;
+import bomberman.ScreenController.LevelScreen;
 import bomberman.ScreenController.Menu;
 import bomberman.ScreenController.Screen;
 import javafx.application.Application;
@@ -15,7 +15,7 @@ public class BombermanGame extends Application {
 
     public void start(Stage stage) throws IOException {
         Screen a = new Menu("Menu");
-        Screen b = new ClassicMap("Map1");
+        Screen b = new LevelScreen("Map1");
         stage.setWidth(1000);
         stage.setHeight(500);
         stage.setScene(a.getScene());

@@ -20,4 +20,7 @@ public abstract class Screen {
     return this.scene;
   }
 
+    public String getCurrentScreen() {
+        return currentScreen;
+    }
 }

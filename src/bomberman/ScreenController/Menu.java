@@ -1,19 +1,13 @@
 package bomberman.ScreenController;
 
-import bomberman.UI.Buttons.ExitButton;
-import bomberman.UI.Buttons.SwitchPaneButton;
-import bomberman.UI.Buttons.SwitchScreenButton;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.WeakEventHandler;
+import bomberman.UI.buttons.ExitButton;
+import bomberman.UI.buttons.SwitchPaneButton;
+import bomberman.UI.buttons.SwitchScreenButton;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.util.HashMap;
 
@@ -50,7 +44,7 @@ public class Menu extends Screen {
     public void createChooseMapPane() {
         //optionPanes.replace("ChooseMap", new VBox());
         Pane p = optionPanes.get("ChooseMap");
-        SwitchScreenButton map1 = new SwitchScreenButton("Map1", "Menu", "Map1");
+        SwitchScreenButton map1 = new SwitchScreenButton("Map 1", "Menu", "Map1");
         p.getChildren().addAll(map1,
                 new SwitchPaneButton("Back", optionPanes.get("ChooseMap"), optionPanes.get("Menu"), root),
                 new ExitButton());
