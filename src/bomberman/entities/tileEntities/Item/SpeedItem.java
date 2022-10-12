@@ -9,4 +9,9 @@ public class SpeedItem extends Item{
         img = Sprite.powerup_speed.getFxImage();
         collision = 4;
     }
+
+    @Override
+    public void update() {
+
+    }
 }

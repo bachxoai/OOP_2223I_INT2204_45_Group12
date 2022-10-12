@@ -9,4 +9,9 @@ public class FlamesItem extends Item{
         img = Sprite.powerup_flames.getFxImage();
         collision = 3;
     }
+
+    @Override
+    public void update() {
+
+    }
 }

@@ -12,4 +12,8 @@ public class BombpassItem extends Item{
     }
 
 
+    @Override
+    public void update() {
+
+    }
 }

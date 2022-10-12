@@ -8,4 +8,9 @@ public class WallpassItem extends Item{
         super(xUnit, yUnit, gamePlay);
         img = Sprite.powerup_wallpass.getFxImage();
     }
+
+    @Override
+    public void update() {
+
+    }
 }

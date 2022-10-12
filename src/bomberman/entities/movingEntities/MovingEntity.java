@@ -1,5 +1,6 @@
 package bomberman.entities.movingEntities;
 
+import bomberman.entities.DynamicEntity;
 import bomberman.managers.GamePlay;
 import bomberman.entities.Entity;
 import bomberman.graphics.Sprite;
@@ -7,7 +8,7 @@ import bomberman.graphics.Sprite;
 import java.awt.*;
 
 //Đây là một Class chung cho các Entity có thể di chuyển.
-public abstract class MovingEntity extends Entity {
+public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Các Sprite lưu animation của Entity.
 //    protected Sprite up, up1, up2, down, down1, down2, left, left1, left2, right, right1, right2;
     protected Sprite[] up;
@@ -38,7 +39,7 @@ public abstract class MovingEntity extends Entity {
     public MovingEntity(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         direction = "none";
-        gamePlay.getEntities().add(this);
+        gamePlay.getMapManager().addDynamicEntity(this);
     }
 
     //Phương thức gán các hình ảnh để tạo animation cho MovingEntity

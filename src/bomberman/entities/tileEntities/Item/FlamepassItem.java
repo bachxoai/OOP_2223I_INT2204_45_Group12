@@ -9,4 +9,9 @@ public class FlamepassItem extends Item{
         img = Sprite.powerup_flamepass.getFxImage();
 //        collision = 7;
     }
+
+    @Override
+    public void update() {
+
+    }
 }

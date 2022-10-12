@@ -9,4 +9,9 @@ public class DetonatorItem extends Item{
         img = Sprite.powerup_detonator.getFxImage();
 //        collision = 6;
     }
+
+    @Override
+    public void update() {
+
+    }
 }

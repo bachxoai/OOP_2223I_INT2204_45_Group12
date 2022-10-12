@@ -3,20 +3,15 @@ package bomberman.managers;
 import bomberman.entities.Entity;
 import bomberman.entities.movingEntities.MovingEntity;
 import bomberman.entities.tileEntities.Grass;
+import bomberman.entities.tileEntities.TileEntity;
 import bomberman.graphics.Sprite;
 
 //Class kiểm tra va chạm
 public class CollisionChecker {
 
-    //Liên kết với một map cụ thể
-    private GamePlay gamePlay;
-    public CollisionChecker(GamePlay gamePlay) {
-        this.gamePlay = gamePlay;
-    }
-
-    public void checkTile(MovingEntity entity) {
+    public static void checkTileEntity(MovingEntity entity, GamePlay gamePlay) {
         int entityLeftX = entity.getX();
-        int entityRightX = entity.getX() + Sprite.SCALED_SIZE;
+        int entityRightX = entity.getX() + Sprite.SCALED_SIZE - 8;
         int entityTopY = entity.getY();
         int entityBottomY = entity.getY() + Sprite.SCALED_SIZE;
 
@@ -26,79 +21,55 @@ public class CollisionChecker {
         int entityTopRow = entityTopY/Sprite.SCALED_SIZE;
         int entityBottomRow = entityBottomY/Sprite.SCALED_SIZE;
 
-        //Tạo hai Entity phụ để kiểm tra va chạm
-        Entity entity1, entity2;
-
         //Kiểm tra va chạm theo từng hướng
         switch (entity.getDirection()) {
             case "up": {
-                //Tính vị trí sắp tới của nhân vật
-                entityTopRow = (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE;
-
-                //Tạo ra hai Entity phụ (ở bên trái và phải của nhân vật) để lưu Entity trong Map mà nhân vật sắp va chạm.
-                entity1 = (Entity) gamePlay.getStillObjectAt(entityLeftCol, entityTopRow);
-                entity2 = (Entity) gamePlay.getStillObjectAt(entityRightCol, entityTopRow);
-
-                //Nếu một trong hai Entity) .getCollision() == 1 nghĩa là một trong hai Entity nhân vật
-                //sắp va chạm có collision = 1 (ngăn cản người chơi đi qua)
-                if (entity1.getCollision() == 1 || entity2.getCollision() == 1) {
-                    if (entity1.getCollision() == 1 && entity2.getCollision() != 1 && entityRightCol * Sprite.SCALED_SIZE - entityLeftX <= 8) {
-                        entity.setX(entityRightCol * Sprite.SCALED_SIZE);
-                    } else if (entity2.getCollision() == 1 && entity1.getCollision() != 1 && entityRightX - entityLeftCol * Sprite.SCALED_SIZE - 31 <= 8) {
-                        entity.setX(entityLeftCol * Sprite.SCALED_SIZE);
-                    } else {
-                        entity.setCollisionOn(1);
-                    }
-                }
+                checkTileVertical((entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
                 break;
             }
             case "down": {
-                entityBottomRow = (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE;
-                entity1 = (Entity) gamePlay.getStillObjectAt(entityLeftCol, entityBottomRow);
-                entity2 = (Entity) gamePlay.getStillObjectAt(entityRightCol, entityBottomRow);
-
-                if (entity1.getCollision() == 1 || entity2.getCollision() == 1) {
-                    if (entity1.getCollision() == 1 && entity2.getCollision() != 1 && entityRightCol * Sprite.SCALED_SIZE - entityLeftX <= 8) {
-                        entity.setX(entityRightCol * Sprite.SCALED_SIZE);
-                    } else if (entity2.getCollision() == 1 && entity1.getCollision() != 1 && entityRightX - entityLeftCol * Sprite.SCALED_SIZE - 31 <= 8) {
-                        entity.setX(entityLeftCol * Sprite.SCALED_SIZE);
-                    } else {
-                        entity.setCollisionOn(1);
-                    }
-                }
+                checkTileVertical((entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
                 break;
             }
             case "left": {
-                entityLeftCol = (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE;
-                entity1 = (Entity) gamePlay.getStillObjectAt(entityLeftCol, entityTopRow);
-                entity2 = (Entity) gamePlay.getStillObjectAt(entityLeftCol, entityBottomRow);
-
-                if (entity1.getCollision() == 1 || entity2.getCollision() == 1) {
-                    if (entity1.getCollision() == 1 && entity2.getCollision() != 1 && entityBottomRow * Sprite.SCALED_SIZE - entityTopY <= 8) {
-                        entity.setY(entityBottomRow * Sprite.SCALED_SIZE);
-                    } else if (entity2.getCollision() == 1 && entity1.getCollision() != 1 && entityBottomY - entityTopRow * Sprite.SCALED_SIZE - 31 <= 8) {
-                        entity.setY(entityTopRow * Sprite.SCALED_SIZE);
-                    } else {
-                        entity.setCollisionOn(1);
-                    }
-                }
+                checkTileHorizontal((entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
                 break;
             }
             case "right": {
-                entityRightCol = (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE;
-                entity1 = (Entity) gamePlay.getStillObjectAt(entityRightCol, entityTopRow);
-                entity2 = (Entity) gamePlay.getStillObjectAt(entityRightCol, entityBottomRow);
-
-                if (entity1.getCollision() == 1 || entity2.getCollision() == 1) {
-                    if (entity1.getCollision() == 1 && entity2.getCollision() != 1 && entityBottomRow * Sprite.SCALED_SIZE - entityTopY <= 8) {
-                        entity.setY(entityBottomRow * Sprite.SCALED_SIZE);
-                    } else if (entity2.getCollision() == 1 && entity1.getCollision() != 1 && entityBottomY - entityTopRow * Sprite.SCALED_SIZE - 31 <= 8) {
-                        entity.setY(entityTopRow * Sprite.SCALED_SIZE);
-                    } else {
-                        entity.setCollisionOn(1);
-                    }
-                }
+                checkTileHorizontal((entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
                 break;
+            }
+        }
+    }
+
+    public static void checkMovingEntity() {}
+
+    private static void checkTileVertical(int row, int entityLeftX, int entityRightX, int entityLeftCol, int entityRightCol, MovingEntity entity, GamePlay gamePlay) {
+        TileEntity tileEntity1 = (TileEntity) gamePlay.getMapManager().getTileEntityMatrixAt(row, entityLeftCol);
+        TileEntity tileEntity2 = (TileEntity) gamePlay.getMapManager().getTileEntityMatrixAt(row, entityRightCol);
+
+        if (tileEntity1.getCollision() == 1 || tileEntity2.getCollision() == 1) {
+            if (tileEntity1.getCollision() == 1 && tileEntity2.getCollision() != 1 && entityRightCol * Sprite.SCALED_SIZE - entityLeftX <= 8) {
+                entity.setX(entityRightCol * Sprite.SCALED_SIZE);
+            } else if (tileEntity2.getCollision() == 1 && tileEntity1.getCollision() != 1 && entityRightX - entityLeftCol * Sprite.SCALED_SIZE - 31 <= 8) {
+                entity.setX(entityLeftCol * Sprite.SCALED_SIZE + 8);
+            } else {
+                entity.setCollisionOn(1);
+            }
+        }
+    }
+
+    private static void checkTileHorizontal(int col, int entityTopRow, int entityBottomRow, int entityTopY, int entityBottomY, MovingEntity entity, GamePlay gamePlay) {
+        TileEntity tileEntity1 = (TileEntity) gamePlay.getMapManager().getTileEntityMatrixAt(entityTopRow, col);
+        TileEntity tileEntity2 = (TileEntity) gamePlay.getMapManager().getTileEntityMatrixAt(entityBottomRow, col);
+
+        if (tileEntity1.getCollision() == 1 || tileEntity2.getCollision() == 1) {
+            if (tileEntity1.getCollision() == 1 && tileEntity2.getCollision() != 1 && entityBottomRow * Sprite.SCALED_SIZE - entityTopY <= 8) {
+                entity.setY(entityBottomRow * Sprite.SCALED_SIZE);
+            } else if (tileEntity2.getCollision() == 1 && tileEntity1.getCollision() != 1 && entityBottomY - entityTopRow * Sprite.SCALED_SIZE - 31 <= 8) {
+                entity.setY(entityTopRow * Sprite.SCALED_SIZE);
+            } else {
+                entity.setCollisionOn(1);
             }
         }
     }

@@ -11,9 +11,4 @@ public class Grass extends TileEntity {
         img = Sprite.grass.getFxImage();
         collision = 0; //Cỏ cho người chơi đi qua
     }
-
-    @Override
-    public void update() {
-
-    }
 }

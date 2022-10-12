@@ -1,5 +1,6 @@
 package bomberman.entities.movingEntities;
 
+import bomberman.entities.tileEntities.Bomb;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 import javafx.scene.input.KeyEvent;
@@ -13,9 +14,6 @@ public class Bomber extends MovingEntity {
     private boolean downPressed = false;
     private boolean rightPressed = false;
     private boolean leftPressed = false;
-
-    //Thời gian hiệu lực của vật phẩm tăng tốc
-    private int speedTimer = 0;
 
     public Bomber(int x, int y, GamePlay gamePlay) {
         super(x, y, gamePlay);
@@ -39,9 +37,8 @@ public class Bomber extends MovingEntity {
         dead[2] = Sprite.player_dead3;
 
         setSprite(up, down, left, right, dead);
-        solidArea = new Rectangle(0,12,20,20); //Cài đặt thông số cho hitbox của Bomber
         super.gamePlay = gamePlay;
-        velocity = 5; //Vận tốc của Bomber = 2 pixel/frame
+        velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
     }
 
     @Override
@@ -72,7 +69,7 @@ public class Bomber extends MovingEntity {
 
         //Kiểm tra xem nhân vật có bị kẹt tường không.
         collisionOn = 0;
-        gamePlay.getCollisionChecker().checkTile(this);
+        gamePlay.getCollisionChecker().checkTileEntity(this, gamePlay);
 
         //Nếu nhân vật không bị kẹt tường thì thay đổi vị trí theo hướng (direction)
         if (collisionOn != 1) {
@@ -81,7 +78,7 @@ public class Bomber extends MovingEntity {
             } else if (collisionOn == 3) { //Ăn được Flames
 
             } else if (collisionOn == 4) { //Ăn được Speed
-                speedTimer = 6; //Thời gian hiệu lực chạy nhanh = 6
+
             }
             switch (direction) {
                 case "up": {
@@ -101,14 +98,6 @@ public class Bomber extends MovingEntity {
                     break;
                 }
             }
-        }
-
-        //Nếu thời gian hiệu lực tăng tốc khác 0 thì gọi hàm để (bắt đầu đếm ngược và tăng tốc độ)
-        if (speedTimer != 0) {
-            velocity = 5;
-            speedCountdown();
-        } else {
-            velocity = 1;
         }
     }
 
@@ -145,8 +134,8 @@ public class Bomber extends MovingEntity {
                 break;
             }
             case B: {
+                //Khi khởi tạo, Bomb được add vào các Array rồi.
                 Bomb b = new Bomb(5, 5, gamePlay);
-                gamePlay.getEntities().add(b);
 //                gamePlay.getMapManager().getEntityMatrix()[5][5] = b;
                 break;
             }
@@ -179,13 +168,6 @@ public class Bomber extends MovingEntity {
                 img = Sprite.player_right.getFxImage();
                 break;
             }
-        }
-    }
-
-    //Hàm đếm ngược + tăng tốc độ di chuyển
-    public void speedCountdown() {
-        if (GamePlay.frameCount == 59) {
-            speedTimer--;
         }
     }
 }

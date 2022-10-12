@@ -10,9 +10,4 @@ public class Wall extends TileEntity {
         img = Sprite.wall.getFxImage();
         collision = 1; //Tường không cho người chơi đi qua
     }
-
-    @Override
-    public void update() {
-
-    }
 }

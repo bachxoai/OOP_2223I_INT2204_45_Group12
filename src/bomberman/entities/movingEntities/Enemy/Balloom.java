@@ -1,11 +1,12 @@
-package bomberman.entities.movingEntities;
+package bomberman.entities.movingEntities.Enemy;
 
+import bomberman.entities.movingEntities.Enemy.Enemy;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 
 import java.awt.*;
 //Class quái Balloom
-public class Balloom extends MovingEntity {
+public class Balloom extends Enemy {
     public Balloom(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.balloom_left1.getFxImage();

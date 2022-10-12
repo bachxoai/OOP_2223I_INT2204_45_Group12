@@ -1,11 +1,12 @@
-package bomberman.entities.movingEntities;
+package bomberman.entities.movingEntities.Enemy;
 
+import bomberman.entities.movingEntities.Enemy.Enemy;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 
 import java.awt.*;
 //Class Quái Oneal
-public class Oneal extends MovingEntity {
+public class Oneal extends Enemy {
     public Oneal(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.oneal_left1.getFxImage();

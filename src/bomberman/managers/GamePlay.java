@@ -1,6 +1,7 @@
 package bomberman.managers;
 
 import bomberman.ScreenController.LevelScreen;
+import bomberman.entities.DynamicEntity;
 import bomberman.managers.CollisionChecker;
 import bomberman.entities.tileEntities.Item.Item;
 import bomberman.managers.MapManager;
@@ -26,8 +27,6 @@ public class GamePlay {
     Bomber bomberman;
     private GraphicsContext gc;
     private Canvas canvas;
-    private ArrayList<Entity> entities = new ArrayList<>();
-    private ArrayList<Entity> stillObjects = new ArrayList<>();
 
     //Quản lý các đối tượng trong map + đọc map
     private MapManager mapManager;// = new TileEntityManager(this);
@@ -38,8 +37,8 @@ public class GamePlay {
     public GamePlay(LevelScreen containedLevelScreen) {
         this.containedLevelScreen = containedLevelScreen;
         mapManager = new MapManager(this);
-        collisionChecker = new CollisionChecker(this);
         mapManager.loadMap("res/levels/Level1.txt");
+
         createGamePlay();
     }
 
@@ -80,32 +79,12 @@ public class GamePlay {
         this.height = height;
     }
 
-    //Phương thức thêm một StillObject vào Map
-    public void addStillObject(Entity entity) {
-        if (this.getStillObjectAt(entity.getX() / Sprite.SCALED_SIZE, entity.getY() / Sprite.SCALED_SIZE) != null) {
-            stillObjects.remove(this.getStillObjectAt(entity.getX() / Sprite.SCALED_SIZE, entity.getY() / Sprite.SCALED_SIZE));
-        }
-        stillObjects.add(entity);
-    }
-
-    public void addButDoNotRemoveStillObject(Entity entity) {
-        stillObjects.add(entity);
-    }
-
-    public void removeEntityFromEntities(Entity entity) {
-        entities.remove(entity);
-    }
-
     public MapManager getMapManager() {
         return mapManager;
     }
 
     public CollisionChecker getCollisionChecker() {
         return collisionChecker;
-    }
-
-    public ArrayList<Entity> getEntities() {
-        return entities;
     }
 
 
@@ -117,33 +96,22 @@ public class GamePlay {
         this.bomberman = bomberman;
     }
 
-    //Phương thức lấy ra một StillObject nào đó
-    public Entity getStillObjectAt(int xCol, int yRow) {
-        for (int i = stillObjects.size() - 1; i >= 0; i--) {
-            if (stillObjects.get(i).getX() == xCol * Sprite.SCALED_SIZE && stillObjects.get(i).getY() == yRow * Sprite.SCALED_SIZE) {
-                return stillObjects.get(i);
-            }
-        }
-        return null;
-    }
-
-    //Phương thức thay đổi một StillObject nào đó.
-    public void setStillObjectAt(int xCol, int yRow, Entity entity) {
-        for (int i = 0; i < stillObjects.size(); i++) {
-            if (stillObjects.get(i).getX() == xCol * Sprite.SCALED_SIZE && stillObjects.get(i).getY() == yRow * Sprite.SCALED_SIZE) {
-                stillObjects.set(i, entity);
-            }
-        }
-    }
-
     public void update() {
-        entities.forEach(Entity::update);
+        for (int i = 0; i < mapManager.getDynamicEntitiesSize(); i++) {
+            mapManager.getDynamicEntityAtIndex(i).update();
+        }
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
+
+        for (int i = 0; i < mapManager.getTileEntitiesSize(); i++) {
+            mapManager.getTileEntityAtIndex(i).render(gc);
+        }
+
+        for (int i = 0; i < mapManager.getDynamicEntitiesSize(); i++) {
+            mapManager.getDynamicEntityAtIndex(i).render(gc);
+        }
     }
 
     //Phương thức handleEvent cho người chơi.

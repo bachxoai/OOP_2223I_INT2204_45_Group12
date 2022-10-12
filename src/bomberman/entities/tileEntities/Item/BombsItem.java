@@ -9,4 +9,9 @@ public class BombsItem extends Item{
         img = Sprite.powerup_bombs.getFxImage();
         collision = 2;
     }
+
+    @Override
+    public void update() {
+
+    }
 }

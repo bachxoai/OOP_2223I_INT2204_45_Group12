@@ -1,12 +1,14 @@
-package bomberman.entities.movingEntities;
+package bomberman.entities.tileEntities;
 
+import bomberman.entities.DynamicEntity;
 import bomberman.entities.Entity;
 import bomberman.entities.tileEntities.Grass;
 import bomberman.graphics.Sprite;
 import bomberman.graphics.SpriteSheet;
 import bomberman.managers.GamePlay;
+import javafx.scene.canvas.GraphicsContext;
 
-public class Bomb extends Entity {
+public class Bomb extends TileEntity implements DynamicEntity {
     int range;
     int timeToExplode;
     int explodingTime;
@@ -28,6 +30,8 @@ public class Bomb extends Entity {
         explosion[4] = Sprite.bomb_exploded;
         timeToExplode = 200;
         explodingTime = 25;
+        gamePlay.getMapManager().addTileEntity(this);
+        gamePlay.getMapManager().addDynamicEntity(this);
     }
 
     @Override
@@ -39,6 +43,11 @@ public class Bomb extends Entity {
             //System.out.println("bomb exploded");
             handleExplode();
         }
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        gc.drawImage(img, x, y);
     }
 
     public void handleExplode() {
