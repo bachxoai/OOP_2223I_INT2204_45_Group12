@@ -45,12 +45,10 @@ public class Bomb extends Entity {
         if (explodingTime > 0) {
             explodingTime--;
             img = explosion[explodingTime/5].getFxImage();
-        } else {
-            Grass g = new Grass(5, 5, gamePlay);
+        } else if (explodingTime == 0) {
+//            Grass g = new Grass(5, 5, gamePlay);
 //            gamePlay.getMapManager().getEntityMatrix()[5][5] = g;
-            gamePlay.setStillObjectAt(5, 5, g);
-            gamePlay.addStillObject(this);
-            //gamePlay.getEntities().remove(this);
+//            gamePlay.getEntities().remove(this);
         }
     }
 }

@@ -1,7 +1,6 @@
 package bomberman.managers;
 
 import bomberman.ScreenController.LevelScreen;
-import bomberman.entities.tileEntities.Temp;
 import bomberman.managers.CollisionChecker;
 import bomberman.entities.tileEntities.Item.Item;
 import bomberman.managers.MapManager;
@@ -29,17 +28,14 @@ public class GamePlay {
     private Canvas canvas;
     private ArrayList<Entity> entities = new ArrayList<>();
     private ArrayList<Entity> stillObjects = new ArrayList<>();
-    private ArrayList<Entity> grassObjects = new ArrayList<>();
-
-    private Item items[] = new Item[10];
 
     //Quản lý các đối tượng trong map + đọc map
     private MapManager mapManager;// = new TileEntityManager(this);
 
     //Kiểm tra va chạm
-    private CollisionChecker collisionChecker;// = new CollisionChecker(this);
+    private CollisionChecker collisionChecker;
 
-    public GamePlay(LevelScreen containedLevelScreen) {//throws IOException {
+    public GamePlay(LevelScreen containedLevelScreen) {
         this.containedLevelScreen = containedLevelScreen;
         mapManager = new MapManager(this);
         collisionChecker = new CollisionChecker(this);
@@ -96,6 +92,10 @@ public class GamePlay {
         stillObjects.add(entity);
     }
 
+    public void removeEntityFromEntities(Entity entity) {
+        entities.remove(entity);
+    }
+
     public MapManager getMapManager() {
         return mapManager;
     }
@@ -104,17 +104,10 @@ public class GamePlay {
         return collisionChecker;
     }
 
-    public Item[] getItems() {
-        return items;
-    }
-
     public ArrayList<Entity> getEntities() {
         return entities;
     }
 
-    public ArrayList<Entity> getGrassObjects() {
-        return grassObjects;
-    }
 
     public Bomber getBomberman() {
         return bomberman;
@@ -126,7 +119,7 @@ public class GamePlay {
 
     //Phương thức lấy ra một StillObject nào đó
     public Entity getStillObjectAt(int xCol, int yRow) {
-        for (int i = 0; i < stillObjects.size(); i++) {
+        for (int i = stillObjects.size() - 1; i >= 0; i--) {
             if (stillObjects.get(i).getX() == xCol * Sprite.SCALED_SIZE && stillObjects.get(i).getY() == yRow * Sprite.SCALED_SIZE) {
                 return stillObjects.get(i);
             }
@@ -149,7 +142,6 @@ public class GamePlay {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        grassObjects.forEach(g -> g.render(gc));
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }

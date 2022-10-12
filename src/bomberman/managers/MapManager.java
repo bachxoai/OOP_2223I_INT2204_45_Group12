@@ -19,19 +19,12 @@ public class MapManager {
     //Level, số hàng, cột được đọc vào từ File Level.txt
     private int level, row, col;
 
-    //Các Entity được load vào map, các Entity này sẽ được khởi tạo trong phuong thức loadMap()
-//    private Entity entityMatrix[][];
-
     public MapManager(GamePlay gamePlay) {
         this.gamePlay = gamePlay;
     }
 
-//    public Entity[][] getEntityMatrix() {
-//        return entityMatrix;
-//    }
-
     //Hàm đọc map từ File, sẽ được gọi trong Constructor của Map1. Hàm này sẽ cần xử lý lại các Exception.
-    public void loadMap(String path) {//throws IOException {
+    public void loadMap(String path) {
         try {
             Reader reader = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -46,37 +39,34 @@ public class MapManager {
             gamePlay.setWidth(col);
             gamePlay.setHeight(row);
 
-            //Khởi tạo mảng các đối tượng trong Map
-//            entityMatrix = new Entity[row][col];
-
             //Đọc file rồi tạo đối tượng trong Map, thêm các đối tượng vào các Array stillObject,...
             for (int i = 0; i < row; i++) {
                 String rowText = bufferedReader.readLine();
                 for (int j = 0; j < col; j++) {
                     char x = rowText.charAt(j);
-                    Entity temp = new Grass(j, i, gamePlay);
-                    temp = new Temp(j, i, gamePlay);
+                    new Grass(j, i, gamePlay);
                     if (x == '#') {
-                        temp = new Wall(j, i, gamePlay);
+                        new Wall(j, i, gamePlay);
                     } else if (x == '*') {
-                        temp = new Brick(j, i, gamePlay);
+                        new Brick(j, i, gamePlay);
                     } else if (x == 'x') {
-                        temp = new Portal(j, i, gamePlay);
-////                    entityMatrix[i][j] = new Brick(j, i, map);
+                        new Portal(j, i, gamePlay);
+                        new Brick(j, i, gamePlay);
                     } else if (x == 'p') {
-                        temp = new Grass(j, i, gamePlay);
                         gamePlay.setBomberman(new Bomber(j, i, gamePlay));
-                        //map.getBomberman() = new Bomber(j, i, map);
                     } else if (x == '1') {
-                        temp = new Balloom(j, i, gamePlay);
+                        new Balloom(j, i, gamePlay);
                     } else if (x == '2') {
-                        temp = new Oneal(j, i, gamePlay);
+                        new Oneal(j, i, gamePlay);
                     } else if (x == 'b') {
-                        temp = new BombsItem(j, i, gamePlay);
+                        new BombsItem(j, i, gamePlay);
+                        new Brick(j, i, gamePlay);
                     } else if (x == 'f') {
-                        temp = new FlamesItem(j, i, gamePlay);
+                        new FlamesItem(j, i, gamePlay);
+                        new Brick(j, i, gamePlay);
                     } else if (x == 's') {
-                        temp = new SpeedItem(j, i, gamePlay);
+                        new SpeedItem(j, i, gamePlay);
+                        new Brick(j, i, gamePlay);
                     }
                 }
             }

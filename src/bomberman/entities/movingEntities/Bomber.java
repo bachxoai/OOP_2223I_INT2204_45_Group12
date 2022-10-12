@@ -21,22 +21,18 @@ public class Bomber extends MovingEntity {
         super(x, y, gamePlay);
         img = Sprite.player_down.getFxImage();
         //Thêm các Spite animation cho Bomber
-        Sprite[] up = new Sprite[3];
-        up[0] = Sprite.player_up;
-        up[1] = Sprite.player_up_1;
-        up[2] = Sprite.player_up_2;
-        Sprite[] down = new Sprite[3];
-        down[2] = Sprite.player_down;
+        Sprite[] up = new Sprite[2];
+        up[0] = Sprite.player_up_1;
+        up[1] = Sprite.player_up_2;
+        Sprite[] down = new Sprite[2];
         down[0] = Sprite.player_down_1;
         down[1] = Sprite.player_down_2;
-        Sprite[] right = new Sprite[3];
-        right[0] = Sprite.player_right;
-        right[1] = Sprite.player_right_1;
-        right[2] = Sprite.player_right_2;
-        Sprite[] left = new Sprite[3];
-        left[0] = Sprite.player_left;
-        left[1] = Sprite.player_left_1;
-        left[2] = Sprite.player_left_2;
+        Sprite[] right = new Sprite[2];
+        right[0] = Sprite.player_right_1;
+        right[1] = Sprite.player_right_2;
+        Sprite[] left = new Sprite[2];
+        left[0] = Sprite.player_left_1;
+        left[1] = Sprite.player_left_2;
         Sprite[] dead = new Sprite[3];
         dead[0] = Sprite.player_dead1;
         dead[1] = Sprite.player_dead2;
@@ -45,7 +41,7 @@ public class Bomber extends MovingEntity {
         setSprite(up, down, left, right, dead);
         solidArea = new Rectangle(0,12,20,20); //Cài đặt thông số cho hitbox của Bomber
         super.gamePlay = gamePlay;
-        velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
+        velocity = 5; //Vận tốc của Bomber = 2 pixel/frame
     }
 
     @Override
@@ -152,7 +148,6 @@ public class Bomber extends MovingEntity {
                 Bomb b = new Bomb(5, 5, gamePlay);
                 gamePlay.getEntities().add(b);
 //                gamePlay.getMapManager().getEntityMatrix()[5][5] = b;
-                gamePlay.setStillObjectAt(5, 5, b);
                 break;
             }
         }
