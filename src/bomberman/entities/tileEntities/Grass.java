@@ -1,4 +1,4 @@
-package bomberman.entities.tileEntities;
+package bomberman.entities.tileentities;
 
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
@@ -8,6 +8,7 @@ public class Grass extends TileEntity {
 
     public Grass(int x, int y, GamePlay gamePlay) {
         super(x, y, gamePlay);
+        gamePlay.getMapManager().addTileEntity(this);
         img = Sprite.grass.getFxImage();
         collision = 0; //Cỏ cho người chơi đi qua
     }

@@ -1,4 +1,4 @@
-package bomberman.entities.tileEntities.Item;
+package bomberman.entities.tileentities.Item;
 
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;

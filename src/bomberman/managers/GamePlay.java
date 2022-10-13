@@ -2,18 +2,12 @@ package bomberman.managers;
 
 import bomberman.ScreenController.LevelScreen;
 import bomberman.entities.DynamicEntity;
-import bomberman.managers.CollisionChecker;
-import bomberman.entities.tileEntities.Item.Item;
-import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 import bomberman.entities.movingEntities.Bomber;
-import bomberman.entities.Entity;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.canvas.Canvas;
-
-import java.util.ArrayList;
 
 public class GamePlay {
     AnimationTimer timer;
@@ -97,20 +91,36 @@ public class GamePlay {
     }
 
     public void update() {
-        for (int i = 0; i < mapManager.getDynamicEntitiesSize(); i++) {
-            mapManager.getDynamicEntityAtIndex(i).update();
+        // update tile entity
+        for (int j = 0; j < mapManager.getRow(); j++) {
+            for (int i = 0; i < mapManager.getCol(); i++) {
+                for (int k = mapManager.getTilesAt(i, j).size() - 1; k >= 0; k--) {
+                    if (mapManager.getTilesAt(i, j).get(k) instanceof DynamicEntity) {
+                        ((DynamicEntity) mapManager.getTilesAt(i, j).get(k)).update();
+                    }
+                }
+            }
+        }
+
+        // update moving entity
+        for (int i = mapManager.getMovingEntities().size() - 1; i >= 0; i--) {
+            mapManager.getMovingEntities().get(i).update();
         }
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        for (int i = 0; i < mapManager.getTileEntitiesSize(); i++) {
-            mapManager.getTileEntityAtIndex(i).render(gc);
+        for (int j = 0; j < mapManager.getRow(); j++) {
+            for (int i = 0; i < mapManager.getCol(); i++) {
+                for (int k = 0; k < mapManager.getTilesAt(i, j).size(); k++) {
+                        mapManager.getTilesAt(i, j).get(k).render(gc);
+                }
+            }
         }
 
-        for (int i = 0; i < mapManager.getDynamicEntitiesSize(); i++) {
-            mapManager.getDynamicEntityAtIndex(i).render(gc);
+        for (int i = mapManager.getMovingEntities().size() - 1; i >= 0; i--) {
+            mapManager.getMovingEntities().get(i).render(gc);
         }
     }
 

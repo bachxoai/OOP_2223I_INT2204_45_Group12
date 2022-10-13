@@ -1,9 +1,11 @@
-package bomberman.entities.tileEntities;
+package bomberman.entities.tileentities;
 
 import bomberman.managers.GamePlay;
 import bomberman.entities.Entity;
 
-//Đây là Class chung cho các Entity đứng yên.
+/**
+ * Class dành cho các đối tượng đứng yên. Liên quan đến toạ độ trong map
+ */
 public abstract class TileEntity extends Entity {
 
     public TileEntity(int xUnit, int yUnit, GamePlay gamePlay) {

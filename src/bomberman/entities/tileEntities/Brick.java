@@ -1,4 +1,4 @@
-package bomberman.entities.tileEntities;
+package bomberman.entities.tileentities;
 
 import bomberman.entities.DynamicEntity;
 import bomberman.managers.GamePlay;
@@ -11,7 +11,6 @@ public class Brick extends TileEntity implements DynamicEntity {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.brick.getFxImage();
         collision = 1; //Không cho người chơi đi qua
-        gamePlay.getMapManager().addDynamicEntity(this);
     }
     public void update() {
 

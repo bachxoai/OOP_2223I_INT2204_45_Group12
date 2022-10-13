@@ -7,7 +7,9 @@ import bomberman.graphics.Sprite;
 
 import java.awt.*;
 
-//Đây là một Class chung cho các Entity có thể di chuyển.
+/**
+ * Class dành cho các đối tượng có thể di chuyển. Liên quan đến toạ độ pixel.
+ */
 public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Các Sprite lưu animation của Entity.
 //    protected Sprite up, up1, up2, down, down1, down2, left, left1, left2, right, right1, right2;
@@ -39,7 +41,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     public MovingEntity(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         direction = "none";
-        gamePlay.getMapManager().addDynamicEntity(this);
+        gamePlay.getMapManager().addMovingEntities(this);
     }
 
     //Phương thức gán các hình ảnh để tạo animation cho MovingEntity

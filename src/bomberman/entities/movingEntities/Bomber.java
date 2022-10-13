@@ -1,14 +1,16 @@
 package bomberman.entities.movingEntities;
 
-import bomberman.entities.tileEntities.Bomb;
-import bomberman.managers.GamePlay;
+import bomberman.entities.tileentities.bomb.Bomb;
 import bomberman.graphics.Sprite;
+import bomberman.managers.GamePlay;
 import javafx.scene.input.KeyEvent;
 
-import java.awt.*;
-
+/**
+ * Class bomber.
+ */
 public class Bomber extends MovingEntity {
-    int bombNo;
+    int bombNums;
+    int bombRange;
     //Kiểm tra xem nút Up có đang được bấm hay không? Các nút còn lại tương tự.
     private boolean upPressed = false;
     private boolean downPressed = false;
@@ -134,9 +136,7 @@ public class Bomber extends MovingEntity {
                 break;
             }
             case B: {
-                //Khi khởi tạo, Bomb được add vào các Array rồi.
-                Bomb b = new Bomb(5, 5, gamePlay);
-//                gamePlay.getMapManager().getEntityMatrix()[5][5] = b;
+                new Bomb(getXUnit(), getYUnit(), gamePlay);
                 break;
             }
         }
