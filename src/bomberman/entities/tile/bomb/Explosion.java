@@ -1,7 +1,7 @@
-package bomberman.entities.tileentities.bomb;
+package bomberman.entities.tile.bomb;
 
 import bomberman.entities.DynamicEntity;
-import bomberman.entities.tileentities.TileEntity;
+import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.GamePlay;
 

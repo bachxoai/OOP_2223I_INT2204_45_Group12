@@ -1,7 +1,6 @@
-package bomberman.entities.movingEntities.Enemy;
+package bomberman.entities.moving.enemy;
 
-import bomberman.entities.DynamicEntity;
-import bomberman.entities.movingEntities.MovingEntity;
+import bomberman.entities.moving.MovingEntity;
 import bomberman.managers.GamePlay;
 
 public abstract class Enemy extends MovingEntity {

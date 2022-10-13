@@ -1,13 +1,10 @@
 package bomberman.managers;
 
-import bomberman.entities.movingEntities.Bomber;
-import bomberman.entities.movingEntities.Enemy.Balloom;
-import bomberman.entities.movingEntities.Enemy.Oneal;
-import bomberman.entities.movingEntities.MovingEntity;
-import bomberman.entities.tileentities.*;
-import bomberman.entities.tileentities.Item.BombsItem;
-import bomberman.entities.tileentities.Item.FlamesItem;
-import bomberman.entities.tileentities.Item.SpeedItem;
+import bomberman.entities.moving.Bomber;
+import bomberman.entities.moving.enemy.*;
+import bomberman.entities.moving.MovingEntity;
+import bomberman.entities.tile.*;
+import bomberman.entities.tile.item.*;
 import java.io.*;
 import java.util.ArrayList;
 

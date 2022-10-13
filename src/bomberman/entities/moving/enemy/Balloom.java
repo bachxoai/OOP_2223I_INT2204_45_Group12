@@ -1,6 +1,5 @@
-package bomberman.entities.movingEntities.Enemy;
+package bomberman.entities.moving.enemy;
 
-import bomberman.entities.movingEntities.Enemy.Enemy;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 

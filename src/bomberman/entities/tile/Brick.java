@@ -1,4 +1,4 @@
-package bomberman.entities.tileentities;
+package bomberman.entities.tile;
 
 import bomberman.entities.DynamicEntity;
 import bomberman.managers.GamePlay;

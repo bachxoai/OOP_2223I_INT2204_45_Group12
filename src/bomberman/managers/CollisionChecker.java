@@ -1,7 +1,7 @@
 package bomberman.managers;
 
-import bomberman.entities.movingEntities.MovingEntity;
-import bomberman.entities.tileentities.TileEntity;
+import bomberman.entities.moving.MovingEntity;
+import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
 
 //Class kiểm tra va chạm

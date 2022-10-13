@@ -3,7 +3,7 @@ package bomberman.managers;
 import bomberman.ScreenController.LevelScreen;
 import bomberman.entities.DynamicEntity;
 import bomberman.graphics.Sprite;
-import bomberman.entities.movingEntities.Bomber;
+import bomberman.entities.moving.Bomber;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;

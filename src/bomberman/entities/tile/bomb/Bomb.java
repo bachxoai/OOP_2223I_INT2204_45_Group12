@@ -1,10 +1,10 @@
-package bomberman.entities.tileentities.bomb;
+package bomberman.entities.tile.bomb;
 
 import bomberman.entities.DynamicEntity;
 import bomberman.entities.Entity;
-import bomberman.entities.tileentities.Brick;
-import bomberman.entities.tileentities.TileEntity;
-import bomberman.entities.tileentities.Wall;
+import bomberman.entities.tile.Brick;
+import bomberman.entities.tile.TileEntity;
+import bomberman.entities.tile.Wall;
 import bomberman.graphics.Sprite;
 import bomberman.managers.GamePlay;
 import javafx.scene.canvas.GraphicsContext;

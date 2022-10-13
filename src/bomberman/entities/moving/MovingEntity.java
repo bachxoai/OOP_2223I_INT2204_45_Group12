@@ -1,4 +1,4 @@
-package bomberman.entities.movingEntities;
+package bomberman.entities.moving;
 
 import bomberman.entities.DynamicEntity;
 import bomberman.managers.GamePlay;

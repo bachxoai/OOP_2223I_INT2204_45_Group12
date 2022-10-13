@@ -1,6 +1,6 @@
-package bomberman.entities.movingEntities;
+package bomberman.entities.moving;
 
-import bomberman.entities.tileentities.bomb.Bomb;
+import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
 import bomberman.managers.GamePlay;
 import javafx.scene.input.KeyEvent;
