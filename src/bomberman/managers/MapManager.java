@@ -1,5 +1,6 @@
 package bomberman.managers;
 
+import bomberman.entities.Entity;
 import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.enemy.*;
 import bomberman.entities.moving.MovingEntity;
@@ -27,20 +28,22 @@ public class MapManager {
     // Mảng gồm các moving entities.
     private ArrayList<MovingEntity> movingEntities = new ArrayList<>();
 
+    //Mảng Enemy chứa các đối tượng quái vật, sử dụng để CheckCollision Bomber và Quái trong CollisionChecker
+    private ArrayList<Enemy> enemies = new ArrayList<>();
+
     public MapManager(GamePlay gamePlay) {
         this.gamePlay = gamePlay;
     }
 
     /**
      * Hàm đọc map từ File, sẽ được gọi trong Constructor của Map1.
-     * Hàm này sẽ cần sử lý lại các Exception.
      *
      * @param path đường dẫn đến file map.
      */
     public void loadMap(String path) {
+        BufferedReader bufferedReader = null;
         try {
-            Reader reader = new FileReader(path);
-            BufferedReader bufferedReader = new BufferedReader(reader);
+            bufferedReader = new BufferedReader(new FileReader(path));
 
             String firstLine = bufferedReader.readLine();
             String[] tokens = firstLine.split("\\s");
@@ -90,10 +93,14 @@ public class MapManager {
                     }
                 }
             }
-            reader.close();
-            bufferedReader.close();
         } catch (IOException e) {
-            System.out.println("Cannot read map");
+            System.err.println("Cannot read file path in loadMap/MapManager.");
+        } finally {
+            try {
+                bufferedReader.close();
+            } catch (Exception e) {
+                System.err.println("Can not close bufferedReader in loadMap/MapManager.");
+            }
         }
     }
 
@@ -154,6 +161,24 @@ public class MapManager {
      */
     public void addMovingEntities(MovingEntity me) {
         movingEntities.add(me);
+    }
+
+    /**
+     * Thêm các Enemy vào danh sách enemies để check collision trong Collision Checker
+     *
+     * @param enemy
+     */
+    public void addEnemies(Enemy enemy) {
+        enemies.add(enemy);
+    }
+
+    /**
+     * Trả về mảng enemies
+     *
+     * @return mảng enemies
+     */
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
     }
 
     public int getRow() {

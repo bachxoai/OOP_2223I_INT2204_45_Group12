@@ -25,9 +25,6 @@ public class GamePlay {
     //Quản lý các đối tượng trong map + đọc map
     private MapManager mapManager;// = new TileEntityManager(this);
 
-    //Kiểm tra va chạm
-    private CollisionChecker collisionChecker;
-
     public GamePlay(LevelScreen containedLevelScreen) {
         this.containedLevelScreen = containedLevelScreen;
         mapManager = new MapManager(this);
@@ -75,10 +72,6 @@ public class GamePlay {
 
     public MapManager getMapManager() {
         return mapManager;
-    }
-
-    public CollisionChecker getCollisionChecker() {
-        return collisionChecker;
     }
 
 

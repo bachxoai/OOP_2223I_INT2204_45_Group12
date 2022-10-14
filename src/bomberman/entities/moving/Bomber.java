@@ -2,6 +2,7 @@ package bomberman.entities.moving;
 
 import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
+import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import javafx.scene.input.KeyEvent;
 
@@ -41,14 +42,26 @@ public class Bomber extends MovingEntity {
         setSprite(up, down, left, right, dead);
         super.gamePlay = gamePlay;
         velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
+        animationDeadTime = -1;
     }
 
     @Override
     public void update() {
         //Nếu có phím được bấm thì thay đổi hướng + nhân vật thực hiện animation, lúc này nhân vật chưa thay đổi vị trí
         //vì nhân vật có thể bị kẹt tường
+
+        if (animationDeadTime == 0) {
+            gamePlay.getMapManager().getEnemies().remove(this);
+            gamePlay.getMapManager().getMovingEntities().remove(this);
+        }
+
+        if (collisionStatus == "dead") {
+            animationDeadTime--;
+            animatedDead();
+            return;
+        }
+
         if (upPressed || downPressed || leftPressed || rightPressed) {
-            animationNumber = 0;
             if (upPressed) {
                 direction = "up";
                 animatedUp();
@@ -70,17 +83,23 @@ public class Bomber extends MovingEntity {
         }
 
         //Kiểm tra xem nhân vật có bị kẹt tường không.
-        collisionOn = 0;
-        gamePlay.getCollisionChecker().checkTileEntity(this, gamePlay);
+        collisionStatus = "null";
+        CollisionChecker.checkTileEntity(this, gamePlay);
+        CollisionChecker.checkMovingEntity(this, gamePlay);
 
         //Nếu nhân vật không bị kẹt tường thì thay đổi vị trí theo hướng (direction)
-        if (collisionOn != 1) {
-            if (collisionOn == 2) { //Ăn được Bombs
-
-            } else if (collisionOn == 3) { //Ăn được Flames
-
-            } else if (collisionOn == 4) { //Ăn được Speed
-
+        if (collisionStatus != "block" && collisionStatus != "bomb") {
+            if (collisionStatus == "flame") {
+                collisionStatus = "dead";
+                animationDeadTime = 20;
+            }
+            if (collisionStatus == "getAttacked") {
+                collisionStatus = "dead";
+                animationDeadTime = 20;
+            }
+            if (collisionStatus == "dead") {
+                animationDeadTime--;
+                animatedDead();
             }
             switch (direction) {
                 case "up": {

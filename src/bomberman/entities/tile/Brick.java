@@ -10,7 +10,7 @@ public class Brick extends TileEntity implements DynamicEntity {
     public Brick(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.brick.getFxImage();
-        collision = 1; //Không cho người chơi đi qua
+        collision = "block"; //Không cho người chơi đi qua
     }
     public void update() {
 

@@ -25,9 +25,8 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Một hình vuông là hitbox của Entity.
     protected Rectangle solidArea;
 
-    //Biến int trả về các giá trị khi có va chạm
-    // 0 là bình thường, 1 là bị chặn, 2 là ăn Bombs, 3 là ăn Flames, 4 là ăn Speed
-    protected int collisionOn = 0;
+    //Biến trả về các giá trị khi có va chạm
+    protected String collisionStatus = "null";
 
     //Vận tốc
     protected int velocity;
@@ -35,8 +34,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Số khung hình trên giây
     public final int ANIMATED_FRAME = 6;
 
-
-    int animationNumber;
+    protected int animationDeadTime;
 
     public MovingEntity(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
@@ -50,6 +48,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         this.down = down;
         this.left = left;
         this.right = right;
+        this.dead = dead;
     }
 
     public String getDirection() {
@@ -60,8 +59,8 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         return solidArea;
     }
 
-    public void setCollisionOn(int collisionOn) {
-        this.collisionOn = collisionOn;
+    public void setCollisionStatus(String collisionStatus) {
+        this.collisionStatus = collisionStatus;
     }
 
     public int getVelocity() {

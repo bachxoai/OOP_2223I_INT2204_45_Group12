@@ -10,6 +10,6 @@ public class Grass extends TileEntity {
         super(x, y, gamePlay);
         gamePlay.getMapManager().addTileEntity(this);
         img = Sprite.grass.getFxImage();
-        collision = 0; //Cỏ cho người chơi đi qua
+        collision = "null"; //Cỏ cho người chơi đi qua
     }
 }

@@ -1,5 +1,6 @@
 package bomberman.entities.moving.enemy;
 
+import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 
@@ -24,10 +25,6 @@ public class Oneal extends Enemy {
         Sprite[] dead = new Sprite[1];
         dead[0] = Sprite.oneal_dead;
         setSprite(left, right, left, right, dead);
-    }
-
-    @Override
-    public void update() {
-        animatedLeft();
+        animationDeadTime = -1;
     }
 }

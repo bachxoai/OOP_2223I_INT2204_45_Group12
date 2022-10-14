@@ -13,11 +13,12 @@ public abstract class TileEntity extends Entity {
         gamePlay.getMapManager().addTileEntity(this);
     }
 
-    //Đây là biến int trả về giá trị khi có va chạm.
-    // 0 là bình thường, 1 là bị chặn, 2 là ăn Bombs, 3 là ăn Flames, 4 là ăn Speed
-    protected int collision = 0;
+    /**
+     * Một thuộc tính xác định TileEntity có chặn người chơi đi qua hay không.
+     */
+    protected String collision = "null";
 
-    public int getCollision() {
+    public String getCollision() {
         return collision;
     }
 }

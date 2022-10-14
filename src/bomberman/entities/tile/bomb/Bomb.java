@@ -28,6 +28,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
         bombs[3] = Sprite.bomb_1;
         timeToExplode = TIME_TO_EXPLODE;
         gamePlay.getMapManager().addTileEntity(this);
+        collision = "bomb";
     }
 
     @Override

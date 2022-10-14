@@ -9,6 +9,6 @@ public class Wall extends TileEntity {
         super(x, y, gamePlay);
         gamePlay.getMapManager().addTileEntity(this);
         img = Sprite.wall.getFxImage();
-        collision = 1; //Tường không cho người chơi đi qua
+        collision = "block"; //Tường không cho người chơi đi qua
     }
 }

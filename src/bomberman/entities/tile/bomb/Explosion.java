@@ -27,6 +27,7 @@ public class Explosion extends TileEntity implements DynamicEntity {
         sprites[3] = sprite1;
         sprites[4] = sprite;
         gamePlay.getMapManager().addTileEntity(this);
+        collision = "flame";
     }
 
     @Override
