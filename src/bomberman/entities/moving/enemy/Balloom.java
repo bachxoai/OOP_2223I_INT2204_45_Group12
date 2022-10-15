@@ -5,7 +5,10 @@ import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 
 import java.awt.*;
-//Class quái Balloom
+
+/**
+ * di chuyển ngẫu nhiên với vận tốc cố định.
+ */
 public class Balloom extends Enemy {
     public Balloom(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
