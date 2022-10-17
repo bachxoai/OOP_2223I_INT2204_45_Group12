@@ -14,6 +14,7 @@ public class GamePlay {
 
     //Một biến đếm số frame của từng giây, sẽ sử dụng kết hợp với MovingEntity để tạo Animation
     public static int frameCount = 0;
+    public static double playedTime = 0;
     LevelScreen containedLevelScreen;
     Group root;
     int width;
@@ -44,7 +45,10 @@ public class GamePlay {
                 //Mỗi khung hình (frame) thì biến frameCount sẽ tăng lên 1 đơn vị
                 //Nếu frameCount >=60 thì frameCount sẽ được gán lại = 0.
                 //1s có 60 frame -> 60 lần gọi
-                frameCount = (frameCount+1)%60;
+                frameCount = (frameCount + 1) % 60;
+                if (frameCount % 6 == 0) {
+                    playedTime += 0.1;
+                }
                 handleEvent();
                 render();
                 update();

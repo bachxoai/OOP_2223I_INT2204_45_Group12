@@ -3,6 +3,7 @@ package bomberman.entities.tile.bomb;
 import bomberman.entities.DynamicEntity;
 import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
+import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 
 /**
@@ -27,7 +28,7 @@ public class Explosion extends TileEntity implements DynamicEntity {
         sprites[3] = sprite1;
         sprites[4] = sprite;
         gamePlay.getMapManager().addTileEntity(this);
-        collision = "flame";
+        collision = CollisionChecker.FLAME_COLLISION;
     }
 
     @Override

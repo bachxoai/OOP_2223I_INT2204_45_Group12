@@ -6,6 +6,7 @@ import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.TileEntity;
 import bomberman.entities.tile.Wall;
 import bomberman.graphics.Sprite;
+import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -28,7 +29,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
         bombs[3] = Sprite.bomb_1;
         timeToExplode = TIME_TO_EXPLODE;
         gamePlay.getMapManager().addTileEntity(this);
-        collision = "bomb";
+        collision = CollisionChecker.BOMB_COLLISION;
     }
 
     @Override

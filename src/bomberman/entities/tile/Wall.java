@@ -1,5 +1,6 @@
 package bomberman.entities.tile;
 
+import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 
@@ -9,6 +10,6 @@ public class Wall extends TileEntity {
         super(x, y, gamePlay);
         gamePlay.getMapManager().addTileEntity(this);
         img = Sprite.wall.getFxImage();
-        collision = "block"; //Tường không cho người chơi đi qua
+        collision = CollisionChecker.WALL_COLLISION;
     }
 }

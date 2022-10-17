@@ -41,10 +41,12 @@ public abstract class Entity {
 
     public void setX(int x) {
         this.x = x;
+        xUnit = (x + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
     }
 
     public void setY(int y) {
         this.y = y;
+        yUnit = (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
     }
 
     public int getXUnit() {

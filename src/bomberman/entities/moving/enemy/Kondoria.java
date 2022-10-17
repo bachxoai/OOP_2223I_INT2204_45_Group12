@@ -16,7 +16,6 @@ public class Kondoria extends Enemy {
     public Kondoria(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.kondoria_left1.getFxImage();
-        solidArea = new Rectangle(0,0,32,32);
         super.gamePlay = gamePlay;
         velocity = 2;
 
@@ -31,6 +30,5 @@ public class Kondoria extends Enemy {
         Sprite[] dead = new Sprite[1];
         dead[0] = Sprite.kondoria_dead;
         setSprite(left, right, left, right, dead);
-        animationDeadTime = -1;
     }
 }

@@ -7,7 +7,6 @@ public class FlamepassItem extends Item{
     public FlamepassItem(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.powerup_flamepass.getFxImage();
-//        collision = 7;
     }
 
     @Override

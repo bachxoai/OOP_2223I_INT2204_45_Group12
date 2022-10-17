@@ -1,5 +1,6 @@
 package bomberman.entities.tile;
 
+import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 
@@ -8,5 +9,6 @@ public class Portal extends TileEntity {
         super(xUnit, yUnit, gamePlay);
         gamePlay.getMapManager().addTileEntity(this);
         img = Sprite.portal.getFxImage();
+        collision = CollisionChecker.PORTAL_COLLISION;
     }
 }

@@ -1,5 +1,6 @@
 package bomberman.entities.moving;
 
+import bomberman.entities.tile.TileEntity;
 import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
@@ -42,79 +43,73 @@ public class Bomber extends MovingEntity {
         setSprite(up, down, left, right, dead);
         super.gamePlay = gamePlay;
         velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
-        animationDeadTime = -1;
     }
 
     @Override
     public void update() {
-        //Nếu có phím được bấm thì thay đổi hướng + nhân vật thực hiện animation, lúc này nhân vật chưa thay đổi vị trí
-        //vì nhân vật có thể bị kẹt tường
 
         if (animationDeadTime == 0) {
             gamePlay.getMapManager().getEnemies().remove(this);
             gamePlay.getMapManager().getMovingEntities().remove(this);
+            return;
         }
 
-        if (collisionStatus == "dead") {
+        if (state == DEAD_STATE) {
             animationDeadTime--;
-            animatedDead();
+            animation(state);
+            return;
+        }
+
+        CollisionChecker.checkTileStable(this, gamePlay);
+        CollisionChecker.checkMovingEntity(this, gamePlay);
+        if (presentCollision == CollisionChecker.FLAME_COLLISION) {
+            state = DEAD_STATE;
+            return;
+        }
+        if (presentCollision == CollisionChecker.ENEMY_COLLISION) {
+            state = DEAD_STATE;
             return;
         }
 
         if (upPressed || downPressed || leftPressed || rightPressed) {
             if (upPressed) {
-                direction = "up";
-                animatedUp();
+                state = UP_STATE;
             }
             if (downPressed) {
-                direction = "down";
-                animatedDown();
+                state = DOWN_STATE;
             }
 
             if (leftPressed) {
-                direction = "left";
-                animatedLeft();
+                state = LEFT_STATE;
             }
 
             if (rightPressed) {
-                direction = "right";
-                animatedRight();
+                state = RIGHT_STATE;
             }
+            animation(state);
         }
 
-        //Kiểm tra xem nhân vật có bị kẹt tường không.
-        collisionStatus = "null";
+        //Kiểm tra xem nhân vật có bị kẹt không.
+        futureCollision = CollisionChecker.NULL_COLLISION;
         CollisionChecker.checkTileEntity(this, gamePlay);
-        CollisionChecker.checkMovingEntity(this, gamePlay);
 
-        //Nếu nhân vật không bị kẹt tường thì thay đổi vị trí theo hướng (direction)
-        if (collisionStatus != "block" && collisionStatus != "bomb") {
-            if (collisionStatus == "flame") {
-                collisionStatus = "dead";
-                animationDeadTime = 20;
-            }
-            if (collisionStatus == "getAttacked") {
-                collisionStatus = "dead";
-                animationDeadTime = 20;
-            }
-            if (collisionStatus == "dead") {
-                animationDeadTime--;
-                animatedDead();
-            }
-            switch (direction) {
-                case "up": {
+        //Nếu nhân vật không bị kẹt thì thay đổi vị trí theo hướng (direction)
+        if (futureCollision != CollisionChecker.WALL_COLLISION && futureCollision != CollisionChecker.BRICK_COLLISION
+        && futureCollision != CollisionChecker.BOMB_COLLISION) {
+            switch (state) {
+                case UP_STATE: {
                     y -= velocity;
                     break;
                 }
-                case "down": {
+                case DOWN_STATE: {
                     y += velocity;
                     break;
                 }
-                case "left": {
+                case LEFT_STATE: {
                     x -= velocity;
                     break;
                 }
-                case "right": {
+                case RIGHT_STATE: {
                     x += velocity;
                     break;
                 }
@@ -163,7 +158,7 @@ public class Bomber extends MovingEntity {
 
     public void handleReleasedEvent(KeyEvent event) {
         //Khi thả nút ra thì hướng di chuyển sẽ = none
-        direction = "none";
+        state = NORMAL_STATE;
 
         //Handle sự kiện thả phím, thả phím nào thì img sẽ đứng yên theo hướng đó.
         switch (event.getCode()) {

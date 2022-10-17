@@ -1,5 +1,6 @@
 package bomberman.entities.tile;
 
+import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 
@@ -10,6 +11,6 @@ public class Grass extends TileEntity {
         super(x, y, gamePlay);
         gamePlay.getMapManager().addTileEntity(this);
         img = Sprite.grass.getFxImage();
-        collision = "null"; //Cỏ cho người chơi đi qua
+        collision = CollisionChecker.NULL_COLLISION;
     }
 }

@@ -1,6 +1,7 @@
 package bomberman.entities.moving;
 
 import bomberman.entities.DynamicEntity;
+import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.entities.Entity;
 import bomberman.graphics.Sprite;
@@ -11,22 +12,29 @@ import java.awt.*;
  * Class dành cho các đối tượng có thể di chuyển. Liên quan đến toạ độ pixel.
  */
 public abstract class MovingEntity extends Entity implements DynamicEntity {
+    //Các trạng thái của Moving Entity
+    public static final String NORMAL_STATE = "normal";
+    public static final String DEAD_STATE = "dead";
+    public static final String UP_STATE = "up";
+    public static final String DOWN_STATE = "down";
+    public static final String LEFT_STATE = "left";
+    public static final String RIGHT_STATE = "right";
+
+    //Trạng thái của Moving Entity
+    protected String state;
+
     //Các Sprite lưu animation của Entity.
-//    protected Sprite up, up1, up2, down, down1, down2, left, left1, left2, right, right1, right2;
     protected Sprite[] up;
     protected Sprite[] down;
     protected Sprite[] left;
     protected Sprite[] right;
     protected Sprite[] dead;
 
-    //Một biến để lưu hướng của Entity.
-    protected String direction;
+    //Va chạm của ô sắp gặp
+    protected String futureCollision = CollisionChecker.NULL_COLLISION;
 
-    //Một hình vuông là hitbox của Entity.
-    protected Rectangle solidArea;
-
-    //Biến trả về các giá trị khi có va chạm
-    protected String collisionStatus = "null";
+    //Va chạm của ô đang đứng
+    protected String presentCollision = CollisionChecker.NULL_COLLISION;
 
     //Vận tốc
     protected int velocity;
@@ -34,12 +42,13 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Số khung hình trên giây
     public final int ANIMATED_FRAME = 6;
 
-    protected int animationDeadTime;
+    //Thời gian hoạt ảnh animation luc chết
+    protected int animationDeadTime = 20;
 
     public MovingEntity(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
-        direction = "none";
         gamePlay.getMapManager().addMovingEntities(this);
+        state = NORMAL_STATE;
     }
 
     //Phương thức gán các hình ảnh để tạo animation cho MovingEntity
@@ -51,16 +60,16 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         this.dead = dead;
     }
 
-    public String getDirection() {
-        return direction;
+    public String getState() {
+        return state;
     }
 
-    public Rectangle getSolidArea() {
-        return solidArea;
+    public void setFutureCollision(String collisionStatus) {
+        this.futureCollision = collisionStatus;
     }
 
-    public void setCollisionStatus(String collisionStatus) {
-        this.collisionStatus = collisionStatus;
+    public void setPresentCollision(String presentCollision) {
+        this.presentCollision = presentCollision;
     }
 
     public int getVelocity() {
@@ -70,29 +79,24 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     @Override
     public abstract void update();
 
-    //Các phương thức thay đổi img của Entity để tạo ra Animation cho nó.
-    protected void animatedRight() {
+    protected void animation(String state) {
         int n = GamePlay.frameCount/(60/ANIMATED_FRAME);
-        img = right[n % right.length].getFxImage();
-    }
-
-    protected void animatedLeft() {
-        int n = GamePlay.frameCount/(60/ANIMATED_FRAME);
-        img = left[n % left.length].getFxImage();
-    }
-
-    protected void animatedDown() {
-        int n = GamePlay.frameCount/(60/ANIMATED_FRAME);
-        img = down[n % down.length].getFxImage();
-    }
-
-    protected void animatedUp() {
-        int n = GamePlay.frameCount/(60/ANIMATED_FRAME);
-        img = up[n % up.length].getFxImage();
-    }
-
-    protected void animatedDead() {
-        int n = GamePlay.frameCount/(60/ANIMATED_FRAME);
-        img = dead[n % dead.length].getFxImage();
+        switch (state) {
+            case UP_STATE:
+                img = up[n % up.length].getFxImage();
+                break;
+            case DOWN_STATE:
+                img = down[n % down.length].getFxImage();
+                break;
+            case LEFT_STATE:
+                img = left[n % left.length].getFxImage();
+                break;
+            case RIGHT_STATE:
+                img = right[n % right.length].getFxImage();
+                break;
+            case DEAD_STATE:
+                img = dead[n % dead.length].getFxImage();
+                break;
+        }
     }
 }

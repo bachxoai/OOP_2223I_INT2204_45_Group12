@@ -8,7 +8,6 @@ public class BombpassItem extends Item{
     public BombpassItem(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.powerup_bombs.getFxImage();
-//        collision = 5;
     }
 
 

@@ -9,6 +9,17 @@ import java.util.ArrayList;
 //Class kiểm tra va chạm
 public class CollisionChecker {
 
+    public static String NULL_COLLISION = "null";
+    public static String BOMB_COLLISION = "bomb";
+    public static String FLAME_COLLISION = "flame";
+    public static String WALL_COLLISION = "wall";
+    public static String BRICK_COLLISION = "brick";
+    public static String PORTAL_COLLISION = "portal";
+    public static String BOMBS_ITEM_COLLISION = "bombsItem";
+    public static String FLAMES_ITEM_COLLISION = "flamesItem";
+    public static String SPEED_ITEM_COLLISION = "speedsItem";
+    public static String ENEMY_COLLISION = "enemy";
+
     /**
      * Hàm kiểm tra va chạm với các TileEntity trong GamePlay nào đó.
      *
@@ -27,22 +38,21 @@ public class CollisionChecker {
         int entityTopRow = entityTopY/Sprite.SCALED_SIZE;
         int entityBottomRow = entityBottomY/Sprite.SCALED_SIZE;
 
-        checkTileStable(entity, gamePlay);
         //Kiểm tra va chạm theo từng hướng
-        switch (entity.getDirection()) {
-            case "up": {
+        switch (entity.getState()) {
+            case MovingEntity.UP_STATE: {
                 checkTileVertical(entity, (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
                 break;
             }
-            case "down": {
+            case MovingEntity.DOWN_STATE: {
                 checkTileVertical(entity, (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
                 break;
             }
-            case "left": {
+            case MovingEntity.LEFT_STATE: {
                 checkTileHorizontal(entity, (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
                 break;
             }
-            case "right": {
+            case MovingEntity.RIGHT_STATE: {
                 checkTileHorizontal(entity, (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
                 break;
             }
@@ -68,7 +78,7 @@ public class CollisionChecker {
             int enemyTopY = newEnemies.get(i).getY();
             int enemyBottomY = newEnemies.get(i).getY() + Sprite.SCALED_SIZE - 1;
             if (!(bomberRightX < enemyLeftX || bomberLeftX > enemyRightX || bomberTopY > enemyBottomY || bomberBottomY < enemyTopY)) {
-                bomber.setCollisionStatus("getAttacked");
+                bomber.setPresentCollision(ENEMY_COLLISION);
             }
         }
     }
@@ -88,23 +98,23 @@ public class CollisionChecker {
     private static void checkTileVertical(MovingEntity moving, int row, int entityLeftX, int entityRightX, int entityLeftCol, int entityRightCol, MovingEntity entity, GamePlay gamePlay) {
         if (entityLeftCol == entityRightCol) {
             String collision = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityLeftCol, row)).getCollision();
-            if (collision != "null") {
-                if (collision == "bomb" && getCollisionAtCurrentPosition(moving, gamePlay) == "bomb") {
+            if (collision != NULL_COLLISION) {
+                if (collision == BOMB_COLLISION && getCollisionAtCurrentPosition(moving, gamePlay) == BOMB_COLLISION) {
                     return;
                 }
-                entity.setCollisionStatus(collision);
+                entity.setFutureCollision(collision);
             }
         } else {
             String collision1 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityLeftCol, row)).getCollision();
             String collision2 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityRightCol, row)).getCollision();
 
-            if (collision1 != "null" || collision2 != "null") {
-                if (collision1 != "null" && collision2 == "null" && entityRightCol * Sprite.SCALED_SIZE - entityLeftX <= 8) {
+            if (collision1 != NULL_COLLISION || collision2 != NULL_COLLISION) {
+                if (collision1 != NULL_COLLISION && collision2 == NULL_COLLISION && entityRightCol * Sprite.SCALED_SIZE - entityLeftX <= 8) {
                     entity.setX(entityRightCol * Sprite.SCALED_SIZE);
-                } else if (collision2 != "null" && collision1 == "null" && entityRightX - entityLeftCol * Sprite.SCALED_SIZE - 31 <= 8) {
+                } else if (collision2 != NULL_COLLISION && collision1 == NULL_COLLISION && entityRightX - entityLeftCol * Sprite.SCALED_SIZE - 31 <= 8) {
                     entity.setX(entityLeftCol * Sprite.SCALED_SIZE + 9);
                 } else {
-                    entity.setCollisionStatus((collision1 != "null") ? collision1 : collision2);
+                    entity.setFutureCollision((collision1 != NULL_COLLISION) ? collision1 : collision2);
                 }
             }
         }
@@ -125,23 +135,23 @@ public class CollisionChecker {
     private static void checkTileHorizontal(MovingEntity moving, int col, int entityTopRow, int entityBottomRow, int entityTopY, int entityBottomY, MovingEntity entity, GamePlay gamePlay) {
         if (entityTopRow == entityBottomRow) {
             String collision = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityTopRow)).getCollision();
-            if (collision != "null") {
-                if (collision == "bomb" && getCollisionAtCurrentPosition(moving, gamePlay) == "bomb") {
+            if (collision != NULL_COLLISION) {
+                if (collision == BOMB_COLLISION && getCollisionAtCurrentPosition(moving, gamePlay) == BOMB_COLLISION) {
                     return;
                 }
-                entity.setCollisionStatus(collision);
+                entity.setFutureCollision(collision);
             }
         } else {
             String collision1 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityTopRow)).getCollision();
             String collision2 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityBottomRow)).getCollision();
 
-            if (collision1 != "null" || collision2 != "null") {
-                if (collision1 != "null" && collision2 == "null" && entityBottomRow * Sprite.SCALED_SIZE - entityTopY <= 8) {
+            if (collision1 != NULL_COLLISION || collision2 != NULL_COLLISION) {
+                if (collision1 != NULL_COLLISION && collision2 == NULL_COLLISION && entityBottomRow * Sprite.SCALED_SIZE - entityTopY <= 8) {
                     entity.setY(entityBottomRow * Sprite.SCALED_SIZE);
-                } else if (collision2 != "null" && collision1 == "null" && entityBottomY - entityTopRow * Sprite.SCALED_SIZE - 31 <= 8) {
+                } else if (collision2 != NULL_COLLISION && collision1 == NULL_COLLISION && entityBottomY - entityTopRow * Sprite.SCALED_SIZE - 31 <= 8) {
                     entity.setY(entityTopRow * Sprite.SCALED_SIZE);
                 } else {
-                    entity.setCollisionStatus((collision1 != "null") ? collision1 : collision2);
+                    entity.setFutureCollision((collision1 != NULL_COLLISION) ? collision1 : collision2);
                 }
             }
         }
@@ -160,16 +170,41 @@ public class CollisionChecker {
     }
 
     /**
-     * Hàm kiểm tra va chạm nếu như Bomberman đứng yên.
+     * Hàm kiểm tra va chạm nếu như Entity đứng yên ko di chuyen.
      *
      * @param entity
      * @param gamePlay
      */
-    private static void checkTileStable(MovingEntity entity, GamePlay gamePlay) {
+    public static void checkTileStable(MovingEntity entity, GamePlay gamePlay) {
         TileEntity tileEntity = (TileEntity) gamePlay.getMapManager().getTopTileAt(entity.getXUnit(), entity.getYUnit());
-        if (tileEntity.getCollision() == "bomb") {
+        if (tileEntity.getCollision() == BOMB_COLLISION) {
             return;
         }
-        entity.setCollisionStatus(tileEntity.getCollision());
+        entity.setPresentCollision(tileEntity.getCollision());
+    }
+
+    /**
+     * Hàm kiểm tra va chạm các ô xung quanh trả về 1 xâu. Lần lượt top,bot,left,right. Nếu bị chặn thì là 1, ngược lại thì là 0
+     * VD: 0011: top và bot không bị chặn, left và right bị chặn
+     * @param enemy
+     * @param gamePlay
+     * @return
+     */
+    public static String getCollisionAround(Enemy enemy, GamePlay gamePlay) {
+        String top = gamePlay.getMapManager().getTopTileAt(enemy.getXUnit(), enemy.getYUnit() - 1).getCollision();
+        String bottom = gamePlay.getMapManager().getTopTileAt(enemy.getXUnit(), enemy.getYUnit() + 1).getCollision();
+        String left = gamePlay.getMapManager().getTopTileAt(enemy.getXUnit() - 1, enemy.getYUnit()).getCollision();
+        String right = gamePlay.getMapManager().getTopTileAt(enemy.getXUnit() + 1, enemy.getYUnit()).getCollision();
+
+        return getCharForGetCollisionAround(top) + getCharForGetCollisionAround(bottom)
+                + getCharForGetCollisionAround(left) + getCharForGetCollisionAround(right);
+    }
+
+    private static String getCharForGetCollisionAround(String s) {
+        if (s != BRICK_COLLISION && s != WALL_COLLISION && s != BOMB_COLLISION) {
+            return "0";
+        } else {
+            return "1";
+        }
     }
 }

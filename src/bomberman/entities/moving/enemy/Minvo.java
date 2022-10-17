@@ -14,7 +14,6 @@ public class Minvo extends Enemy {
     public Minvo(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.minvo_left1.getFxImage();
-        solidArea = new Rectangle(0,0,32,32);
         super.gamePlay = gamePlay;
         velocity = 2;
 
@@ -29,6 +28,5 @@ public class Minvo extends Enemy {
         Sprite[] dead = new Sprite[1];
         dead[0] = Sprite.minvo_dead;
         setSprite(left, right, left, right, dead);
-        animationDeadTime = -1;
     }
 }
