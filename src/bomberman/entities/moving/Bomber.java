@@ -1,5 +1,6 @@
 package bomberman.entities.moving;
 
+import bomberman.entities.Entity;
 import bomberman.entities.tile.TileEntity;
 import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
@@ -50,34 +51,8 @@ public class Bomber extends MovingEntity {
         if (isAlive) {
             CollisionChecker.checkTileStable(this, gamePlay);
             CollisionChecker.checkMovingEntity(this, gamePlay);
-            if (presentCollision == CollisionChecker.FLAME_COLLISION) {
-                state = DEAD_STATE;
-                isAlive = false;
-                return;
-            }
-            if (presentCollision == CollisionChecker.ENEMY_COLLISION) {
-                state = DEAD_STATE;
-                isAlive = false;
-                return;
-            }
-
-            if (upPressed || downPressed || leftPressed || rightPressed) {
-                if (upPressed) {
-                    state = UP_STATE;
-                }
-                if (downPressed) {
-                    state = DOWN_STATE;
-                }
-
-                if (leftPressed) {
-                    state = LEFT_STATE;
-                }
-
-                if (rightPressed) {
-                    state = RIGHT_STATE;
-                }
-                animation(state);
-            }
+            handleCollision();
+            changeState();
 
             //Kiểm tra xem nhân vật có bị kẹt không.
             futureCollision = CollisionChecker.NULL_COLLISION;
@@ -154,6 +129,59 @@ public class Bomber extends MovingEntity {
                 break;
             }
         }
+    }
+
+    private void handleCollision() {
+        if (presentCollision == CollisionChecker.FLAME_COLLISION) {
+            state = DEAD_STATE;
+            isAlive = false;
+            return;
+        }
+        if (presentCollision == CollisionChecker.ENEMY_COLLISION) {
+            state = DEAD_STATE;
+            isAlive = false;
+            return;
+        }
+        if (presentCollision == CollisionChecker.PORTAL_COLLISION) {
+            //Modify attribute here
+        }
+        if (presentCollision == CollisionChecker.SPEED_ITEM_COLLISION) {
+            velocity++;
+            deleteItem();
+        }
+        if (presentCollision == CollisionChecker.BOMBS_ITEM_COLLISION) {
+            //Modify attribute here
+            deleteItem();
+        }
+        if (presentCollision == CollisionChecker.FLAMES_ITEM_COLLISION) {
+            //Modify attribute here
+            deleteItem();
+        }
+    }
+
+    private void changeState() {
+        if (upPressed || downPressed || leftPressed || rightPressed) {
+            if (upPressed) {
+                state = UP_STATE;
+            }
+            if (downPressed) {
+                state = DOWN_STATE;
+            }
+
+            if (leftPressed) {
+                state = LEFT_STATE;
+            }
+
+            if (rightPressed) {
+                state = RIGHT_STATE;
+            }
+            animation(state);
+        }
+    }
+
+    private void deleteItem() {
+        Entity item = gamePlay.getMapManager().getTopTileAt(getXUnit(), getYUnit());
+        gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(item);
     }
 }
 

@@ -29,7 +29,6 @@ public class Balloom extends Enemy {
         Sprite[] dead = new Sprite[1];
         dead[0] = Sprite.balloom_dead;
         setSprite(left, right, left, right, dead);
-        movingDelayTimeLeft = MOVING_DELAY_TIME;
     }
 
     /**

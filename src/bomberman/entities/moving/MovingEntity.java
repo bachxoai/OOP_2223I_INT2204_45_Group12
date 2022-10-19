@@ -45,6 +45,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Thời gian hoạt ảnh animation luc chết
     protected int animationDeadTime = 20;
 
+    //Biến thể hiện rằng Entity còn sống
     protected boolean isAlive = true;
 
     public MovingEntity(int xUnit, int yUnit, GamePlay gamePlay) {
@@ -81,6 +82,10 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     @Override
     public abstract void update();
 
+    /**
+     * Hàm tạo hoạt ảnh cho nhân vật
+     * @param state
+     */
     protected void animation(int state) {
         int n = GamePlay.frameCount/(60/ANIMATED_FRAME);
         switch (state) {
@@ -102,6 +107,9 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         }
     }
 
+    /**
+     * Hàm thay đổi vị trí cho nhân vật
+     */
     protected void move() {
         if (futureCollision != CollisionChecker.WALL_COLLISION && futureCollision != CollisionChecker.BRICK_COLLISION
                 && futureCollision != CollisionChecker.BOMB_COLLISION) {
@@ -126,6 +134,9 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         }
     }
 
+    /**
+     * Hàm thực hiện khi nhân vật chết
+     */
     protected void handleDeadState() {
         if (animationDeadTime == 0) {
             gamePlay.getMapManager().getEnemies().remove(this);
