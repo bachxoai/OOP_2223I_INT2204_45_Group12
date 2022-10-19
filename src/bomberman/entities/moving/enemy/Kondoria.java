@@ -31,4 +31,9 @@ public class Kondoria extends Enemy {
         dead[0] = Sprite.kondoria_dead;
         setSprite(left, right, left, right, dead);
     }
+
+    @Override
+    protected void setDirection() {
+
+    }
 }

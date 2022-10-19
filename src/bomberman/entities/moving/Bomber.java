@@ -47,73 +47,44 @@ public class Bomber extends MovingEntity {
 
     @Override
     public void update() {
-
-        if (animationDeadTime == 0) {
-            gamePlay.getMapManager().getEnemies().remove(this);
-            gamePlay.getMapManager().getMovingEntities().remove(this);
-            return;
-        }
-
-        if (state == DEAD_STATE) {
-            animationDeadTime--;
-            animation(state);
-            return;
-        }
-
-        CollisionChecker.checkTileStable(this, gamePlay);
-        CollisionChecker.checkMovingEntity(this, gamePlay);
-        if (presentCollision == CollisionChecker.FLAME_COLLISION) {
-            state = DEAD_STATE;
-            return;
-        }
-        if (presentCollision == CollisionChecker.ENEMY_COLLISION) {
-            state = DEAD_STATE;
-            return;
-        }
-
-        if (upPressed || downPressed || leftPressed || rightPressed) {
-            if (upPressed) {
-                state = UP_STATE;
+        if (isAlive) {
+            CollisionChecker.checkTileStable(this, gamePlay);
+            CollisionChecker.checkMovingEntity(this, gamePlay);
+            if (presentCollision == CollisionChecker.FLAME_COLLISION) {
+                state = DEAD_STATE;
+                isAlive = false;
+                return;
             }
-            if (downPressed) {
-                state = DOWN_STATE;
+            if (presentCollision == CollisionChecker.ENEMY_COLLISION) {
+                state = DEAD_STATE;
+                isAlive = false;
+                return;
             }
 
-            if (leftPressed) {
-                state = LEFT_STATE;
-            }
-
-            if (rightPressed) {
-                state = RIGHT_STATE;
-            }
-            animation(state);
-        }
-
-        //Kiểm tra xem nhân vật có bị kẹt không.
-        futureCollision = CollisionChecker.NULL_COLLISION;
-        CollisionChecker.checkTileEntity(this, gamePlay);
-
-        //Nếu nhân vật không bị kẹt thì thay đổi vị trí theo hướng (direction)
-        if (futureCollision != CollisionChecker.WALL_COLLISION && futureCollision != CollisionChecker.BRICK_COLLISION
-        && futureCollision != CollisionChecker.BOMB_COLLISION) {
-            switch (state) {
-                case UP_STATE: {
-                    y -= velocity;
-                    break;
+            if (upPressed || downPressed || leftPressed || rightPressed) {
+                if (upPressed) {
+                    state = UP_STATE;
                 }
-                case DOWN_STATE: {
-                    y += velocity;
-                    break;
+                if (downPressed) {
+                    state = DOWN_STATE;
                 }
-                case LEFT_STATE: {
-                    x -= velocity;
-                    break;
+
+                if (leftPressed) {
+                    state = LEFT_STATE;
                 }
-                case RIGHT_STATE: {
-                    x += velocity;
-                    break;
+
+                if (rightPressed) {
+                    state = RIGHT_STATE;
                 }
+                animation(state);
             }
+
+            //Kiểm tra xem nhân vật có bị kẹt không.
+            futureCollision = CollisionChecker.NULL_COLLISION;
+            CollisionChecker.checkTileEntity(this, gamePlay);
+            move();
+        } else {
+            handleDeadState();
         }
     }
 

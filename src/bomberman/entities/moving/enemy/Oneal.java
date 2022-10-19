@@ -29,4 +29,9 @@ public class Oneal extends Enemy {
         dead[0] = Sprite.oneal_dead;
         setSprite(left, right, left, right, dead);
     }
+
+    @Override
+    protected void setDirection() {
+
+    }
 }

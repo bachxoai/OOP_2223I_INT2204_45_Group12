@@ -37,7 +37,9 @@ public class Menu extends Screen {
         createRoot();
 
         scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("background.css").toExternalForm());
+
+        scene.getStylesheets().add(getClass().getResource("/background.css").toExternalForm());
+
         return scene;
     }
 

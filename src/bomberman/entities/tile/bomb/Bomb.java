@@ -41,7 +41,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
             new Explosion(getXUnit(), getYUnit(), gamePlay,
                     Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2);
             createExplosion();
-            gamePlay.getMapManager().getTilesAt(xUnit, yUnit).remove(this);
+            gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
         }
     }
 
@@ -230,6 +230,6 @@ public class Bomb extends TileEntity implements DynamicEntity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(img, x, y);
+        gc.drawImage(img, getX(), getY());
     }
 }

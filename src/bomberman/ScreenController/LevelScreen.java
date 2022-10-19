@@ -41,7 +41,7 @@ public class LevelScreen extends Screen {
         createPlayingPane();
         root.getChildren().addAll(playingPane);
         scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("background.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/background.css").toExternalForm());
 
 //        timer = new AnimationTimer() {
 //            @Override

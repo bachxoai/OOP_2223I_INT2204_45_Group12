@@ -11,13 +11,13 @@ import javafx.scene.image.Image;
  */
 public abstract class Entity {
     //Tọa độ X tính từ góc trái trên trong Canvas
-    protected int x;
+    private int x;
     //Tọa độ Y tính từ góc trái trên trong Canvas
-    protected int y;
+    private int y;
     //Toạ độ x tính từ góc trái trên trong map.
-    protected int xUnit;
+    private int xUnit;
     //Toạ độ y tính từ góc trái trên trong map.
-    protected int yUnit;
+    private int yUnit;
     //Ảnh đc render của đối tượng.
     protected Image img;
     //GamePlay chứa entity đó.

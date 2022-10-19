@@ -19,6 +19,6 @@ public class Brick extends TileEntity implements DynamicEntity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(img, x, y);
+        gc.drawImage(img, getX(), getY());
     }
 }

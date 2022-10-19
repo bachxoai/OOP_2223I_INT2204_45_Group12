@@ -1,6 +1,7 @@
 package bomberman.entities.moving.enemy;
 
 import bomberman.entities.moving.MovingEntity;
+import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 
@@ -24,24 +25,29 @@ public abstract class Enemy extends MovingEntity {
     }
     @Override
     public void update() {
+        if (isAlive) {
+            CollisionChecker.checkTileStable(this, gamePlay);
 
-        if (animationDeadTime == 0) {
-            gamePlay.getMapManager().getEnemies().remove(this);
-            gamePlay.getMapManager().getMovingEntities().remove(this);
-            return;
+            if (presentCollision == CollisionChecker.FLAME_COLLISION) {
+                state = DEAD_STATE;
+                isAlive = false;
+                return;
+            }
+
+            setDirection();
+            animation(state);
+            move();
+        } else {
+            handleDeadState();
         }
+    }
 
-        if (state == MovingEntity.DEAD_STATE) {
-            animationDeadTime--;
-            animation(DEAD_STATE);
-            return;
+    protected abstract void setDirection();
+
+    protected boolean inABlock() {
+        if (getX() == getXUnit() * Sprite.SCALED_SIZE && getY() == getYUnit() * Sprite.SCALED_SIZE) {
+            return true;
         }
-
-        CollisionChecker.checkTileStable(this, gamePlay);
-
-        if (presentCollision == CollisionChecker.FLAME_COLLISION) {
-            state = DEAD_STATE;
-            return;
-        }
+        return false;
     }
 }

@@ -13,15 +13,15 @@ import java.awt.*;
  */
 public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Các trạng thái của Moving Entity
-    public static final String NORMAL_STATE = "normal";
-    public static final String DEAD_STATE = "dead";
-    public static final String UP_STATE = "up";
-    public static final String DOWN_STATE = "down";
-    public static final String LEFT_STATE = "left";
-    public static final String RIGHT_STATE = "right";
+    public static final int NORMAL_STATE = 0;
+    public static final int DEAD_STATE = 1;
+    public static final int UP_STATE = 2;
+    public static final int DOWN_STATE = 3;
+    public static final int LEFT_STATE = 4;
+    public static final int RIGHT_STATE = 5;
 
     //Trạng thái của Moving Entity
-    protected String state;
+    protected int state;
 
     //Các Sprite lưu animation của Entity.
     protected Sprite[] up;
@@ -45,6 +45,8 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Thời gian hoạt ảnh animation luc chết
     protected int animationDeadTime = 20;
 
+    protected boolean isAlive = true;
+
     public MovingEntity(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         gamePlay.getMapManager().addMovingEntities(this);
@@ -60,7 +62,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         this.dead = dead;
     }
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 
@@ -79,7 +81,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     @Override
     public abstract void update();
 
-    protected void animation(String state) {
+    protected void animation(int state) {
         int n = GamePlay.frameCount/(60/ANIMATED_FRAME);
         switch (state) {
             case UP_STATE:
@@ -98,5 +100,39 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
                 img = dead[n % dead.length].getFxImage();
                 break;
         }
+    }
+
+    protected void move() {
+        if (futureCollision != CollisionChecker.WALL_COLLISION && futureCollision != CollisionChecker.BRICK_COLLISION
+                && futureCollision != CollisionChecker.BOMB_COLLISION) {
+            switch (state) {
+                case UP_STATE: {
+                    setY(getY() - velocity);
+                    break;
+                }
+                case DOWN_STATE: {
+                    setY(getY() + velocity);
+                    break;
+                }
+                case LEFT_STATE: {
+                    setX(getX() - velocity);
+                    break;
+                }
+                case RIGHT_STATE: {
+                    setX(getX() + velocity);
+                    break;
+                }
+            }
+        }
+    }
+
+    protected void handleDeadState() {
+        if (animationDeadTime == 0) {
+            gamePlay.getMapManager().getEnemies().remove(this);
+            gamePlay.getMapManager().getMovingEntities().remove(this);
+            return;
+        }
+        animationDeadTime--;
+        animation(DEAD_STATE);
     }
 }

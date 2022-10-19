@@ -32,4 +32,9 @@ public class Doll extends Enemy {
         dead[0] = Sprite.doll_dead;
         setSprite(left, right, left, right, dead);
     }
+
+    @Override
+    protected void setDirection() {
+
+    }
 }

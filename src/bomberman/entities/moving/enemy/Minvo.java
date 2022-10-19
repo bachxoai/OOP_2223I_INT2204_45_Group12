@@ -29,4 +29,9 @@ public class Minvo extends Enemy {
         dead[0] = Sprite.minvo_dead;
         setSprite(left, right, left, right, dead);
     }
+
+    @Override
+    protected void setDirection() {
+
+    }
 }

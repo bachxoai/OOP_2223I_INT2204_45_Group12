@@ -37,7 +37,7 @@ public class Explosion extends TileEntity implements DynamicEntity {
             timeLeft--;
             img = sprites[timeLeft / ANIMATED_FRAME].getFxImage();
         } else if (timeLeft == 0) {
-            gamePlay.getMapManager().getTilesAt(xUnit, yUnit).remove(this);
+            gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
         }
     }
 }
