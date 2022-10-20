@@ -10,8 +10,6 @@ public abstract class Enemy extends MovingEntity {
     //Thời gian cho 1 hướng di chuyển (đơn vị là frame, 1s = 60 frame)
     protected final int MOVING_DELAY_TIME = 64;
 
-    protected boolean canMove = false;
-
     public Enemy(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         gamePlay.getMapManager().addEnemies(this);
@@ -26,8 +24,9 @@ public abstract class Enemy extends MovingEntity {
                 isAlive = false;
                 return;
             }
-
-            setDirection();
+            if (inABlock()) {
+                setDirection();
+            }
             animation(state);
             futureCollision = CollisionChecker.NULL_COLLISION;
             CollisionChecker.checkTileEntity(this, gamePlay);
@@ -40,10 +39,42 @@ public abstract class Enemy extends MovingEntity {
 
     protected abstract void setDirection();
 
-    protected boolean inABlock() {
-        if (getX() == getXUnit() * Sprite.SCALED_SIZE && getY() == getYUnit() * Sprite.SCALED_SIZE) {
-            return true;
+    public void moveRandomly() {
+        while (true) {
+            if (state == LEFT_STATE) {
+                if (canMove(getXUnit() - 1, getYUnit())) {
+                    return;
+                } else {
+                    state = (state + 1) % 4 + 2;
+                }
+            }
+            if (state == DOWN_STATE) {
+                if (canMove(getXUnit(), getYUnit() + 1)) {
+                    return;
+                } else {
+                    state = (state + 1) % 4 + 2;
+                }
+            }
+            if (state == RIGHT_STATE) {
+                if (canMove(getXUnit() + 1, getYUnit())) {
+                    return;
+                } else {
+                    state = (state + 1) % 4 + 2;
+                }
+            }
+            if (state == UP_STATE) {
+                if (canMove(getXUnit(), getYUnit() - 1)) {
+                    return;
+                } else {
+                    state = (state + 1) % 4 + 2;
+                }
+            }
         }
-        return false;
+    }
+
+    protected abstract boolean canMove(int x, int y);
+
+    protected boolean inABlock() {
+        return getX() == getXUnit() * Sprite.SCALED_SIZE && getY() == getYUnit() * Sprite.SCALED_SIZE;
     }
 }

@@ -7,14 +7,11 @@ import bomberman.graphics.Sprite;
 import javafx.scene.canvas.GraphicsContext;
 
 //Class cho gạch
-public class Brick extends TileEntity implements DynamicEntity {
+public class Brick extends TileEntity {
     public Brick(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.brick.getFxImage();
         collision = CollisionChecker.BRICK_COLLISION;
-    }
-    public void update() {
-
     }
 
     @Override

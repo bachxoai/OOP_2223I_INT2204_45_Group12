@@ -9,7 +9,6 @@ public class Grass extends TileEntity {
 
     public Grass(int x, int y, GamePlay gamePlay) {
         super(x, y, gamePlay);
-        gamePlay.getMapManager().addTileEntity(this);
         img = Sprite.grass.getFxImage();
         collision = CollisionChecker.NULL_COLLISION;
     }

@@ -6,11 +6,10 @@ import bomberman.managers.GamePlay;
 import java.awt.*;
 
 /**
- * Di chuyển chậm nhất
- * Có thể đi qua Soft Blocks
- * Đuổi theo bomberman, có khả năng tránh bom
- * Be associated with the Remote Control power-up => appear when the stage Exit
- *      containing the power-up is bombed or destroyed
+ * It moves really slow, making Doria the slowest, but it can move through Soft Blocks.
+ * It appears cyan-colored, just as the Onils are.
+ * Doria is very smart, it will commonly attempt to chase Bomberman, and it can evade bombs.
+ *  It takes 1 hit to defeat and yields a score of 1000 points.
  */
 public class Kondoria extends Enemy {
     public Kondoria(int xUnit, int yUnit, GamePlay gamePlay) {
@@ -35,5 +34,10 @@ public class Kondoria extends Enemy {
     @Override
     protected void setDirection() {
 
+    }
+
+    @Override
+    protected boolean canMove(int x, int y) {
+        return false;
     }
 }

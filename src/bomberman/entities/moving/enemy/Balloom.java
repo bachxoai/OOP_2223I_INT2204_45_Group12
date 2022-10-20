@@ -1,6 +1,8 @@
 package bomberman.entities.moving.enemy;
 
+import bomberman.entities.Entity;
 import bomberman.entities.moving.MovingEntity;
+import bomberman.entities.tile.Grass;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
@@ -29,26 +31,19 @@ public class Balloom extends Enemy {
         Sprite[] dead = new Sprite[1];
         dead[0] = Sprite.balloom_dead;
         setSprite(left, right, left, right, dead);
+
+        state = LEFT_STATE;
     }
 
     /**
      * Hàm chọn hướng di chuyển phù hợp
      */
     protected void setDirection() {
-        if (inABlock()) {
-            Random random = new Random();
+        moveRandomly();
+    }
 
-            //Chọn bừa 1 số từ {2, 3, 4, 5} tương ứng với STATE {UP, DOWN, LEFT, RIGHT}
-            int i = random.nextInt(4) + 2;
-
-            //Nếu hướng đang chọn bị chặn thì chọn một hướng khác cho tới khi chọn được hướng không bị chặn.
-            while (CollisionChecker.getCollisionAround(this, gamePlay).charAt(i - UP_STATE) == '1') {
-                i++;
-                if (i > RIGHT_STATE) {
-                    i = UP_STATE;
-                }
-            }
-            state = i;
-        }
+    protected boolean canMove(int x, int y) {
+        Entity e = gamePlay.getMapManager().getTopTileAt(x, y);
+        return e instanceof Grass;
     }
 }

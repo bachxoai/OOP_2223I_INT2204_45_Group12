@@ -13,7 +13,12 @@ import javafx.scene.input.KeyEvent;
  */
 public class Bomber extends MovingEntity {
     int bombNums;
-    int bombRange;
+    int flameRange;
+    boolean canWalkThroughBomb;
+    boolean canWalkThroughBrick;
+    boolean canWalkThroughFlame;
+    boolean canDetonate;
+
     //Kiểm tra xem nút Up có đang được bấm hay không? Các nút còn lại tương tự.
     private boolean upPressed = false;
     private boolean downPressed = false;
@@ -44,6 +49,9 @@ public class Bomber extends MovingEntity {
         setSprite(up, down, left, right, dead);
         super.gamePlay = gamePlay;
         velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
+
+        canWalkThroughFlame = false;
+        canWalkThroughBrick = false;
     }
 
     @Override
@@ -57,10 +65,18 @@ public class Bomber extends MovingEntity {
             //Kiểm tra xem nhân vật có bị kẹt không.
             futureCollision = CollisionChecker.NULL_COLLISION;
             CollisionChecker.checkTileEntity(this, gamePlay);
-            move();
+            if (canMove()) {
+                move();
+            }
         } else {
             handleDeadState();
         }
+    }
+
+    protected boolean canMove() {
+        return futureCollision != CollisionChecker.WALL_COLLISION
+                && (futureCollision != CollisionChecker.BRICK_COLLISION || isCanWalkThroughBrick())
+                && futureCollision != CollisionChecker.BOMB_COLLISION;
     }
 
     public void handleEvent(KeyEvent event) {
@@ -132,7 +148,7 @@ public class Bomber extends MovingEntity {
     }
 
     private void handleCollision() {
-        if (presentCollision == CollisionChecker.FLAME_COLLISION) {
+        if (presentCollision == CollisionChecker.FLAME_COLLISION && !isCanWalkThroughFlame()) {
             state = DEAD_STATE;
             isAlive = false;
             return;
@@ -183,6 +199,55 @@ public class Bomber extends MovingEntity {
         Entity item = gamePlay.getMapManager().getTopTileAt(getXUnit(), getYUnit());
         gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(item);
     }
+
+    public int getBombNums() {
+        return bombNums;
+    }
+
+    public void setBombNums(int bombNums) {
+        this.bombNums = bombNums;
+    }
+
+    public int getFlameRange() {
+        return flameRange;
+    }
+
+    public void setFlameRange(int flameRange) {
+        this.flameRange = flameRange;
+    }
+
+    public boolean isCanWalkThroughBomb() {
+        return canWalkThroughBomb;
+    }
+
+    public void setCanWalkThroughBomb(boolean canWalkThroughBomb) {
+        this.canWalkThroughBomb = canWalkThroughBomb;
+    }
+
+    public boolean isCanWalkThroughBrick() {
+        return canWalkThroughBrick;
+    }
+
+    public void setCanWalkThroughBrick(boolean canWalkThroughBrick) {
+        this.canWalkThroughBrick = canWalkThroughBrick;
+    }
+
+    public boolean isCanWalkThroughFlame() {
+        return canWalkThroughFlame;
+    }
+
+    public void setCanWalkThroughFlame(boolean canWalkThroughFlame) {
+        this.canWalkThroughFlame = canWalkThroughFlame;
+    }
+
+    public boolean isCanDetonate() {
+        return canDetonate;
+    }
+
+    public void setCanDetonate(boolean canDetonate) {
+        this.canDetonate = canDetonate;
+    }
+
 }
 
 

@@ -27,33 +27,33 @@ public class CollisionChecker {
      * @param gamePlay
      */
     public static void checkTileEntity(MovingEntity entity, GamePlay gamePlay) {
-        int entityLeftX = entity.getX();
-        int entityRightX = entity.getX() + Sprite.SCALED_SIZE - 9;
-        int entityTopY = entity.getY();
-        int entityBottomY = entity.getY() + Sprite.SCALED_SIZE - 1;
+        double entityLeftX = entity.getX();
+        double entityRightX = entity.getX() + Sprite.SCALED_SIZE - 9;
+        double entityTopY = entity.getY();
+        double entityBottomY = entity.getY() + Sprite.SCALED_SIZE - 1;
 
         //Xác định hàng, cột của hitbox của entity
-        int entityLeftCol = entityLeftX/Sprite.SCALED_SIZE;
-        int entityRightCol = entityRightX/Sprite.SCALED_SIZE;
-        int entityTopRow = entityTopY/Sprite.SCALED_SIZE;
-        int entityBottomRow = entityBottomY/Sprite.SCALED_SIZE;
+        int entityLeftCol = (int) entityLeftX/Sprite.SCALED_SIZE;
+        int entityRightCol = (int) entityRightX/Sprite.SCALED_SIZE;
+        int entityTopRow = (int) entityTopY/Sprite.SCALED_SIZE;
+        int entityBottomRow = (int) entityBottomY/Sprite.SCALED_SIZE;
 
         //Kiểm tra va chạm theo từng hướng
         switch (entity.getState()) {
             case MovingEntity.UP_STATE: {
-                checkTileVertical(entity, (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
+                checkTileVertical(entity, (int) (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
                 break;
             }
             case MovingEntity.DOWN_STATE: {
-                checkTileVertical(entity, (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
+                checkTileVertical(entity, (int) (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
                 break;
             }
             case MovingEntity.LEFT_STATE: {
-                checkTileHorizontal(entity, (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
+                checkTileHorizontal(entity, (int) (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
                 break;
             }
             case MovingEntity.RIGHT_STATE: {
-                checkTileHorizontal(entity, (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
+                checkTileHorizontal(entity,  (int ) (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
                 break;
             }
         }
@@ -66,36 +66,24 @@ public class CollisionChecker {
      * @param gamePlay tham chiếu đến gamePlay hện tại
      */
     public static void checkMovingEntity(MovingEntity bomber, GamePlay gamePlay) {
-        int bomberLeftX = bomber.getX();
-        int bomberRightX = bomber.getX() + Sprite.SCALED_SIZE - 9;
-        int bomberTopY = bomber.getY();
-        int bomberBottomY = bomber.getY() + Sprite.SCALED_SIZE - 1;
+        double bomberLeftX = bomber.getX();
+        double bomberRightX = bomber.getX() + Sprite.SCALED_SIZE - 9;
+        double bomberTopY = bomber.getY();
+        double bomberBottomY = bomber.getY() + Sprite.SCALED_SIZE - 1;
 
         ArrayList<Enemy> newEnemies = gamePlay.getMapManager().getEnemies();
         for (int i = 0; i < newEnemies.size(); i++) {
-            int enemyLeftX = newEnemies.get(i).getX();
-            int enemyRightX = newEnemies.get(i).getX() + Sprite.SCALED_SIZE - 1;
-            int enemyTopY = newEnemies.get(i).getY();
-            int enemyBottomY = newEnemies.get(i).getY() + Sprite.SCALED_SIZE - 1;
+            double enemyLeftX = newEnemies.get(i).getX();
+            double enemyRightX = newEnemies.get(i).getX() + Sprite.SCALED_SIZE - 1;
+            double enemyTopY = newEnemies.get(i).getY();
+            double enemyBottomY = newEnemies.get(i).getY() + Sprite.SCALED_SIZE - 1;
             if (!(bomberRightX < enemyLeftX || bomberLeftX > enemyRightX || bomberTopY > enemyBottomY || bomberBottomY < enemyTopY)) {
                 bomber.setPresentCollision(ENEMY_COLLISION);
             }
         }
     }
 
-    /**
-     * Hàm kiểm tra va chạm với TileEntity theo chiều dọc
-     *
-     * @param moving
-     * @param row
-     * @param entityLeftX
-     * @param entityRightX
-     * @param entityLeftCol
-     * @param entityRightCol
-     * @param entity
-     * @param gamePlay
-     */
-    private static void checkTileVertical(MovingEntity moving, int row, int entityLeftX, int entityRightX, int entityLeftCol, int entityRightCol, MovingEntity entity, GamePlay gamePlay) {
+    private static void checkTileVertical(MovingEntity moving, int row, double entityLeftX, double entityRightX, int entityLeftCol, int entityRightCol, MovingEntity entity, GamePlay gamePlay) {
         if (entityLeftCol == entityRightCol) {
             String collision = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityLeftCol, row)).getCollision();
             if (collision != NULL_COLLISION) {
@@ -120,19 +108,7 @@ public class CollisionChecker {
         }
     }
 
-    /**
-     * Hàm kiểm tra va chạm với TileEntity theo chiều ngang
-     *
-     * @param moving
-     * @param col
-     * @param entityTopRow
-     * @param entityBottomRow
-     * @param entityTopY
-     * @param entityBottomY
-     * @param entity
-     * @param gamePlay
-     */
-    private static void checkTileHorizontal(MovingEntity moving, int col, int entityTopRow, int entityBottomRow, int entityTopY, int entityBottomY, MovingEntity entity, GamePlay gamePlay) {
+    private static void checkTileHorizontal(MovingEntity moving, int col, int entityTopRow, int entityBottomRow, double entityTopY, double entityBottomY, MovingEntity entity, GamePlay gamePlay) {
         if (entityTopRow == entityBottomRow) {
             String collision = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityTopRow)).getCollision();
             if (collision != NULL_COLLISION) {

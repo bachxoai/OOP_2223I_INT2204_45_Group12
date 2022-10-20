@@ -8,10 +8,8 @@ import java.awt.*;
 
 /**
  * Move through Soft Blocks
- * Don't chase after Bomberman
- * Have wall-pass abilities
- * Be associated with a Bomb Pass power-up => appear when the stage Exit containing the power-up is bombed
- *      or destroyed.
+ * Don't chase after Bomberman (dumb)
+ * It takes 1 hit to defeat and yields a score of 400 points.
  */
 public class Doll extends Enemy {
     public Doll(int xUnit, int yUnit, GamePlay gamePlay) {
@@ -36,5 +34,10 @@ public class Doll extends Enemy {
     @Override
     protected void setDirection() {
 
+    }
+
+    @Override
+    protected boolean canMove(int x, int y) {
+        return false;
     }
 }

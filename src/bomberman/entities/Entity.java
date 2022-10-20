@@ -11,9 +11,9 @@ import javafx.scene.image.Image;
  */
 public abstract class Entity {
     //Tọa độ X tính từ góc trái trên trong Canvas
-    private int x;
+    private double x;
     //Tọa độ Y tính từ góc trái trên trong Canvas
-    private int y;
+    private double y;
     //Toạ độ x tính từ góc trái trên trong map.
     private int xUnit;
     //Toạ độ y tính từ góc trái trên trong map.
@@ -31,30 +31,30 @@ public abstract class Entity {
         this.gamePlay = gamePlay;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
-        xUnit = (x + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+        xUnit = (int) (x + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
-        yUnit = (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+        yUnit = (int) (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
     }
 
     public int getXUnit() {
-        return (x + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+        return (int) (x + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
     }
 
     public int getYUnit() {
-        return (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
+        return (int) (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
     }
 
     /**

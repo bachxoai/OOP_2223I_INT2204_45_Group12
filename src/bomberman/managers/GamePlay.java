@@ -54,7 +54,6 @@ public class GamePlay {
                 update();
             }
         };
-        timer.start();
         return root;
     }
 

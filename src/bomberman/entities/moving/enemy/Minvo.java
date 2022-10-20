@@ -34,4 +34,9 @@ public class Minvo extends Enemy {
     protected void setDirection() {
 
     }
+
+    @Override
+    protected boolean canMove(int x, int y) {
+        return false;
+    }
 }

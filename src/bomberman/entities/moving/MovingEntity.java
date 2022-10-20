@@ -75,8 +75,12 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         this.presentCollision = presentCollision;
     }
 
-    public int getVelocity() {
+    public double getVelocity() {
         return velocity;
+    }
+
+    public void setVelocity(int velocity) {
+        this.velocity = velocity;
     }
 
     @Override
@@ -111,25 +115,22 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
      * Hàm thay đổi vị trí cho nhân vật
      */
     protected void move() {
-        if (futureCollision != CollisionChecker.WALL_COLLISION && futureCollision != CollisionChecker.BRICK_COLLISION
-                && futureCollision != CollisionChecker.BOMB_COLLISION) {
-            switch (state) {
-                case UP_STATE: {
-                    setY(getY() - velocity);
-                    break;
-                }
-                case DOWN_STATE: {
-                    setY(getY() + velocity);
-                    break;
-                }
-                case LEFT_STATE: {
-                    setX(getX() - velocity);
-                    break;
-                }
-                case RIGHT_STATE: {
-                    setX(getX() + velocity);
-                    break;
-                }
+        switch (state) {
+            case UP_STATE: {
+                setY(getY() - velocity);
+                break;
+            }
+            case DOWN_STATE: {
+                setY(getY() + velocity);
+                break;
+            }
+            case LEFT_STATE: {
+                setX(getX() - velocity);
+                break;
+            }
+            case RIGHT_STATE: {
+                setX(getX() + velocity);
+                break;
             }
         }
     }

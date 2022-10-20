@@ -1,7 +1,10 @@
 package bomberman.UI.levelscreen;
 
 import bomberman.ScreenController.LevelScreen;
+import bomberman.entities.Entity;
+import bomberman.entities.moving.MovingEntity;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
 public class InformationPane extends HBox {
@@ -15,6 +18,10 @@ public class InformationPane extends HBox {
             handlePause();
         });
         getChildren().add(pause);
+        Label speedTitle = new Label("Speed: ");
+        Label speedNumber = new Label();
+        speedNumber.setText( String.valueOf( ((MovingEntity) containedLevelScreen.getMap().getBomberman()).getVelocity() ) );
+        getChildren().addAll(speedTitle, speedNumber);
     }
 
     private void handlePause() {
