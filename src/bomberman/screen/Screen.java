@@ -1,14 +1,13 @@
-package bomberman.ScreenController;
+package bomberman.screen;
 
 import javafx.scene.Scene;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
 public abstract class Screen {
-    Scene scene;
-    String currentScreen;
+    protected Scene scene;
+    protected String currentScreen;
     public static HashMap<String, Screen> allScreens = new HashMap<>();
 
     public Screen(String currentScreen) {

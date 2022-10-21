@@ -1,5 +1,6 @@
 package bomberman.entities.tile.bomb;
 
+import bomberman.screen.levelscreen.InformationPane;
 import bomberman.entities.DynamicEntity;
 import bomberman.entities.Entity;
 import bomberman.entities.tile.Brick;
@@ -14,14 +15,15 @@ import javafx.scene.canvas.GraphicsContext;
  * Charging bomb class.
  */
 public class Bomb extends TileEntity implements DynamicEntity {
-    public static final int TIME_TO_EXPLODE = 200;
-    public static final int ANIMATED_FRAME = 15;
-    int range = 4;
+    public static final int TIME_TO_EXPLODE = 120;
+    public static final int ANIMATED_FRAME = 10;
+    int range;
     int timeToExplode;
     Sprite[] bombs;
 
-    public Bomb(int xUnit, int yUnit, GamePlay gamePlay) {
+    public Bomb(int xUnit, int yUnit, GamePlay gamePlay, int range) {
         super(xUnit, yUnit, gamePlay);
+        this.range = range;
         img = Sprite.bomb.getFxImage();
         bombs = new Sprite[4];
         bombs[0] = Sprite.bomb;
@@ -38,11 +40,18 @@ public class Bomb extends TileEntity implements DynamicEntity {
             timeToExplode--;
             img = bombs[(timeToExplode / ANIMATED_FRAME) % 4].getFxImage();
         } else if (timeToExplode == 0) {
-            new Explosion(getXUnit(), getYUnit(), gamePlay,
-                    Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2);
-            createExplosion();
-            gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
+            handleAfterExplosion();
         }
+    }
+
+    private void handleAfterExplosion() {
+        new Explosion(getXUnit(), getYUnit(), gamePlay,
+                Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2);
+        createExplosion();
+        gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
+        int addedBombNums = gamePlay.getBomberman().getBombNums() + 1;
+        gamePlay.getBomberman().setBombNums(addedBombNums);
+        gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, addedBombNums);
     }
 
     /**

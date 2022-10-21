@@ -1,15 +1,10 @@
 package bomberman.entities.moving.enemy;
 
 import bomberman.entities.Entity;
-import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.Grass;
-import bomberman.entities.tile.Wall;
-import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
-import com.sun.javafx.font.directwrite.DWFactory;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -64,7 +59,8 @@ public class Oneal extends Enemy {
     protected void setDirection() {
         updateOnealMap();
         bfs();
-        moveRandomly();
+        // If found bomberman, the direction is satisfied -> no need to turn left
+        turnLeftUntilCanMove();
     }
 
     private void bfs() {

@@ -1,17 +1,19 @@
 package bomberman.entities.moving;
 
 import bomberman.entities.Entity;
-import bomberman.entities.tile.TileEntity;
 import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
+import bomberman.screen.levelscreen.InformationPane;
 import javafx.scene.input.KeyEvent;
+import javafx.application.Platform;
 
 /**
  * Class bomber.
  */
 public class Bomber extends MovingEntity {
+    int lives;
     int bombNums;
     int flameRange;
     boolean canWalkThroughBomb;
@@ -50,8 +52,12 @@ public class Bomber extends MovingEntity {
         super.gamePlay = gamePlay;
         velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
 
-        canWalkThroughFlame = false;
+        canWalkThroughFlame = true;
         canWalkThroughBrick = false;
+
+        bombNums = 3;
+        lives = 3;
+        flameRange = 1;
     }
 
     @Override
@@ -112,7 +118,10 @@ public class Bomber extends MovingEntity {
                 break;
             }
             case B: {
-                new Bomb(getXUnit(), getYUnit(), gamePlay);
+                if (bombNums > 0) {
+                    new Bomb(getXUnit(), getYUnit(), gamePlay, flameRange);
+                    gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, --bombNums);
+                }
                 break;
             }
         }
@@ -149,30 +158,56 @@ public class Bomber extends MovingEntity {
 
     private void handleCollision() {
         if (presentCollision == CollisionChecker.FLAME_COLLISION && !isCanWalkThroughFlame()) {
-            state = DEAD_STATE;
-            isAlive = false;
+            handleDeath();
             return;
         }
         if (presentCollision == CollisionChecker.ENEMY_COLLISION) {
-            state = DEAD_STATE;
-            isAlive = false;
+            handleDeath();
             return;
         }
         if (presentCollision == CollisionChecker.PORTAL_COLLISION) {
             //Modify attribute here
         }
+
         if (presentCollision == CollisionChecker.SPEED_ITEM_COLLISION) {
-            velocity++;
+            gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.SPEED, ++velocity);
             deleteItem();
         }
         if (presentCollision == CollisionChecker.BOMBS_ITEM_COLLISION) {
-            //Modify attribute here
+            gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, ++bombNums);
             deleteItem();
         }
         if (presentCollision == CollisionChecker.FLAMES_ITEM_COLLISION) {
-            //Modify attribute here
+            gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.FLAME_RANGE, ++flameRange);
             deleteItem();
         }
+    }
+
+    private void handleDeath() {
+        gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.LIVES_LEFT, --lives);
+        state = DEAD_STATE;
+        isAlive = false;
+    }
+
+    protected void handleDeadState() {
+        super.handleDeadState();
+        if (animationDeadTime == 0) {
+            if (lives <= 0) {
+                gamePlay.getContainedLevelScreen().gameOver();
+                gamePlay.stopTimer();
+            } else {
+                isAlive = true;
+                resurrectBomber();
+            }
+        }
+    }
+
+    private void resurrectBomber() {
+        animationDeadTime = MovingEntity.DEAD_TIME;
+        state = NORMAL_STATE;
+        setX(32);
+        setY(32);
+        gamePlay.getMapManager().addMovingEntities(this);
     }
 
     private void changeState() {
@@ -248,6 +283,21 @@ public class Bomber extends MovingEntity {
         this.canDetonate = canDetonate;
     }
 
+    public void setVelocity(int velocity) {
+        super.setVelocity(velocity);
+    }
+
+    public int getVelocity() {
+        return super.getVelocity();
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
 }
 
 

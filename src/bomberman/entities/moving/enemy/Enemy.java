@@ -39,7 +39,7 @@ public abstract class Enemy extends MovingEntity {
 
     protected abstract void setDirection();
 
-    public void moveRandomly() {
+    public void turnLeftUntilCanMove() {
         while (true) {
             if (state == LEFT_STATE) {
                 if (canMove(getXUnit() - 1, getYUnit())) {

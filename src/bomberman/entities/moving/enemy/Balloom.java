@@ -1,14 +1,9 @@
 package bomberman.entities.moving.enemy;
 
 import bomberman.entities.Entity;
-import bomberman.entities.moving.MovingEntity;
 import bomberman.entities.tile.Grass;
-import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
-
-import java.awt.*;
-import java.util.Random;
 
 /**
  * di chuyển ngẫu nhiên với vận tốc cố định.
@@ -39,7 +34,7 @@ public class Balloom extends Enemy {
      * Hàm chọn hướng di chuyển phù hợp
      */
     protected void setDirection() {
-        moveRandomly();
+        turnLeftUntilCanMove();
     }
 
     protected boolean canMove(int x, int y) {

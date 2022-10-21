@@ -19,7 +19,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     public static final int DOWN_STATE = 3;
     public static final int LEFT_STATE = 4;
     public static final int RIGHT_STATE = 5;
-
+    public static final int DEAD_TIME = 20;
     //Trạng thái của Moving Entity
     protected int state;
 
@@ -43,7 +43,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     public final int ANIMATED_FRAME = 6;
 
     //Thời gian hoạt ảnh animation luc chết
-    protected int animationDeadTime = 20;
+    protected int animationDeadTime = DEAD_TIME;
 
     //Biến thể hiện rằng Entity còn sống
     protected boolean isAlive = true;
@@ -75,7 +75,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         this.presentCollision = presentCollision;
     }
 
-    public double getVelocity() {
+    public int getVelocity() {
         return velocity;
     }
 
@@ -142,6 +142,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         if (animationDeadTime == 0) {
             gamePlay.getMapManager().getEnemies().remove(this);
             gamePlay.getMapManager().getMovingEntities().remove(this);
+            animationDeadTime--;
             return;
         }
         animationDeadTime--;

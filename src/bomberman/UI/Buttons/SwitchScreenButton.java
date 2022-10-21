@@ -1,7 +1,7 @@
 package bomberman.UI.buttons;
 
-import bomberman.ScreenController.LevelScreen;
-import bomberman.ScreenController.Screen;
+import bomberman.screen.levelscreen.LevelScreen;
+import bomberman.screen.Screen;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -17,11 +17,12 @@ public class SwitchScreenButton extends Button {
     }
 
     public void switchScreen() {
-        System.out.println("cc");
         Stage s = (Stage) this.getScene().getWindow();
-        s.setScene(Screen.allScreens.get(screenToSwitchTo).getScene());
-        if (Screen.allScreens.get(screenToSwitchTo) instanceof LevelScreen) {
-            ((LevelScreen) Screen.allScreens.get(screenToSwitchTo)).startTimer();
+        Screen scr = Screen.allScreens.get(screenToSwitchTo);
+        s.setScene(scr.getScene());
+        if (scr instanceof LevelScreen) {
+            ((LevelScreen) scr).startTimer();
+            ((LevelScreen) scr).setBomberStats();
         }
     }
 }

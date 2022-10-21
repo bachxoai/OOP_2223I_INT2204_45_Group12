@@ -1,7 +1,6 @@
-package bomberman.ScreenController;
+package bomberman.screen.levelscreen;
 
-import bomberman.UI.levelscreen.InformationPane;
-import bomberman.UI.levelscreen.PausePane;
+import bomberman.screen.Screen;
 import bomberman.managers.GamePlay;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -17,18 +16,18 @@ public class LevelScreen extends Screen {
     Pane playingPane;
     InformationPane informationPane;
     GamePlay gamePlay;
+    GameOverPane gameOver;
 
     public LevelScreen(String currentScreen) {
         super(currentScreen);
         pausePane = new PausePane(this);
+        gameOver = new GameOverPane(this);
         createScene();
     }
     public Pane createPlayingPane() {
         playingPane = new VBox();
         gamePlay = new GamePlay(this);
         informationPane = new InformationPane(this);
-        System.out.println(gamePlay.getRoot());
-        //playingPane.getChildren().addAll(informationPane, map.getRoot());
         playingPane.getChildren().addAll(informationPane, gamePlay.getRoot());
         return playingPane;
     }
@@ -42,27 +41,8 @@ public class LevelScreen extends Screen {
         root.getChildren().addAll(playingPane);
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/background.css").toExternalForm());
-
-//        timer = new AnimationTimer() {
-//            @Override
-//            public void handle(long l) {
-//                //Mỗi khung hình (frame) thì biến frameCount sẽ tăng lên 1 đơn vị
-//                //Nếu frameCount >=60 thì frameCount sẽ được gán lại = 0.
-//                //1s có 60 frame -> 60 lần gọi
-//                frameCount = (frameCount+1)%60;
-//                gamePlay.handleEvent();
-//                gamePlay.render();
-//                gamePlay.update();
-//            }
-//        };
-//        timer.start();
-
         return scene;
     }
-
-//    public void startTimer() {
-//        timer.start();
-//    }
 
     public void startTimer() {
         gamePlay.startTimer();
@@ -70,6 +50,10 @@ public class LevelScreen extends Screen {
 
     public void stopTimer() {
         gamePlay.stopTimer();
+    }
+
+    public void gameOver() {
+        root.getChildren().add(gameOver);
     }
 
     public Pane getRoot() {
@@ -110,5 +94,17 @@ public class LevelScreen extends Screen {
 
     public void setMap(GamePlay gamePlay) {
         this.gamePlay = gamePlay;
+    }
+
+    public void setBomberStats() {
+        getInformationPane().setBomberStats();
+    }
+
+    public void setBomberStat(int type, int value) {
+        getInformationPane().setStat(type, value);
+    }
+
+    public void setBomberSpeed(int v) {
+        informationPane.setSpeed(v);
     }
 }

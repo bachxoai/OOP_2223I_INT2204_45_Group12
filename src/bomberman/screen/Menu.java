@@ -1,22 +1,14 @@
-package bomberman.ScreenController;
+package bomberman.screen;
 
 import bomberman.UI.buttons.ExitButton;
 import bomberman.UI.buttons.SwitchPaneButton;
 import bomberman.UI.buttons.SwitchScreenButton;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Menu extends Screen {
     HashMap<String, Pane> optionPanes;
@@ -48,7 +40,6 @@ public class Menu extends Screen {
 
         SwitchPaneButton toChooseMap = new SwitchPaneButton("Play", optionPanes.get("Menu"), optionPanes.get("ChooseMap"), root);
         toChooseMap.setPrefWidth(100);
-        System.out.println(toChooseMap);
         Button exit = new ExitButton();
         exit.relocate(30,30);
         exit.setPrefWidth(100);

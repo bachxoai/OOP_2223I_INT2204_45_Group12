@@ -9,16 +9,16 @@ import java.util.ArrayList;
 //Class kiểm tra va chạm
 public class CollisionChecker {
 
-    public static String NULL_COLLISION = "null";
-    public static String BOMB_COLLISION = "bomb";
-    public static String FLAME_COLLISION = "flame";
-    public static String WALL_COLLISION = "wall";
-    public static String BRICK_COLLISION = "brick";
-    public static String PORTAL_COLLISION = "portal";
-    public static String BOMBS_ITEM_COLLISION = "bombsItem";
-    public static String FLAMES_ITEM_COLLISION = "flamesItem";
-    public static String SPEED_ITEM_COLLISION = "speedsItem";
-    public static String ENEMY_COLLISION = "enemy";
+    public static final String NULL_COLLISION = "null";
+    public static final String BOMB_COLLISION = "bomb";
+    public static final String FLAME_COLLISION = "flame";
+    public static final String WALL_COLLISION = "wall";
+    public static final String BRICK_COLLISION = "brick";
+    public static final String PORTAL_COLLISION = "portal";
+    public static final String BOMBS_ITEM_COLLISION = "bombsItem";
+    public static final String FLAMES_ITEM_COLLISION = "flamesItem";
+    public static final String SPEED_ITEM_COLLISION = "speedsItem";
+    public static final String ENEMY_COLLISION = "enemy";
 
     /**
      * Hàm kiểm tra va chạm với các TileEntity trong GamePlay nào đó.

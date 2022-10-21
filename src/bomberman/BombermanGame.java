@@ -1,8 +1,8 @@
 package bomberman;
 
-import bomberman.ScreenController.LevelScreen;
-import bomberman.ScreenController.Menu;
-import bomberman.ScreenController.Screen;
+import bomberman.screen.levelscreen.LevelScreen;
+import bomberman.screen.Menu;
+import bomberman.screen.Screen;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

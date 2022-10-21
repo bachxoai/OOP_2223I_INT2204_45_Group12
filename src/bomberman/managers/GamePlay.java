@@ -1,6 +1,7 @@
 package bomberman.managers;
 
-import bomberman.ScreenController.LevelScreen;
+import bomberman.screen.levelscreen.InformationPane;
+import bomberman.screen.levelscreen.LevelScreen;
 import bomberman.entities.DynamicEntity;
 import bomberman.graphics.Sprite;
 import bomberman.entities.moving.Bomber;
@@ -52,6 +53,7 @@ public class GamePlay {
                 handleEvent();
                 render();
                 update();
+                getContainedLevelScreen().setBomberStat(InformationPane.TIME_LEFT, (int) playedTime);
             }
         };
         return root;
@@ -137,5 +139,13 @@ public class GamePlay {
 
     public void setRoot(Group root) {
         this.root = root;
+    }
+
+    public LevelScreen getContainedLevelScreen() {
+        return containedLevelScreen;
+    }
+
+    public void setContainedLevelScreen(LevelScreen containedLevelScreen) {
+        this.containedLevelScreen = containedLevelScreen;
     }
 }
