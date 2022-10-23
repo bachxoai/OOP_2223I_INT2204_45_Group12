@@ -4,6 +4,7 @@ import bomberman.entities.moving.MovingEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
+import bomberman.managers.SoundEffect;
 
 public abstract class Enemy extends MovingEntity {
 
@@ -34,6 +35,9 @@ public abstract class Enemy extends MovingEntity {
             move();
         } else {
             handleDeadState();
+            if(SoundEffect.hasSoundEffect) {
+                SoundEffect.playSE(SoundEffect.soundEnemyDie);
+            }
         }
     }
 

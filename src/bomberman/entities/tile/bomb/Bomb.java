@@ -1,5 +1,7 @@
 package bomberman.entities.tile.bomb;
 
+import bomberman.managers.Sound;
+import bomberman.managers.SoundEffect;
 import bomberman.screen.levelscreen.InformationPane;
 import bomberman.entities.DynamicEntity;
 import bomberman.entities.Entity;
@@ -52,6 +54,9 @@ public class Bomb extends TileEntity implements DynamicEntity {
         int addedBombNums = gamePlay.getBomberman().getBombNums() + 1;
         gamePlay.getBomberman().setBombNums(addedBombNums);
         gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, addedBombNums);
+        if(SoundEffect.hasSoundEffect) {
+            SoundEffect.playSE(SoundEffect.soundBombExplosion);
+        }
     }
 
     /**

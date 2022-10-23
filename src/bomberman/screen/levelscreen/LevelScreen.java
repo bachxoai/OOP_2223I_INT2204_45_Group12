@@ -12,7 +12,7 @@ public class LevelScreen extends Screen {
 //    public static int frameCount = 0;
 
     Pane root;
-    Pane pausePane;
+    Pane pausePane; // 3 nut o man pause
     Pane playingPane;
     InformationPane informationPane;
     GamePlay gamePlay;

@@ -1,6 +1,7 @@
 package bomberman.screen.levelscreen;
 
 import bomberman.managers.GamePlay;
+import bomberman.managers.SoundBackground;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;

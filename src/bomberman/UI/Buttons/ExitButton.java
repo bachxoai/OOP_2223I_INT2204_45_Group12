@@ -1,4 +1,4 @@
-package bomberman.UI.buttons;
+package bomberman.UI.Buttons;
 
 import javafx.application.Platform;
 import javafx.scene.control.Button;

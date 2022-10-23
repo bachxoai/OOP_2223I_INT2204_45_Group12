@@ -31,7 +31,7 @@ public class GamePlay {
         this.containedLevelScreen = containedLevelScreen;
         mapManager = new MapManager(this);
         mapManager.loadMap("res/levels/Level1.txt");
-
+        // Sound.playMusic(Sound.soundBgBbm);
         createGamePlay();
     }
 

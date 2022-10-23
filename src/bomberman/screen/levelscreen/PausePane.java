@@ -1,7 +1,8 @@
 package bomberman.screen.levelscreen;
 
-import bomberman.UI.buttons.ExitButton;
-import bomberman.UI.buttons.SwitchScreenButton;
+import bomberman.UI.Buttons.ExitButton;
+import bomberman.UI.Buttons.SwitchScreenButton;
+import bomberman.managers.SoundBackground;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
@@ -11,10 +12,6 @@ public class PausePane extends VBox {
     public PausePane(LevelScreen containedLevelScreen) {
         super(30);
         this.containedLevelScreen = containedLevelScreen;
-        //setPrefHeight(100);
-        //setPrefWidth(200);
-        //setLayoutX(400);
-        //setLayoutY(200);
         Button exit = new ExitButton();
         exit.setPrefWidth(200);
         getChildren().add(exit);
@@ -27,8 +24,8 @@ public class PausePane extends VBox {
             containedLevelScreen.startTimer();
         });
         getChildren().add(cont);
-        SwitchScreenButton p = new SwitchScreenButton("Back to menu", containedLevelScreen.getCurrentScreen(), "Menu");
-        p.setPrefWidth(200);
-        getChildren().add(p);
+        SwitchScreenButton BackToMenu = new SwitchScreenButton("Back to menu", containedLevelScreen.getCurrentScreen(), "Menu",false);
+        BackToMenu.setPrefWidth(200);
+        getChildren().add(BackToMenu);
     }
 }

@@ -5,6 +5,7 @@ import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
+import bomberman.managers.Sound;
 
 /**
  * Đối tượng được sinh ra sau khi bom nổ.
@@ -34,6 +35,7 @@ public class Explosion extends TileEntity implements DynamicEntity {
         if (timeLeft > 0) {
             timeLeft--;
             img = sprites[timeLeft / (ANIMATED_FRAME / 5)].getFxImage();
+
         } else if (timeLeft == 0) {
             gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
         }

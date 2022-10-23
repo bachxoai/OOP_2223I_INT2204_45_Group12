@@ -3,8 +3,7 @@ package bomberman.entities.moving;
 import bomberman.entities.Entity;
 import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
-import bomberman.managers.CollisionChecker;
-import bomberman.managers.GamePlay;
+import bomberman.managers.*;
 import bomberman.screen.levelscreen.InformationPane;
 import javafx.scene.input.KeyEvent;
 import javafx.application.Platform;
@@ -121,6 +120,9 @@ public class Bomber extends MovingEntity {
                 if (bombNums > 0) {
                     new Bomb(getXUnit(), getYUnit(), gamePlay, flameRange);
                     gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, --bombNums);
+                    if(SoundEffect.hasSoundEffect) {
+                       SoundEffect.playSE(SoundEffect.soundBomb);
+                    }
                 }
                 break;
             }
@@ -171,14 +173,23 @@ public class Bomber extends MovingEntity {
 
         if (presentCollision == CollisionChecker.SPEED_ITEM_COLLISION) {
             gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.SPEED, ++velocity);
+            if(SoundEffect.hasSoundEffect) {
+                SoundEffect.playSE(SoundEffect.soundSpeedItem);
+            }
             deleteItem();
         }
         if (presentCollision == CollisionChecker.BOMBS_ITEM_COLLISION) {
             gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, ++bombNums);
+            if(SoundEffect.hasSoundEffect) {
+                SoundEffect.playSE(SoundEffect.soundBombsItem);
+            }
             deleteItem();
         }
         if (presentCollision == CollisionChecker.FLAMES_ITEM_COLLISION) {
             gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.FLAME_RANGE, ++flameRange);
+            if(SoundEffect.hasSoundEffect) {
+                SoundEffect.playSE(SoundEffect.soundFlamesItem);
+            }
             deleteItem();
         }
     }
@@ -187,6 +198,9 @@ public class Bomber extends MovingEntity {
         gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.LIVES_LEFT, --lives);
         state = DEAD_STATE;
         isAlive = false;
+        if(SoundEffect.hasSoundEffect) {
+            SoundEffect.playSE(SoundEffect.soundYAD);
+        }
     }
 
     protected void handleDeadState() {
@@ -195,6 +209,10 @@ public class Bomber extends MovingEntity {
             if (lives <= 0) {
                 gamePlay.getContainedLevelScreen().gameOver();
                 gamePlay.stopTimer();
+                if(SoundEffect.hasSoundEffect) {
+                    SoundEffect.playSE(SoundEffect.soundBombermanDie);
+                }
+                SoundBackground.clip.stop();//tam dung nhac
             } else {
                 isAlive = true;
                 resurrectBomber();
