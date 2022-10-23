@@ -29,14 +29,11 @@ public abstract class Enemy extends MovingEntity {
                 setDirection();
             }
             animation(state);
-            futureCollision = CollisionChecker.NULL_COLLISION;
-            CollisionChecker.checkTileEntity(this, gamePlay);
-
             move();
         } else {
             handleDeadState();
             if(SoundEffect.hasSoundEffect) {
-                SoundEffect.playSE(SoundEffect.soundEnemyDie);
+                SoundEffect.playSE(SoundEffect.enemyDeath);
             }
         }
     }

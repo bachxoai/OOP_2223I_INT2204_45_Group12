@@ -14,6 +14,14 @@ import java.util.ArrayList;
  */
 public class MapManager {
     //Liên kết Class quản lý map với một map nào đó.
+    final char BombPassItem = 'a';
+    final char BombsItem = 'b';
+    final char DetonatorItem = 'c';
+    final char FlamePassItem = 'd';
+    final char FlamesItem = 'f';
+    final char SpeedItem = 's';
+    final char WallPassItem = 'e';
+
     private GamePlay gamePlay;
 
     //Level, số hàng, cột được đọc vào từ File Level.txt
@@ -81,14 +89,26 @@ public class MapManager {
                         new Balloom(i, j, gamePlay);
                     } else if (x == '2') {
                         new Oneal(i, j, gamePlay);
-                    } else if (x == 'b') {
+                    } else if (x == BombPassItem) {
+                        new BombPassItem(i, j, gamePlay);
+                        new Brick(i, j, gamePlay);
+                    } else if (x == BombsItem) {
                         new BombsItem(i, j, gamePlay);
                         new Brick(i, j, gamePlay);
-                    } else if (x == 'f') {
+                    } else if (x == DetonatorItem) {
+                        new DetonatorItem(i, j, gamePlay);
+                        new Brick(i, j, gamePlay);
+                    } else if (x == FlamePassItem) {
+                        new FlamePassItem(i, j, gamePlay);
+                        new Brick(i, j, gamePlay);
+                    } else if (x == FlamesItem) {
                         new FlamesItem(i, j, gamePlay);
                         new Brick(i, j, gamePlay);
-                    } else if (x == 's') {
+                    } else if (x == SpeedItem) {
                         new SpeedItem(i, j, gamePlay);
+                        new Brick(i, j, gamePlay);
+                    } else if (x == WallPassItem) {
+                        new WallPassItem(i, j, gamePlay);
                         new Brick(i, j, gamePlay);
                     }
                 }

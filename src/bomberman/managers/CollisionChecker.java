@@ -1,9 +1,9 @@
 package bomberman.managers;
+import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.MovingEntity;
 import bomberman.entities.moving.enemy.Enemy;
 import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
-
 import java.util.ArrayList;
 
 //Class kiểm tra va chạm
@@ -18,6 +18,10 @@ public class CollisionChecker {
     public static final String BOMBS_ITEM_COLLISION = "bombsItem";
     public static final String FLAMES_ITEM_COLLISION = "flamesItem";
     public static final String SPEED_ITEM_COLLISION = "speedsItem";
+    public static final String BOMB_PASS_ITEM_COLLISION = "bombPassItem";
+    public static final String FLAME_PASS_ITEM_COLLISION = "flamePassItem";
+    public static final String WALL_PASS_ITEM_COLLISION = "wallPassItem";
+    public static final String DETONATOR_ITEM_COLLISION = "detonatorItem";
     public static final String ENEMY_COLLISION = "enemy";
 
     /**
@@ -86,6 +90,14 @@ public class CollisionChecker {
     private static void checkTileVertical(MovingEntity moving, int row, double entityLeftX, double entityRightX, int entityLeftCol, int entityRightCol, MovingEntity entity, GamePlay gamePlay) {
         if (entityLeftCol == entityRightCol) {
             String collision = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityLeftCol, row)).getCollision();
+            if (moving instanceof Bomber) {
+                if (((Bomber) moving).isCanWalkThroughBrick() && collision == BRICK_COLLISION) {
+                    collision = NULL_COLLISION;
+                }
+                if (((Bomber) moving).isCanWalkThroughBomb() && collision == BOMB_COLLISION) {
+                    collision = NULL_COLLISION;
+                }
+            }
             if (collision != NULL_COLLISION) {
                 if (collision == BOMB_COLLISION && getCollisionAtCurrentPosition(moving, gamePlay) == BOMB_COLLISION) {
                     return;
@@ -95,6 +107,26 @@ public class CollisionChecker {
         } else {
             String collision1 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityLeftCol, row)).getCollision();
             String collision2 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityRightCol, row)).getCollision();
+
+            if (moving instanceof Bomber) {
+                if (((Bomber) moving).isCanWalkThroughBrick()) {
+                    if (collision1 == BRICK_COLLISION) {
+                        collision1 = NULL_COLLISION;
+                    }
+                    if (collision2 == BRICK_COLLISION) {
+                        collision2 = NULL_COLLISION;
+                    }
+                }
+                if (((Bomber) moving).isCanWalkThroughBomb()) {
+                    if (collision1 == BOMB_COLLISION) {
+                        collision1 = NULL_COLLISION;
+                    }
+                    if (collision2 == BOMB_COLLISION) {
+                        collision2 = NULL_COLLISION;
+                    }
+                }
+
+            }
 
             if (collision1 != NULL_COLLISION || collision2 != NULL_COLLISION) {
                 if (collision1 != NULL_COLLISION && collision2 == NULL_COLLISION && entityRightCol * Sprite.SCALED_SIZE - entityLeftX <= 8) {
@@ -111,6 +143,14 @@ public class CollisionChecker {
     private static void checkTileHorizontal(MovingEntity moving, int col, int entityTopRow, int entityBottomRow, double entityTopY, double entityBottomY, MovingEntity entity, GamePlay gamePlay) {
         if (entityTopRow == entityBottomRow) {
             String collision = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityTopRow)).getCollision();
+            if (moving instanceof Bomber) {
+                if (((Bomber) moving).isCanWalkThroughBrick() && collision == BRICK_COLLISION) {
+                    collision = NULL_COLLISION;
+                }
+                if (((Bomber) moving).isCanWalkThroughBomb() && collision == BOMB_COLLISION) {
+                    collision = NULL_COLLISION;
+                }
+            }
             if (collision != NULL_COLLISION) {
                 if (collision == BOMB_COLLISION && getCollisionAtCurrentPosition(moving, gamePlay) == BOMB_COLLISION) {
                     return;
@@ -120,6 +160,26 @@ public class CollisionChecker {
         } else {
             String collision1 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityTopRow)).getCollision();
             String collision2 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityBottomRow)).getCollision();
+
+            if (moving instanceof Bomber) {
+                if (((Bomber) moving).isCanWalkThroughBrick()) {
+                    if (collision1 == BRICK_COLLISION) {
+                        collision1 = NULL_COLLISION;
+                    }
+                    if (collision2 == BRICK_COLLISION) {
+                        collision2 = NULL_COLLISION;
+                    }
+                }
+                if (((Bomber) moving).isCanWalkThroughBomb()) {
+                    if (collision1 == BOMB_COLLISION) {
+                        collision1 = NULL_COLLISION;
+                    }
+                    if (collision2 == BOMB_COLLISION) {
+                        collision2 = NULL_COLLISION;
+                    }
+                }
+
+            }
 
             if (collision1 != NULL_COLLISION || collision2 != NULL_COLLISION) {
                 if (collision1 != NULL_COLLISION && collision2 == NULL_COLLISION && entityBottomRow * Sprite.SCALED_SIZE - entityTopY <= 8) {

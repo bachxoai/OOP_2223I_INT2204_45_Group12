@@ -139,13 +139,15 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
      * Hàm thực hiện khi nhân vật chết
      */
     protected void handleDeadState() {
+        animationDeadTime--;
         if (animationDeadTime == 0) {
+            if (this instanceof Bomber && ((Bomber) this).lives != 0) {
+                return;
+            }
             gamePlay.getMapManager().getEnemies().remove(this);
             gamePlay.getMapManager().getMovingEntities().remove(this);
-            animationDeadTime--;
             return;
         }
-        animationDeadTime--;
         animation(DEAD_STATE);
     }
 }

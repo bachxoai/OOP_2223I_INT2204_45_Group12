@@ -55,7 +55,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
         gamePlay.getBomberman().setBombNums(addedBombNums);
         gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, addedBombNums);
         if(SoundEffect.hasSoundEffect) {
-            SoundEffect.playSE(SoundEffect.soundBombExplosion);
+            SoundEffect.playSE(SoundEffect.bombExplosion);
         }
     }
 
