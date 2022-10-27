@@ -6,6 +6,8 @@ import bomberman.entities.moving.enemy.*;
 import bomberman.entities.moving.MovingEntity;
 import bomberman.entities.tile.*;
 import bomberman.entities.tile.item.*;
+import bomberman.graphics.Sprite;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -60,8 +62,12 @@ public class MapManager {
             col = Integer.parseInt(tokens[2]);
 
             //Thay đổi kích thước của map dựa theo dữ liệu trong file.
-            gamePlay.setHeight(row);
-            gamePlay.setWidth(col);
+            gamePlay.setMaxRow(row);
+            gamePlay.setMaxCol(col);
+
+            gamePlay.setMapWidth(col * Sprite.SCALED_SIZE);
+            gamePlay.setMapHeight(row * Sprite.SCALED_SIZE);
+
             tileEntitiesMatrix = new ArrayList<>();
             for (int j = 0; j < row; j++) {
                 tileEntitiesMatrix.add(new ArrayList<>());

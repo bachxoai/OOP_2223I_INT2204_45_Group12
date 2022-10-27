@@ -11,13 +11,13 @@ import javafx.scene.image.Image;
  */
 public abstract class Entity {
     //Tọa độ X tính từ góc trái trên trong Canvas
-    private double x;
+    protected double x;
     //Tọa độ Y tính từ góc trái trên trong Canvas
-    private double y;
+    protected double y;
     //Toạ độ x tính từ góc trái trên trong map.
-    private int xUnit;
+    protected int xUnit;
     //Toạ độ y tính từ góc trái trên trong map.
-    private int yUnit;
+    protected int yUnit;
     //Ảnh đc render của đối tượng.
     protected Image img;
     //GamePlay chứa entity đó.
@@ -62,7 +62,18 @@ public abstract class Entity {
      *
      * @param gc gc được vẽ lên
      */
+//    public void render(GraphicsContext gc) {
+//        gc.drawImage(img, x, y);
+//    }
     public void render(GraphicsContext gc) {
-        gc.drawImage(img, x, y);
+        double screenX = x - gamePlay.getBomberman().getX() + gamePlay.getBomberman().getScreenX();
+        double screenY = y - gamePlay.getBomberman().getY() + gamePlay.getBomberman().getScreenY();
+
+        if (x + Sprite.SCALED_SIZE > gamePlay.getBomberman().getX() - gamePlay.getBomberman().getScreenX() &&
+                x - Sprite.SCALED_SIZE < gamePlay.getBomberman().getX() + gamePlay.getBomberman().getScreenX() &&
+                y + Sprite.SCALED_SIZE > gamePlay.getBomberman().getY() - gamePlay.getBomberman().getScreenY() &&
+                y - Sprite.SCALED_SIZE < gamePlay.getBomberman().getY() + gamePlay.getBomberman().getScreenY()) {
+            gc.drawImage(img, screenX, screenY);
+        }
     }
 }

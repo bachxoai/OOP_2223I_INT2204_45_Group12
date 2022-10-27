@@ -13,9 +13,4 @@ public class Brick extends TileEntity {
         img = Sprite.brick.getFxImage();
         collision = CollisionChecker.BRICK_COLLISION;
     }
-
-    @Override
-    public void render(GraphicsContext gc) {
-        gc.drawImage(img, getX(), getY());
-    }
 }

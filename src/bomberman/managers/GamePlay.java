@@ -18,8 +18,12 @@ public class GamePlay {
     public static double playedTime = 0;
     LevelScreen containedLevelScreen;
     Group root;
-    int width;
-    int height;
+    int maxCol;
+    int maxRow;
+    int mapWidth;
+    int mapHeight;
+    public static final int gameplayScreenWidth = 480;
+    public static final int gameplayScreenHeight = 480;
     Bomber bomberman;
     private GraphicsContext gc;
     private Canvas canvas;
@@ -36,7 +40,8 @@ public class GamePlay {
     }
 
     public Group createGamePlay() {
-        canvas = new Canvas(Sprite.SCALED_SIZE * width, Sprite.SCALED_SIZE * height);
+//        canvas = new Canvas(, height);
+        canvas = new Canvas(gameplayScreenWidth, gameplayScreenHeight);
         gc = canvas.getGraphicsContext2D();
         root = new Group();
         root.getChildren().add(canvas);
@@ -67,12 +72,12 @@ public class GamePlay {
         timer.stop();
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setMapWidth(int width) {
+        this.mapWidth = width;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setMapHeight(int height) {
+        this.mapHeight = height;
     }
 
     public MapManager getMapManager() {
@@ -147,5 +152,29 @@ public class GamePlay {
 
     public void setContainedLevelScreen(LevelScreen containedLevelScreen) {
         this.containedLevelScreen = containedLevelScreen;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getMaxCol() {
+        return maxCol;
+    }
+
+    public void setMaxCol(int maxCol) {
+        this.maxCol = maxCol;
+    }
+
+    public int getMaxRow() {
+        return maxRow;
+    }
+
+    public void setMaxRow(int maxRow) {
+        this.maxRow = maxRow;
     }
 }

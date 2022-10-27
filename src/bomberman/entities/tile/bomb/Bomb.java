@@ -161,9 +161,4 @@ public class Bomb extends TileEntity implements DynamicEntity {
         }
         return e instanceof Wall;
     }
-
-    @Override
-    public void render(GraphicsContext gc) {
-        gc.drawImage(img, getX(), getY());
-    }
 }

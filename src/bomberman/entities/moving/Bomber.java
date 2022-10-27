@@ -5,6 +5,7 @@ import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
 import bomberman.managers.*;
 import bomberman.screen.levelscreen.InformationPane;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.application.Platform;
 
@@ -32,6 +33,9 @@ public class Bomber extends MovingEntity {
     private boolean rightPressed = false;
     private boolean leftPressed = false;
 
+    private double screenX;
+    private double screenY;
+
     public Bomber(int x, int y, GamePlay gamePlay) {
         super(x, y, gamePlay);
         img = Sprite.player_down.getFxImage();
@@ -52,6 +56,8 @@ public class Bomber extends MovingEntity {
         dead[0] = Sprite.player_dead1;
         dead[1] = Sprite.player_dead2;
         dead[2] = Sprite.player_dead3;
+        screenX = GamePlay.gameplayScreenWidth/2 - Sprite.SCALED_SIZE/2;
+        screenY = GamePlay.gameplayScreenHeight/2 - Sprite.SCALED_SIZE/2;
 
         setSprite(up, down, left, right, dead);
         super.gamePlay = gamePlay;
@@ -381,6 +387,18 @@ public class Bomber extends MovingEntity {
 
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    public void render(GraphicsContext gc) {
+        gc.drawImage(img, screenX, screenY);
+    }
+
+    public double getScreenX() {
+        return screenX;
+    }
+
+    public double getScreenY() {
+        return screenY;
     }
 }
 
