@@ -1,5 +1,7 @@
 package bomberman.entities.moving.enemy;
 
+import bomberman.entities.Entity;
+import bomberman.entities.tile.Grass;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
@@ -7,7 +9,7 @@ import bomberman.graphics.Sprite;
 import java.awt.*;
 
 /**
- * Move through Soft Blocks
+ * Move fast, randomly
  * Don't chase after Bomberman (dumb)
  * It takes 1 hit to defeat and yields a score of 400 points.
  */
@@ -33,11 +35,12 @@ public class Doll extends Enemy {
 
     @Override
     protected void setDirection() {
-
+        changeDirRandomly();
     }
 
     @Override
     protected boolean canMove(int x, int y) {
-        return false;
+        Entity e = gamePlay.getMapManager().getTopTileAt(x, y);
+        return e instanceof Grass;
     }
 }

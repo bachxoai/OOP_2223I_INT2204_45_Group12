@@ -27,14 +27,18 @@ public class Balloom extends Enemy {
         dead[0] = Sprite.balloom_dead;
         setSprite(left, right, left, right, dead);
 
-        state = LEFT_STATE;
+        state = NORMAL_STATE;
     }
 
     /**
      * Hàm chọn hướng di chuyển phù hợp
      */
     protected void setDirection() {
-        turnLeftUntilCanMove();
+        if (!stuck()) {
+            changeDirWhenBlockedRandomly();
+        } else {
+            state = NORMAL_STATE;
+        }
     }
 
     protected boolean canMove(int x, int y) {

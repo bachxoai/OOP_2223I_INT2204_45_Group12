@@ -4,7 +4,6 @@ import bomberman.entities.moving.MovingEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
-import bomberman.managers.SoundEffect;
 
 public abstract class Enemy extends MovingEntity {
 
@@ -29,18 +28,34 @@ public abstract class Enemy extends MovingEntity {
                 setDirection();
             }
             animation(state);
+            futureCollision = CollisionChecker.NULL_COLLISION;
+            CollisionChecker.checkTileEntity(this, gamePlay);
+
             move();
         } else {
             handleDeadState();
-            if(SoundEffect.hasSoundEffect) {
-                SoundEffect.playSE(SoundEffect.enemyDeath);
-            }
         }
     }
 
     protected abstract void setDirection();
 
-    public void turnLeftUntilCanMove() {
+    public void changeDirWhenBlockedRandomly() {
+        if (canMove(getXUnit() - 1, getYUnit()) && state == LEFT_STATE
+                || canMove(getXUnit() + 1, getYUnit()) && state == RIGHT_STATE
+                || canMove(getXUnit(), getYUnit() - 1) && state == UP_STATE
+                || canMove(getXUnit(), getYUnit() + 1) && state == DOWN_STATE) {
+            return;
+        }
+        changeDirRandomly();
+    }
+
+    protected void changeDirRandomly() {
+        if (state == NORMAL_STATE) {
+            state = LEFT_STATE;
+        }
+        int max = 5;
+        int min = 2;
+        state = (int) (Math.random() * (max - min + 1)) + min;
         while (true) {
             if (state == LEFT_STATE) {
                 if (canMove(getXUnit() - 1, getYUnit())) {
@@ -77,5 +92,12 @@ public abstract class Enemy extends MovingEntity {
 
     protected boolean inABlock() {
         return getX() == getXUnit() * Sprite.SCALED_SIZE && getY() == getYUnit() * Sprite.SCALED_SIZE;
+    }
+
+    protected boolean stuck() {
+        return !canMove(getXUnit() + 1, getYUnit())
+                && !canMove(getXUnit() - 1, getYUnit())
+                && !canMove(getXUnit(), getYUnit() - 1)
+                && !canMove(getXUnit(), getYUnit() + 1);
     }
 }

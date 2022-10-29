@@ -76,4 +76,8 @@ public abstract class Entity {
             gc.drawImage(img, screenX, screenY);
         }
     }
+
+    public GamePlay getGamePlay() {
+        return gamePlay;
+    }
 }

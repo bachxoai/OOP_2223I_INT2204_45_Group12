@@ -95,6 +95,10 @@ public class MapManager {
                         new Balloom(i, j, gamePlay);
                     } else if (x == '2') {
                         new Oneal(i, j, gamePlay);
+                    } else if (x == '3') {
+                        new Kondoria(i, j, gamePlay);
+                    } else if (x == '4') {
+                        new Doll(i, j, gamePlay);
                     } else if (x == BombPassItem) {
                         new BombPassItem(i, j, gamePlay);
                         new Brick(i, j, gamePlay);

@@ -1,0 +1,169 @@
+package bomberman.entities.moving.enemy;
+
+import bomberman.entities.Entity;
+import bomberman.entities.moving.Bomber;
+import bomberman.entities.moving.MovingEntity;
+import bomberman.managers.GamePlay;
+import bomberman.managers.MapManager;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class BomberFinder {
+    public static final int CAN_WALK = 0;
+    public static final int BLOCKED = 1;
+    public static final int BOMBER = 9;
+    public static final int ROOT = 8;
+    int lengthToFindBomber;
+    int finalDirection;
+    Enemy owner;
+    ArrayList<ArrayList<Integer>> vision;
+    GamePlay gamePlay;
+    MapManager mapManager;
+    ArrayList<ArrayList<Integer>> myQueue;
+    int left;
+    int right;
+    public BomberFinder(Enemy owner, int lengthToFindBomber) {
+        this.owner = owner;
+        this.lengthToFindBomber = lengthToFindBomber;
+        mapManager = ((Entity) owner).getGamePlay().getMapManager();
+        vision = new ArrayList<>();
+        for (int j = 0; j < mapManager.getRow(); j++) {
+            vision.add(new ArrayList<>());
+            for (int i = 0; i < mapManager.getCol(); i++) {
+                vision.get(j).add(0);
+            }
+        }
+    }
+
+    ArrayList<ArrayList<Integer>> updatedVision() {
+        for (int j = 0; j < mapManager.getRow(); j++) {
+            for (int i = 0; i < mapManager.getCol(); i++) {
+                if (owner.canMove(i, j)) {
+                    vision.get(j).set(i, CAN_WALK);
+                } else {
+                    vision.get(j).set(i, BLOCKED);
+                }
+            }
+        }
+        vision.get(owner.getGamePlay().getBomberman().getYUnit()).set(owner.getGamePlay().getBomberman().getXUnit(), BOMBER);
+        vision.get(owner.getYUnit()).set(owner.getXUnit(), ROOT);
+        return vision;
+    }
+
+    void bfs() {
+        int length = lengthToFindBomber;
+        myQueue = new ArrayList<>();
+        left = 0;
+        right = 1;
+        int curX = owner.getXUnit();
+        int curY = owner.getYUnit();
+        myQueue.add(new ArrayList<>());
+        myQueue.get(0).add(owner.getXUnit());
+        myQueue.get(0).add(owner.getYUnit());
+        int oldRight = right;
+
+        if (checkDirectionsForBfs(curX, curY, 0, true)) {
+            return;
+        }
+
+        left = oldRight;
+        while (left != right && length > 0) {
+            oldRight = right;
+            for (int i = left; i < oldRight; i++) {
+                curX = myQueue.get(i).get(0);
+                curY = myQueue.get(i).get(1);
+                if (checkDirectionsForBfs(curX, curY, vision.get(curY).get(curX), false)) {
+                    return;
+                }
+            }
+            left = oldRight;
+            length--;
+        }
+    }
+
+    private boolean checkDirectionsForBfs(int curX, int curY,
+                                       int dir,
+                                       boolean depthOne) {
+        int u = dir;
+        int d = dir;
+        int l = dir;
+        int r = dir;
+        if (depthOne) {
+            u = MovingEntity.UP_STATE;
+            d = MovingEntity.DOWN_STATE;
+            l = MovingEntity.LEFT_STATE;
+            r = MovingEntity.RIGHT_STATE;
+        }
+        if (vision.get(curY).get(curX + 1) == CAN_WALK) {
+            addToMyQueue(curX + 1, curY, myQueue, r);
+            right++;
+        }
+        if (vision.get(curY).get(curX - 1) == CAN_WALK) {
+            addToMyQueue(curX - 1, curY, myQueue, l);
+            right++;
+        }
+        if (vision.get(curY + 1).get(curX) == CAN_WALK) {
+            addToMyQueue(curX, curY + 1, myQueue, d);
+            right++;
+        }
+        if (vision.get(curY - 1).get(curX) == CAN_WALK) {
+            addToMyQueue(curX, curY - 1, myQueue, u);
+            right++;
+        }
+        if (depthOne) {
+            if (vision.get(curY).get(curX + 1) == BOMBER) {
+                finalDirection = MovingEntity.RIGHT_STATE;
+                return true;
+            }
+            if (vision.get(curY).get(curX - 1) == BOMBER) {
+                finalDirection = MovingEntity.LEFT_STATE;
+                return true;
+            }
+            if (vision.get(curY + 1).get(curX) == BOMBER) {
+                finalDirection = MovingEntity.DOWN_STATE;
+                return true;
+            }
+            if (vision.get(curY - 1).get(curX) == BOMBER) {
+                finalDirection = MovingEntity.UP_STATE;
+                return true;
+            }
+        } else {
+            if (vision.get(curY).get(curX + 1) == BOMBER
+                    || vision.get(curY).get(curX - 1) == BOMBER
+                    || vision.get(curY - 1).get(curX) == BOMBER
+                    || vision.get(curY + 1).get(curX) == BOMBER) {
+                    finalDirection = vision.get(curY).get(curX);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addToMyQueue(int x, int y, ArrayList<ArrayList<Integer>> myQueue, int val) {
+        vision.get(y).set(x, val);
+        ArrayList<Integer> a = new ArrayList<>();
+        a.add(x);
+        a.add(y);
+        myQueue.add(a);
+    }
+
+    public void printMap() {
+        for (int j = 0; j < mapManager.getRow(); j++) {
+            for (int i = 0; i < mapManager.getCol(); i++) {
+                System.out.print(vision.get(j).get(i) + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public int getFinalDirection() {
+        return finalDirection;
+    }
+
+    public void setFinalDirection(int finalDirection) {
+        this.finalDirection = finalDirection;
+    }
+}

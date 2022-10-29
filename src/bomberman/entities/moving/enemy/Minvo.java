@@ -7,8 +7,7 @@ import java.awt.*;
 
 /**
  * Đuổi theo bomberman nếu ở gần
- * Be associated with a Soft Block Pass power-up => appear when the stage Exit containing the power-up is bombed
- *      or destroyed
+ * Be associated with a Soft Block Pass power-up
  */
 public class Minvo extends Enemy {
     public Minvo(int xUnit, int yUnit, GamePlay gamePlay) {
