@@ -40,7 +40,7 @@ public class LevelScreen extends Screen {
         createPlayingPane();
         root.getChildren().addAll(playingPane);
         scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/background.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource("/background.css").toExternalForm());
         return scene;
     }
 
@@ -94,6 +94,9 @@ public class LevelScreen extends Screen {
 
     public void setMap(GamePlay gamePlay) {
         this.gamePlay = gamePlay;
+    }
+    public Pane getHeartpane(){
+        return getInformationPane().getHeartPane();
     }
 
     public void setBomberStats() {

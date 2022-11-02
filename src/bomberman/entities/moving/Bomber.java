@@ -4,6 +4,7 @@ import bomberman.entities.Entity;
 import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
 import bomberman.managers.*;
+import bomberman.screen.levelscreen.HeartPane;
 import bomberman.screen.levelscreen.InformationPane;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
@@ -35,6 +36,7 @@ public class Bomber extends MovingEntity {
 
     private double screenX;
     private double screenY;
+    int ChetLanThu;
 
     public Bomber(int x, int y, GamePlay gamePlay) {
         super(x, y, gamePlay);
@@ -73,6 +75,7 @@ public class Bomber extends MovingEntity {
         bombNums = 1;
         lives = 3;
         flameRange = 1;
+        ChetLanThu = 0;
     }
 
     @Override
@@ -246,7 +249,17 @@ public class Bomber extends MovingEntity {
     }
 
     private void handleDeath() {
-        gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.LIVES_LEFT, --lives);
+        ChetLanThu++;
+        if(ChetLanThu == 1) {
+            gamePlay.getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf3);
+        }
+        if(ChetLanThu == 2) {
+            gamePlay.getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf2);
+        }
+        if(ChetLanThu == 3) {
+            gamePlay.getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf1);
+        }
+        lives--;
         state = DEAD_STATE;
         isAlive = false;
         if(SoundEffect.hasSoundEffect) {
