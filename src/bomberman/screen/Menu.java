@@ -142,6 +142,13 @@ public class Menu extends Screen {
         SwitchPaneButton back = new SwitchPaneButton("Back", optionPanes.get("ChooseMusic"), optionPanes.get("ChooseMap"), root);
         back.setPrefWidth(200);
         createFont(back);
+
+        Image imageBack = new Image(getClass().getResourceAsStream("/ImageButton/back.png"));
+        ImageView imageViewBack = new ImageView(imageBack);
+        imageViewBack.setFitWidth(32);
+        imageViewBack.setFitHeight(32);
+        back.setGraphic(imageViewBack);
+
         Button feed = new Button("Feed");
         createFont(feed);
         feed.setPrefWidth(200);

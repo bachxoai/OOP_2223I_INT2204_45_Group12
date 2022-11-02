@@ -28,8 +28,7 @@ public class GameOverPane extends VBox {
         exit.setGraphic(imageViewExit);
 
         //createImageButton("ImageButton/exit.png",exit);
-        exit.setPrefWidth(200);
-        getChildren().add(exit);
+        exit.setPrefWidth(250);
         relocate(400,100);
         SwitchScreenButton p = new SwitchScreenButton("Back to menu", containedLevelScreen.getCurrentScreen(), "Menu",true);
         createFont(p);
@@ -41,8 +40,8 @@ public class GameOverPane extends VBox {
         p.setGraphic(imageViewBack);
 
         //createImageButton("ImageButton/back.png",p);
-        p.setPrefWidth(200);
-        getChildren().add(p);
+        p.setPrefWidth(250);
+        getChildren().addAll(p,exit);
     }
     void createFont(Button a) {
         a.setFont(Font.loadFont("file:res/font/font.ttf",20));
