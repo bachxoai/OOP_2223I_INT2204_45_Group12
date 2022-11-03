@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 public class PausePane extends VBox {
@@ -16,56 +17,40 @@ public class PausePane extends VBox {
     public PausePane(LevelScreen containedLevelScreen) {
         super(30);
         this.containedLevelScreen = containedLevelScreen;
+        relocate(200,200);
+
         Button exit = new ExitButton();
-        exit.setPrefWidth(300);
+        exit.setPrefWidth(200);
         createFont(exit);
+        createImageButton("/ImageButton/exit.png",exit);
 
-        Image imageExit = new Image(getClass().getResourceAsStream("/ImageButton/exit.png"));
-        ImageView imageViewExit = new ImageView(imageExit);
-        imageViewExit.setFitWidth(32);
-        imageViewExit.setFitHeight(32);
-        exit.setGraphic(imageViewExit);
-
-        relocate(400,100);
         Button cont = new Button("Continue");
         createFont(cont);
-
-        Image imageCon = new Image(getClass().getResourceAsStream("/ImageButton/continue.png"));
-        ImageView imageViewCon = new ImageView(imageCon);
-        imageViewCon.setFitWidth(32);
-        imageViewCon.setFitHeight(32);
-        cont.setGraphic(imageViewCon);
-
-        //createImageButton("ImageButton/continue.png",cont);
-        cont.setPrefWidth(300);
+        createImageButton("/ImageButton/continue.png",cont);
+        cont.setPrefWidth(200);
         cont.setOnAction(actionEvent -> {
             containedLevelScreen.getRoot().getChildren().remove(this);
             containedLevelScreen.getPlayingPane().setOpacity(1);
             containedLevelScreen.startTimer();
         });
-        SwitchScreenButton BackToMenu = new SwitchScreenButton("Back to menu", containedLevelScreen.getCurrentScreen(), "Menu",false);
+
+        SwitchScreenButton BackToMenu = new SwitchScreenButton("Back", containedLevelScreen.getCurrentScreen(), "Menu",false);
         createFont(BackToMenu);
+        createImageButton("/ImageButton/back.png",BackToMenu);
+        BackToMenu.setPrefWidth(200);
 
-        Image imageBack = new Image(getClass().getResourceAsStream("/ImageButton/back.png"));
-        ImageView imageViewBack = new ImageView(imageBack);
-        imageViewBack.setFitWidth(32);
-        imageViewBack.setFitHeight(32);
-        BackToMenu.setGraphic(imageViewBack);
-
-        //createImageButton("ImageButton/back.png",BackToMenu);
-        BackToMenu.setPrefWidth(300);
         getChildren().addAll(cont,BackToMenu,exit);
     }
     void createFont(Button a) {
         a.setFont(Font.loadFont("file:res/font/font.ttf",20));
-        a.setStyle("-fx-background-color: #bdb76b");
-        a.setTextFill(Color.WHITE);
+        a.setStyle("-fx-background-color: #33ff36");
+        a.setTextFill(Paint.valueOf("#bf00b3"));
     }
-    /*void createImageButton(String path, Button a) {
+    void createImageButton(String path, Button a) {
         Image image = new Image(getClass().getResourceAsStream(path));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(32);
         imageView.setFitHeight(32);
         a.setGraphic(imageView);
-    }*/
+    }
 }

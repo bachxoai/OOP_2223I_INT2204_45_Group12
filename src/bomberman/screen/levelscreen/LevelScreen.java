@@ -3,6 +3,7 @@ package bomberman.screen.levelscreen;
 import bomberman.screen.Screen;
 import bomberman.managers.GamePlay;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
 public class LevelScreen extends Screen {
@@ -17,6 +18,7 @@ public class LevelScreen extends Screen {
     InformationPane informationPane;
     GamePlay gamePlay;
     GameOverPane gameOver;
+    Image image;
 
     public LevelScreen(String currentScreen) {
         super(currentScreen);
@@ -41,6 +43,17 @@ public class LevelScreen extends Screen {
         root.getChildren().addAll(playingPane);
         scene = new Scene(root);
         //scene.getStylesheets().add(getClass().getResource("/background.css").toExternalForm());
+
+        image = new Image(getClass().getResourceAsStream("/textures/GamePlayBackground.png"));
+        BackgroundImage backgroundImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(100,100,true,true,true,true)
+        );
+        Background background = new Background(backgroundImage);
+        root.setBackground(background);
         return scene;
     }
 

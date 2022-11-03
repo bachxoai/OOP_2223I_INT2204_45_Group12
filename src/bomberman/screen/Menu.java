@@ -53,118 +53,86 @@ public class Menu extends Screen {
 
     public void createMenuPane() { //play,exit
         //optionPanes.replace("Menu", new VBox());
-
         SwitchPaneButton toChooseMap = new SwitchPaneButton("Play", optionPanes.get("Menu"), optionPanes.get("ChooseMap"), root);
-        toChooseMap.setPrefWidth(200);
+        toChooseMap.setPrefWidth(150);
         createFont(toChooseMap);
-
-        Image imagePlayButton = new Image(getClass().getResourceAsStream("/ImageButton/play.png"));
-        ImageView imageViewPlayButton = new ImageView(imagePlayButton);
-        imageViewPlayButton.setFitWidth(32);
-        imageViewPlayButton.setFitHeight(32);
-        toChooseMap.setGraphic(imageViewPlayButton);
+        createImageButton("/ImageButton/play.png",toChooseMap);
 
         Button exit = new ExitButton();
+        exit.setPrefWidth(150);
         createFont(exit);
+        createImageButton("/ImageButton/exit.png",exit);
 
-        Image imageExit = new Image(getClass().getResourceAsStream("/ImageButton/exit.png"));
-        ImageView imageViewExit = new ImageView(imageExit);
-        imageViewExit.setFitWidth(32);
-        imageViewExit.setFitHeight(32);
-        exit.setGraphic(imageViewExit);
-
-        exit.setPrefWidth(200);
         SwitchPaneButton music = new SwitchPaneButton("Music",optionPanes.get("Menu"), optionPanes.get("ChooseMusic"), root);
-        music.setPrefWidth(200);
+        music.setPrefWidth(150);
         createFont(music);
+        createImageButton("/ImageButton/music.png",music);
 
-        Image imageMusic = new Image(getClass().getResourceAsStream("/ImageButton/music.png"));
-        ImageView imageViewMusic = new ImageView(imageMusic);
-        imageViewMusic.setFitWidth(32);
-        imageViewMusic.setFitHeight(32);
-        music.setGraphic(imageViewMusic);
-
-        //createImageButton("/ImageButton/music.png",music);
-        optionPanes.get("Menu").relocate(400,50);
+        optionPanes.get("Menu").relocate(30,230);
         optionPanes.get("Menu").getChildren().addAll(toChooseMap,music,exit);
     }
 
     public void createChooseMapPane() { //map1,back,exit
         //optionPanes.replace("ChooseMap", new VBox());
         Pane p = optionPanes.get("ChooseMap");
-        p.relocate(400,50);
-        SwitchScreenButton map1 = new SwitchScreenButton("Map 1", "Menu", "Map1",false);
-        map1.setPrefWidth(200);
-        createFont(map1);
+        p.relocate(30,230);
 
-        Image imageMap1 = new Image(getClass().getResourceAsStream("/ImageButton/map1.png"));
-        ImageView imageViewMap1 = new ImageView(imageMap1);
-        imageViewMap1.setFitWidth(32);
-        imageViewMap1.setFitHeight(32);
-        map1.setGraphic(imageViewMap1);
+        SwitchScreenButton map1 = new SwitchScreenButton("Map 1", "Menu", "Map1",false);
+        map1.setPrefWidth(150);
+        createFont(map1);
+        createImageButton("/ImageButton/map1.png",map1);
 
         SwitchPaneButton back = new SwitchPaneButton("Back", optionPanes.get("ChooseMap"), optionPanes.get("Menu"), root);
-        back.setPrefWidth(200);
+        back.setPrefWidth(150);
         createFont(back);
+        createImageButton("/ImageButton/back.png",back);
 
-        Image imageBack = new Image(getClass().getResourceAsStream("/ImageButton/back.png"));
-        ImageView imageViewBack = new ImageView(imageBack);
-        imageViewBack.setFitWidth(32);
-        imageViewBack.setFitHeight(32);
-        back.setGraphic(imageViewBack);
-
-        //createImageButton("ImageButton/back.png",back);
         Button exit = new ExitButton();
+        exit.setPrefWidth(150);
         createFont(exit);
+        createImageButton("/ImageButton/exit.png",exit);
 
-        Image imageExit = new Image(getClass().getResourceAsStream("/ImageButton/exit.png"));
-        ImageView imageViewExit = new ImageView(imageExit);
-        imageViewExit.setFitWidth(32);
-        imageViewExit.setFitHeight(32);
-        exit.setGraphic(imageViewExit);
-
-       // createImageButton("ImageButton/exit.png",exit);
-        exit.setPrefWidth(200);
         p.getChildren().addAll(map1,back,exit);
     }
 
-
     public void createChooseMusic() {
         Pane chooseMusic = optionPanes.get("ChooseMusic");
-        chooseMusic.relocate(400,50);
+        chooseMusic.relocate(30,200);
+
         Button noMusic = new Button("Unmute");
-        noMusic.setPrefWidth(200);
+        noMusic.setPrefWidth(160);
         createFont(noMusic);
+        createImageButton("/ImageButton/umnute.png",noMusic);
         noMusic.setOnAction(actionEvent -> {
             SoundBackground.stopMusic();
             SoundEffect.hasSoundEffect = false;
         });
-        SwitchPaneButton back = new SwitchPaneButton("Back", optionPanes.get("ChooseMusic"), optionPanes.get("ChooseMap"), root);
-        back.setPrefWidth(200);
-        createFont(back);
 
-        Image imageBack = new Image(getClass().getResourceAsStream("/ImageButton/back.png"));
-        ImageView imageViewBack = new ImageView(imageBack);
-        imageViewBack.setFitWidth(32);
-        imageViewBack.setFitHeight(32);
-        back.setGraphic(imageViewBack);
+        SwitchPaneButton back = new SwitchPaneButton("Back", optionPanes.get("ChooseMusic"), optionPanes.get("Menu"), root);
+        back.setPrefWidth(160);
+        createFont(back);
+        createImageButton("/ImageButton/back.png",back);
 
         Button feed = new Button("Feed");
         createFont(feed);
-        feed.setPrefWidth(200);
+        createImageButton("/ImageButton/music.png",feed);
+        feed.setPrefWidth(160);
         feed.setOnAction(actionEvent -> {
             SoundEffect.hasSoundEffect = true;
             SoundBackground.stopMusic();
             SoundBackground.playMusic(SoundBackground.soundFeed);
         });
+
         Button sinnes = new Button("Sinnes");
         createFont(sinnes);
-        sinnes.setPrefWidth(200);
+        createImageButton("/ImageButton/music.png",sinnes);
+        sinnes.setPrefWidth(160);
         sinnes.setOnAction(actionEvent -> {
             SoundEffect.hasSoundEffect = true;
             SoundBackground.stopMusic();
             SoundBackground.playMusic(SoundBackground.soundSinnes);
         });
+
         chooseMusic.getChildren().addAll(noMusic,feed,sinnes,back);
     }
     public void createRoot()  {
@@ -177,7 +145,7 @@ public class Menu extends Screen {
         BackgroundFill backgroundFill = new BackgroundFill(color, cornerRadii, insets);
         Background background = new Background(backgroundFill);*/
 
-        /*Image image= new Image("/bbm.png");
+        Image image= new Image(getClass().getResourceAsStream("/textures/MenuBackground.png"));
         BackgroundImage backgroundImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,
@@ -186,18 +154,18 @@ public class Menu extends Screen {
                 new BackgroundSize(100,100,true,true,true,true)
         );
         Background background = new Background(backgroundImage);
-        root.setBackground(background);*/
+        root.setBackground(background);
     }
     void createFont(Button a) {
         a.setFont(Font.loadFont("file:res/font/font.ttf",20));
-        a.setStyle("-fx-background-color: #bdb76b");
-        a.setTextFill(Color.WHITE);
+        a.setStyle("-fx-background-color: #33ff36");
+        a.setTextFill(Paint.valueOf("#bf00b3"));
     }
-    /*void createImageButton(String path, Button a) {
+    void createImageButton(String path, Button a) {
         Image image = new Image(getClass().getResourceAsStream(path));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(32);
         imageView.setFitHeight(32);
         a.setGraphic(imageView);
-    }*/
+    }
 }
