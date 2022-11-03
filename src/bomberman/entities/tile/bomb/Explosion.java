@@ -27,7 +27,6 @@ public class Explosion extends TileEntity implements DynamicEntity {
         sprites[2] = sprite2;
         sprites[3] = sprite1;
         sprites[4] = sprite;
-        collision = CollisionChecker.FLAME_COLLISION;
     }
 
     @Override

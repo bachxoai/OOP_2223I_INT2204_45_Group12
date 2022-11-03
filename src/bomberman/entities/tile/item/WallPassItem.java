@@ -8,6 +8,5 @@ public class WallPassItem extends Item {
     public WallPassItem(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.powerup_wallpass.getFxImage();
-        collision = CollisionChecker.WALL_PASS_ITEM_COLLISION;
     }
 }

@@ -14,13 +14,4 @@ public abstract class TileEntity extends Entity {
         super(xUnit, yUnit, gamePlay);
         gamePlay.getMapManager().addTileEntity(this);
     }
-
-    /**
-     * Một thuộc tính xác định TileEntity có chặn người chơi đi qua hay không.
-     */
-    protected String collision = "null";
-
-    public String getCollision() {
-        return collision;
-    }
 }

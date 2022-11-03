@@ -8,6 +8,5 @@ public class FlamePassItem extends Item {
     public FlamePassItem(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.powerup_flamepass.getFxImage();
-        collision = CollisionChecker.FLAME_PASS_ITEM_COLLISION;
     }
 }

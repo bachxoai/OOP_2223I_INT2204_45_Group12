@@ -8,6 +8,5 @@ public class Portal extends TileEntity {
     public Portal(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.portal.getFxImage();
-        collision = CollisionChecker.PORTAL_COLLISION;
     }
 }

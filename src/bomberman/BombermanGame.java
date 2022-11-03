@@ -16,8 +16,9 @@ public class BombermanGame extends Application {
     public void start(Stage stage) throws IOException {
         Screen a = new Menu("Menu");
         Screen b = new LevelScreen("Map1");
-        stage.setWidth(1000);
-        stage.setHeight(500);
+        stage.setWidth(500);
+        stage.setHeight(800);
+        stage.setResizable(false);
         stage.setScene(a.getScene());
         stage.show();
     }

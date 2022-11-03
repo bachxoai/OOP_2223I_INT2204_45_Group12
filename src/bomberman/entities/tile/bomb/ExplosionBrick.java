@@ -1,5 +1,6 @@
 package bomberman.entities.tile.bomb;
 
+import bomberman.entities.tile.Brick;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
@@ -20,6 +21,5 @@ public class ExplosionBrick extends Explosion {
                 Sprite.brick_exploded,
                 Sprite.brick_exploded1,
                 Sprite.brick_exploded2);
-        collision = CollisionChecker.BRICK_COLLISION;
     }
 }

@@ -27,20 +27,21 @@ public class Bomb extends TileEntity implements DynamicEntity {
         super(xUnit, yUnit, gamePlay);
         this.range = range;
         img = Sprite.bomb.getFxImage();
-        bombs = new Sprite[4];
+        bombs = new Sprite[6];
         bombs[0] = Sprite.bomb;
         bombs[1] = Sprite.bomb_1;
         bombs[2] = Sprite.bomb_2;
-        bombs[3] = Sprite.bomb_1;
+        bombs[3] = Sprite.bomb_3;
+        bombs[4] = Sprite.bomb_4;
+        bombs[5] = Sprite.bomb_5;
         timeToExplode = TIME_TO_EXPLODE;
-        collision = CollisionChecker.BOMB_COLLISION;
     }
 
     @Override
     public void update() {
         if (timeToExplode > 0) {
             timeToExplode--;
-            img = bombs[(timeToExplode / ANIMATED_FRAME) % 4].getFxImage();
+            img = bombs[(timeToExplode / ANIMATED_FRAME) % 6].getFxImage();
         } else if (timeToExplode == 0) {
             handleAfterExplosion();
         }

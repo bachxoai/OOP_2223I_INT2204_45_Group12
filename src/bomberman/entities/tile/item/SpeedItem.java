@@ -8,6 +8,5 @@ public class SpeedItem extends Item {
     public SpeedItem(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.powerup_speed.getFxImage();
-        collision = CollisionChecker.SPEED_ITEM_COLLISION;
     }
 }

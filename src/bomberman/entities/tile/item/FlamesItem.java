@@ -8,6 +8,5 @@ public class FlamesItem extends Item {
     public FlamesItem(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.powerup_flames.getFxImage();
-        collision = CollisionChecker.FLAMES_ITEM_COLLISION;
     }
 }

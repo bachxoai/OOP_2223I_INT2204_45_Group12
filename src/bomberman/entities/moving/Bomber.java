@@ -1,7 +1,13 @@
 package bomberman.entities.moving;
 
 import bomberman.entities.Entity;
+import bomberman.entities.moving.enemy.Enemy;
+import bomberman.entities.tile.Brick;
+import bomberman.entities.tile.Portal;
+import bomberman.entities.tile.Wall;
 import bomberman.entities.tile.bomb.Bomb;
+import bomberman.entities.tile.bomb.Explosion;
+import bomberman.entities.tile.item.*;
 import bomberman.graphics.Sprite;
 import bomberman.managers.*;
 import bomberman.screen.levelscreen.HeartPane;
@@ -15,18 +21,17 @@ import javafx.application.Platform;
  */
 public class Bomber extends MovingEntity {
 
-    private final int EFFECTIVE_ITEM_TIME = 10;
+    private final int IMMORTAL_TIME = 3;
     int lives;
     int bombNums;
     int flameRange;
     boolean canWalkThroughBomb;
     boolean canWalkThroughBrick;
     boolean canWalkThroughFlame;
-
-    int canWalkThroughBrickTime;
-    int canWalkThroughFlameTime;
-    int canWalkThroughBombTime;
     boolean canDetonate;
+
+    boolean isImmortal;
+    int immortalTime;
 
     //Kiểm tra xem nút Up có đang được bấm hay không? Các nút còn lại tương tự.
     private boolean upPressed = false;
@@ -68,9 +73,8 @@ public class Bomber extends MovingEntity {
         canWalkThroughBomb = false;
         canWalkThroughFlame = false;
         canWalkThroughBrick = false;
-        canWalkThroughBombTime = 0;
-        canWalkThroughFlameTime = 0;
-        canWalkThroughBrickTime = 0;
+        isImmortal = false;
+        immortalTime = 0;
 
         bombNums = 1;
         lives = 3;
@@ -85,10 +89,10 @@ public class Bomber extends MovingEntity {
             CollisionChecker.checkMovingEntity(this, gamePlay);
             handleCollision();
             changeState();
-            handleItemEffect();
+            handleImmortal();
 
             //Kiểm tra xem nhân vật có bị kẹt không.
-            futureCollision = CollisionChecker.NULL_COLLISION;
+            futureCollision = null;
             CollisionChecker.checkTileEntity(this, gamePlay);
             if (canMove()) {
                 move();
@@ -99,9 +103,9 @@ public class Bomber extends MovingEntity {
     }
 
     protected boolean canMove() {
-        return futureCollision != CollisionChecker.WALL_COLLISION
-                && (futureCollision != CollisionChecker.BRICK_COLLISION || isCanWalkThroughBrick())
-                && futureCollision != CollisionChecker.BOMB_COLLISION;
+        return (futureCollision == null) || (!(futureCollision instanceof Wall)
+                && (!(futureCollision instanceof Brick) || isCanWalkThroughBrick())
+                && !(futureCollision instanceof Bomb));
     }
 
     public void handleEvent(KeyEvent event) {
@@ -138,7 +142,7 @@ public class Bomber extends MovingEntity {
             }
             case B: {
                 CollisionChecker.checkTileStable(this, gamePlay);
-                if (bombNums > 0 && presentCollision != CollisionChecker.BRICK_COLLISION) {
+                if (bombNums > 0 && !(presentCollision instanceof Brick)) {
                     new Bomb(getXUnit(), getYUnit(), gamePlay, flameRange);
                     gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, --bombNums);
                     if(SoundEffect.hasSoundEffect) {
@@ -181,65 +185,61 @@ public class Bomber extends MovingEntity {
     }
 
     private void handleCollision() {
-        if (presentCollision == CollisionChecker.FLAME_COLLISION && !isCanWalkThroughFlame()) {
+        if ((presentCollision instanceof Explosion) && !isCanWalkThroughFlame()) {
             handleDeath();
             return;
         }
-        if (presentCollision == CollisionChecker.BRICK_COLLISION && !isCanWalkThroughBrick()) {
+        if ((presentCollision instanceof Enemy)) {
             handleDeath();
             return;
         }
-        if (presentCollision == CollisionChecker.ENEMY_COLLISION) {
-            handleDeath();
-            return;
-        }
-        if (presentCollision == CollisionChecker.PORTAL_COLLISION) {
+        if ((presentCollision instanceof Portal)) {
             //Modify attribute here
         }
 
-        if (presentCollision == CollisionChecker.SPEED_ITEM_COLLISION) {
+        if ((presentCollision instanceof SpeedItem)) {
             gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.SPEED, ++velocity);
             if(SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.collectingItem);
             }
             deleteItem();
         }
-        if (presentCollision == CollisionChecker.BOMBS_ITEM_COLLISION) {
+        if ((presentCollision instanceof BombsItem)) {
             gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, ++bombNums);
             if(SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.collectingItem);
             }
             deleteItem();
         }
-        if (presentCollision == CollisionChecker.FLAMES_ITEM_COLLISION) {
+        if ((presentCollision instanceof FlamesItem)) {
             gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.FLAME_RANGE, ++flameRange);
             if(SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.collectingItem);
             }
             deleteItem();
         }
-        if (presentCollision == CollisionChecker.BOMB_PASS_ITEM_COLLISION) {
-            canWalkThroughBombTime = EFFECTIVE_ITEM_TIME * 60;
+        if ((presentCollision instanceof BombPassItem)) {
+            canWalkThroughBomb = true;
             if(SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.collectingItem);
             }
             deleteItem();
         }
-        if (presentCollision == CollisionChecker.FLAME_PASS_ITEM_COLLISION) {
-            canWalkThroughFlameTime = EFFECTIVE_ITEM_TIME * 60;
+        if ((presentCollision instanceof FlamePassItem)) {
+            canWalkThroughFlame = true;
             if(SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.collectingItem);
             }
             deleteItem();
         }
-        if (presentCollision == CollisionChecker.WALL_PASS_ITEM_COLLISION) {
-            canWalkThroughBrickTime = EFFECTIVE_ITEM_TIME * 60;
+        if ((presentCollision instanceof WallPassItem)) {
+            canWalkThroughBrick = true;
             if(SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.collectingItem);
             }
             deleteItem();
         }
-        if (presentCollision == CollisionChecker.DETONATOR_ITEM_COLLISION) {
+        if ((presentCollision instanceof DetonatorItem)) {
             //Modify here
             if(SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.collectingItem);
@@ -290,6 +290,8 @@ public class Bomber extends MovingEntity {
         img = Sprite.player_right.getFxImage();
         setX(32);
         setY(32);
+        immortalTime = IMMORTAL_TIME * 60;
+        isImmortal = true;
     }
 
     private void changeState() {
@@ -317,24 +319,16 @@ public class Bomber extends MovingEntity {
         gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(item);
     }
 
-    private void handleItemEffect() {
-        if (canWalkThroughBrickTime != 0) {
-            canWalkThroughBrick = true;
-            canWalkThroughBrickTime--;
+    private void handleImmortal() {
+        if (immortalTime != 0) {
+            immortalTime--;
+            if (immortalTime % 10 == 5) {
+                img = Sprite.nothing.getFxImage();
+            } else if (immortalTime % 10 == 0) {
+                img = Sprite.player_right.getFxImage();
+            }
         } else {
-            canWalkThroughBrick = false;
-        }
-        if (canWalkThroughFlameTime != 0) {
-            canWalkThroughFlame = true;
-            canWalkThroughFlameTime--;
-        } else {
-            canWalkThroughFlame = false;
-        }
-        if (canWalkThroughBombTime != 0) {
-            canWalkThroughBomb = true;
-            canWalkThroughBombTime--;
-        } else {
-            canWalkThroughBomb = false;
+            isImmortal = false;
         }
     }
 
@@ -412,6 +406,10 @@ public class Bomber extends MovingEntity {
 
     public double getScreenY() {
         return screenY;
+    }
+
+    public boolean isImmortal() {
+        return isImmortal;
     }
 }
 

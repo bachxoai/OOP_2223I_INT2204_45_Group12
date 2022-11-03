@@ -31,10 +31,10 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     protected Sprite[] dead;
 
     //Va chạm của ô sắp gặp
-    protected String futureCollision = CollisionChecker.NULL_COLLISION;
+    protected Entity futureCollision = null;
 
     //Va chạm của ô đang đứng
-    protected String presentCollision = CollisionChecker.NULL_COLLISION;
+    protected Entity presentCollision = null;
 
     //Vận tốc
     protected int velocity;
@@ -67,11 +67,11 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         return state;
     }
 
-    public void setFutureCollision(String collisionStatus) {
+    public void setFutureCollision(Entity collisionStatus) {
         this.futureCollision = collisionStatus;
     }
 
-    public void setPresentCollision(String presentCollision) {
+    public void setPresentCollision(Entity presentCollision) {
         this.presentCollision = presentCollision;
     }
 

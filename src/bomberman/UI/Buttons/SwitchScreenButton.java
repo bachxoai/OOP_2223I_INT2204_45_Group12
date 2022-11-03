@@ -35,6 +35,8 @@ public class SwitchScreenButton extends Button {
             if (scr instanceof LevelScreen) {
                 ((LevelScreen) scr).startTimer();
                 ((LevelScreen) scr).setBomberStats();
+                s.setWidth(640);
+                s.setHeight(640);
             }
         }
     }

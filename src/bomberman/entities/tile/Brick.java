@@ -11,6 +11,5 @@ public class Brick extends TileEntity {
     public Brick(int xUnit, int yUnit, GamePlay gamePlay) {
         super(xUnit, yUnit, gamePlay);
         img = Sprite.brick.getFxImage();
-        collision = CollisionChecker.BRICK_COLLISION;
     }
 }

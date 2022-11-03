@@ -22,8 +22,8 @@ public class GamePlay {
     int maxRow;
     int mapWidth;
     int mapHeight;
-    public static final int gameplayScreenWidth = 480;
-    public static final int gameplayScreenHeight = 480;
+    public static final int gameplayScreenWidth = 640;
+    public static final int gameplayScreenHeight = 640;
     Bomber bomberman;
     private GraphicsContext gc;
     private Canvas canvas;
