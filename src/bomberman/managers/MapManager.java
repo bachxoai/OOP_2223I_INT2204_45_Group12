@@ -30,6 +30,8 @@ public class MapManager {
     //Level, số hàng, cột được đọc vào từ File Level.txt
     private int level, row, col;
 
+    public Grass tempGrass;
+
     // Các đối tượng có thể đè lên nhau
     // Mảng 3 chiều của các Tile entities
     // Trong đó 2 chiều đầu là vị trí của entity trong map
@@ -124,6 +126,7 @@ public class MapManager {
                     }
                 }
             }
+            tempGrass = new Grass(1, 1, this);
         } catch (IOException e) {
             System.err.println("Cannot read file path in loadMap/MapManager.");
         } finally {
@@ -234,5 +237,9 @@ public class MapManager {
 
     public void setBomberman(Bomber bomberman) {
         this.bomberman = bomberman;
+    }
+
+    public Grass getTempGrass() {
+        return tempGrass;
     }
 }

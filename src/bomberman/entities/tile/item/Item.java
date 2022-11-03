@@ -12,11 +12,9 @@ public abstract class Item extends TileEntity {
     }
 
     @Override
-    public void handleBomberCollision(Bomber bomber) {
-        super.handleBomberCollision(bomber);
-        mapManager.removeTile(this);
-        if(SoundEffect.hasSoundEffect) {
-            SoundEffect.playSE(SoundEffect.collectingItem);
-        }
+    public boolean handleEntityCollision(Bomber bomber) {
+        SoundEffect.playSE(SoundEffect.collectingItem);
+        mapManager.getGamePlay().getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
+        return true;
     }
 }

@@ -13,11 +13,10 @@ public class BombsItem extends Item {
         img = Sprite.powerup_bombs.getFxImage();
     }
 
-    @Override
-    public void handleBomberCollision(Bomber bomber) {
-        super.handleBomberCollision(bomber);
-        int newBombNums = bomber.getBombNums() + 1;
-        bomber.setBombNums(newBombNums);
-        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, newBombNums);
+    public boolean handleEntityCollision(Bomber bomber) {
+        bomber.setBombNums(bomber.getBombNums() + 1);
+        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, bomber.getBombNums());
+        super.handleEntityCollision(bomber);
+        return true;
     }
 }

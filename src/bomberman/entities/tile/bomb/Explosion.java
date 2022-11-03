@@ -1,6 +1,7 @@
 package bomberman.entities.tile.bomb;
 
 import bomberman.entities.DynamicEntity;
+import bomberman.entities.moving.Bomber;
 import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
@@ -39,5 +40,13 @@ public class Explosion extends TileEntity implements DynamicEntity {
         } else if (timeLeft == 0) {
             mapManager.getTilesAt(getXUnit(), getYUnit()).remove(this);
         }
+    }
+
+    @Override
+    public boolean handleEntityCollision(Bomber bomber) {
+        if (!(bomber.isCanWalkThroughFlame())) {
+            bomber.handleDeath();
+        }
+        return true;
     }
 }

@@ -11,9 +11,9 @@ public class FlamePassItem extends Item {
         img = Sprite.powerup_flamepass.getFxImage();
     }
 
-    @Override
-    public void handleBomberCollision(Bomber bomber) {
-        super.handleBomberCollision(bomber);
+    public boolean handleEntityCollision(Bomber bomber) {
         bomber.setCanWalkThroughFlame(true);
+        super.handleEntityCollision(bomber);
+        return true;
     }
 }

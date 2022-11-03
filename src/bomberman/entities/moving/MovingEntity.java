@@ -152,4 +152,8 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         }
         animation(DEAD_STATE);
     }
+
+    public boolean  handleEntityCollision(Bomber bomber) {
+        return true;
+    }
 }

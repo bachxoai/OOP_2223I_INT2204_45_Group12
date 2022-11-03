@@ -12,11 +12,10 @@ public class FlamesItem extends Item {
         img = Sprite.powerup_flames.getFxImage();
     }
 
-    @Override
-    public void handleBomberCollision(Bomber bomber) {
-        super.handleBomberCollision(bomber);
-        int newFlameRange = bomber.getFlameRange() + 1;
-        bomber.setFlameRange(newFlameRange);
-        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.FLAME_RANGE, newFlameRange);
+    public boolean handleEntityCollision(Bomber bomber) {
+        bomber.setFlameRange(bomber.getFlameRange() + 1);
+        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.FLAME_RANGE, bomber.getFlameRange());
+        super.handleEntityCollision(bomber);
+        return true;
     }
 }

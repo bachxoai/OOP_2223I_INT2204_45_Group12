@@ -41,7 +41,6 @@ public class Bomber extends MovingEntity {
 
     private double screenX;
     private double screenY;
-    int ChetLanThu;
 
     public Bomber(int x, int y, MapManager mapManager) {
         super(x, y, mapManager);
@@ -78,7 +77,6 @@ public class Bomber extends MovingEntity {
         bombNums = 1;
         lives = 3;
         flameRange = 1;
-        ChetLanThu = 0;
     }
 
     @Override
@@ -86,25 +84,19 @@ public class Bomber extends MovingEntity {
         if (isAlive) {
             CollisionChecker.checkTileStable(this, mapManager);
             CollisionChecker.checkMovingEntity(this, mapManager);
-            handleCollision();
+            presentCollision.handleEntityCollision(this);
             changeState();
             handleImmortal();
 
             //Kiểm tra xem nhân vật có bị kẹt không.
-            futureCollision = null;
+            futureCollision = mapManager.tempGrass;
             CollisionChecker.checkTileEntity(this, mapManager);
-            if (canMove()) {
+            if (futureCollision.handleEntityCollision(this)) {
                 move();
             }
         } else {
             handleDeadState();
         }
-    }
-
-    protected boolean canMove() {
-        return (futureCollision == null) || (!(futureCollision instanceof Wall)
-                && (!(futureCollision instanceof Brick) || isCanWalkThroughBrick())
-                && !(futureCollision instanceof Bomb));
     }
 
     public void handleEvent(KeyEvent event) {
@@ -183,33 +175,14 @@ public class Bomber extends MovingEntity {
         }
     }
 
-    private void handleCollision() {
-        if ((presentCollision instanceof Explosion) && !isCanWalkThroughFlame()) {
-            handleDeath();
-            return;
-        }
-        if ((presentCollision instanceof Enemy)) {
-            handleDeath();
-            return;
-        }
-        if ((presentCollision instanceof Portal)) {
-            //Modify attribute here
-        }
-
-        if (presentCollision instanceof Item) {
-            ((Item) presentCollision).handleBomberCollision(this);
-        }
-    }
-
-    private void handleDeath() {
-        ChetLanThu++;
-        if(ChetLanThu == 1) {
+    public void handleDeath() {
+        if(4 - lives == 1) {
             mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf3);
         }
-        if(ChetLanThu == 2) {
+        if(4 - lives == 2) {
             mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf2);
         }
-        if(ChetLanThu == 3) {
+        if(4 - lives == 3) {
             mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf1);
         }
         lives--;
@@ -226,9 +199,7 @@ public class Bomber extends MovingEntity {
             if (lives <= 0) {
                 mapManager.getGamePlay().getContainedLevelScreen().gameOver();
                 mapManager.getGamePlay().stopTimer();
-                if(SoundEffect.hasSoundEffect) {
-                    SoundEffect.playSE(SoundEffect.gameOver);
-                }
+                SoundEffect.playSE(SoundEffect.gameOver);
                 SoundBackground.clip.stop();//tam dung nhac
             } else {
                 isAlive = true;
@@ -265,11 +236,6 @@ public class Bomber extends MovingEntity {
             }
             animation(state);
         }
-    }
-
-    private void deleteItem() {
-        Entity item = mapManager.getTopTileAt(getXUnit(), getYUnit());
-        mapManager.getTilesAt(getXUnit(), getYUnit()).remove(item);
     }
 
     private void handleImmortal() {

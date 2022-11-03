@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class CollisionChecker {
 
     /**
-     * Hàm kiểm tra va chạm với các TileEntity trong MapManager nào đó.
+     * Hàm kiểm tra va chạm với các TileEntity trong mapManager nào đó.
      *
      * @param entity
      * @param mapManager
      */
-    public static void checkTileEntity(MovingEntity entity, MapManager mapManager) {
+    public static void checkTileEntity(MovingEntity entity,MapManager mapManager) {
         double entityLeftX = entity.getX();
         double entityRightX = entity.getX() + Sprite.SCALED_SIZE - 1;
         double entityTopY = entity.getY();
@@ -34,143 +34,96 @@ public class CollisionChecker {
         //Kiểm tra va chạm theo từng hướng
         switch (entity.getState()) {
             case MovingEntity.UP_STATE: {
-                checkTileVertical(entity, (int) (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, mapManager);
+                checkTileVertical(entity, (int) (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, mapManager);
                 break;
             }
             case MovingEntity.DOWN_STATE: {
-                checkTileVertical(entity, (int) (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, mapManager);
+                checkTileVertical(entity, (int) (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, mapManager);
                 break;
             }
             case MovingEntity.LEFT_STATE: {
-                checkTileHorizontal(entity, (int) (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, mapManager);
+                checkTileHorizontal(entity, (int) (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, mapManager);
                 break;
             }
             case MovingEntity.RIGHT_STATE: {
-                checkTileHorizontal(entity,  (int ) (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, mapManager);
+                checkTileHorizontal(entity,  (int ) (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, mapManager);
                 break;
             }
         }
     }
 
-    private static void checkTileVertical(MovingEntity moving, int row, double entityLeftX, double entityRightX, int entityLeftCol, int entityRightCol, MovingEntity entity, MapManager mapManager) {
+    private static void checkTileVertical(MovingEntity moving, int row, double entityLeftX, double entityRightX, int entityLeftCol, int entityRightCol,MapManager mapManager) {
         if (entityLeftCol == entityRightCol) {
-            Entity collision = ((TileEntity) mapManager.getTopTileAt(entityLeftCol, row));
-            if (collision instanceof Grass) {
-                collision = null;
-            }
-            if (moving instanceof Bomber) {
-                if (((Bomber) moving).isCanWalkThroughBrick() && collision instanceof Brick) {
-                    collision = null;
-                }
-                if (((Bomber) moving).isCanWalkThroughBomb() && collision instanceof Bomb) {
-                    collision = null;
-                }
-            }
-            if (collision != null) {
-                if (collision instanceof Bomb && getCollisionAtCurrentPosition(moving, mapManager) instanceof Bomb) {
-                    return;
-                }
-                entity.setFutureCollision(collision);
-            }
+            checkOneBlock(mapManager, moving, entityLeftCol, row);
         } else {
-            Entity collision1 = ((TileEntity) mapManager.getTopTileAt(entityLeftCol, row));
-            Entity collision2 = ((TileEntity) mapManager.getTopTileAt(entityRightCol, row));
-            if (collision1 instanceof Grass) {
-                collision1 = null;
-            }
-            if (collision2 instanceof Grass) {
-                collision2 = null;
-            }
-
-            if (moving instanceof Bomber) {
-                if (((Bomber) moving).isCanWalkThroughBrick()) {
-                    if (collision1 instanceof Brick) {
-                        collision1 = null;
-                    }
-                    if (collision2 instanceof Brick) {
-                        collision2 = null;
-                    }
-                }
-                if (((Bomber) moving).isCanWalkThroughBomb()) {
-                    if (collision1 instanceof Bomb) {
-                        collision1 = null;
-                    }
-                    if (collision2 instanceof Bomb) {
-                        collision2 = null;
-                    }
-                }
-
-            }
-
-            if (collision1 != null || collision2 != null) {
-                if (collision1 != null && collision2 == null && entityRightCol * Sprite.SCALED_SIZE - entityLeftX <= 8) {
-                    entity.setX(entityRightCol * Sprite.SCALED_SIZE);
-                } else if (collision2 != null && collision1 == null && entityRightX - entityLeftCol * Sprite.SCALED_SIZE - 31 <= 8) {
-                    entity.setX(entityLeftCol * Sprite.SCALED_SIZE );
-                } else {
-                    entity.setFutureCollision((collision1 != null) ? collision1 : collision2);
-                }
-            }
+            checkTwoBlocks(mapManager, moving, entityLeftCol, entityRightCol, row, row, entityLeftCol, entityRightCol, entityLeftX, entityRightX);
         }
     }
 
-    private static void checkTileHorizontal(MovingEntity moving, int col, int entityTopRow, int entityBottomRow, double entityTopY, double entityBottomY, MovingEntity entity, MapManager mapManager) {
+    private static void checkTileHorizontal(MovingEntity moving, int col, int entityTopRow, int entityBottomRow, double entityTopY, double entityBottomY,MapManager mapManager) {
         if (entityTopRow == entityBottomRow) {
-            Entity collision = ((TileEntity) mapManager.getTopTileAt(col, entityTopRow));
-            if (collision instanceof Grass) {
-                collision = null;
-            }
-            if (moving instanceof Bomber) {
-                if (((Bomber) moving).isCanWalkThroughBrick() && collision instanceof Brick) {
-                    collision = null;
-                }
-                if (((Bomber) moving).isCanWalkThroughBomb() && collision instanceof Bomb) {
-                    collision = null;
-                }
-            }
-            if (collision != null) {
-                if (collision instanceof Bomb && getCollisionAtCurrentPosition(moving, mapManager) instanceof Bomb) {
-                    return;
-                }
-                entity.setFutureCollision(collision);
-            }
+            checkOneBlock(mapManager, moving, col, entityTopRow);
         } else {
-            Entity collision1 = ((TileEntity) mapManager.getTopTileAt(col, entityTopRow));
-            Entity collision2 = ((TileEntity) mapManager.getTopTileAt(col, entityBottomRow));
-            if (collision1 instanceof Grass) {
-                collision1 = null;
-            }
-            if (collision2 instanceof Grass) {
-                collision2 = null;
-            }
-            if (moving instanceof Bomber) {
-                if (((Bomber) moving).isCanWalkThroughBrick()) {
-                    if (collision1 instanceof Brick) {
-                        collision1 = null;
-                    }
-                    if (collision2 instanceof Brick) {
-                        collision2 = null;
-                    }
-                }
-                if (((Bomber) moving).isCanWalkThroughBomb()) {
-                    if (collision1 instanceof Bomb) {
-                        collision1 = null;
-                    }
-                    if (collision2 instanceof Bomb) {
-                        collision2 = null;
-                    }
-                }
+            checkTwoBlocks(mapManager, moving, col, col, entityTopRow, entityBottomRow, entityTopRow, entityBottomRow, entityTopY, entityBottomY);
+        }
+    }
 
+    private static void checkOneBlock(MapManager mapManager, MovingEntity moving, int col, int row) {
+        Entity collision = ((TileEntity) mapManager.getTopTileAt(col, row));
+        if (moving instanceof Bomber) {
+            if (((Bomber) moving).isCanWalkThroughBrick() && collision instanceof Brick
+                    || ((Bomber) moving).isCanWalkThroughBomb() && collision instanceof Bomb
+                    || ((TileEntity) mapManager.getTopTileAt(moving.getXUnit(), moving.getYUnit()) instanceof Bomb
+                    && collision instanceof Bomb)) {
+                collision = mapManager.getTempGrass();
             }
+        }
+        if (!(collision instanceof Grass)) {
+            moving.setFutureCollision(collision);
+        }
+    }
 
-            if (collision1 != null || collision2 != null) {
-                if (collision1 != null && collision2 == null && entityBottomRow * Sprite.SCALED_SIZE - entityTopY <= 8) {
-                    entity.setY(entityBottomRow * Sprite.SCALED_SIZE);
-                } else if (collision2 != null && collision1 == null && entityBottomY - entityTopRow * Sprite.SCALED_SIZE - 31 <= 8) {
-                    entity.setY(entityTopRow * Sprite.SCALED_SIZE);
-                } else {
-                    entity.setFutureCollision((collision1 != null) ? collision1 : collision2);
+    private static void checkTwoBlocks(MapManager mapManager, MovingEntity moving, int leftCol, int rightCol, int topRow, int bottomRow
+            , int smallModifyCR, int bigModifyCR, double smallModifyXY, double bigModifyXY) {
+        Entity collision1 = ((TileEntity) mapManager.getTopTileAt(leftCol, topRow));
+        Entity collision2 = ((TileEntity) mapManager.getTopTileAt(rightCol, bottomRow));
+
+        if (moving instanceof Bomber) {
+            if (((Bomber) moving).isCanWalkThroughBrick()) {
+                if (collision1 instanceof Brick) {
+                    collision1 = mapManager.getTempGrass();
                 }
+                if (collision2 instanceof Brick) {
+                    collision2 = mapManager.getTempGrass();
+                }
+            }
+            if (((Bomber) moving).isCanWalkThroughBomb()) {
+                if (collision1 instanceof Bomb) {
+                    collision1 = mapManager.getTempGrass();
+                }
+                if (collision2 instanceof Bomb) {
+                    collision2 = mapManager.getTempGrass();
+                }
+            }
+        }
+
+        if (!(collision1 instanceof Grass) || !(collision2 instanceof Grass)) {
+            if (!(collision1 instanceof Grass) && (collision2 instanceof Grass) && bigModifyCR * Sprite.SCALED_SIZE - smallModifyXY <= 8) {
+                if (topRow == bottomRow) {
+                    moving.setX(bigModifyCR * Sprite.SCALED_SIZE);
+                }
+                if (leftCol == rightCol) {
+                    moving.setY(bigModifyCR * Sprite.SCALED_SIZE);
+                }
+            } else if (!(collision2 instanceof Grass) && (collision1 instanceof Grass) && bigModifyXY - smallModifyCR * Sprite.SCALED_SIZE - 31 <= 8) {
+                if (topRow == bottomRow) {
+                    moving.setX(smallModifyCR * Sprite.SCALED_SIZE);
+                }
+                if (leftCol == rightCol) {
+                    moving.setY(smallModifyCR * Sprite.SCALED_SIZE);
+                }
+            } else {
+                moving.setFutureCollision((!(collision1 instanceof Grass)) ? collision1 : collision2);
             }
         }
     }
@@ -183,7 +136,7 @@ public class CollisionChecker {
      */
     public static void checkMovingEntity(MovingEntity bomber, MapManager mapManager) {
         if (bomber instanceof Bomber && ((Bomber) bomber).isImmortal()) {
-            bomber.setPresentCollision(null);
+            bomber.setPresentCollision(mapManager.getTempGrass());
             return;
         }
         double bomberLeftX = bomber.getX();
@@ -204,17 +157,6 @@ public class CollisionChecker {
     }
 
     /**
-     * Hàm trả về Collision của TileEntity mà Bomberman đang đứng lên
-     *
-     * @param entity
-     * @param mapManager
-     * @return String là Collision của TileEntity đó
-     */
-    private static Entity getCollisionAtCurrentPosition(MovingEntity entity, MapManager mapManager) {
-        return (TileEntity) mapManager.getTopTileAt(entity.getXUnit(), entity.getYUnit());
-    }
-
-    /**
      * Hàm kiểm tra va chạm nếu như Entity đứng yên ko di chuyen.
      *
      * @param entity
@@ -226,7 +168,7 @@ public class CollisionChecker {
             return;
         }
         if (entity instanceof Bomber && ((Bomber) entity).isImmortal()) {
-            entity.setPresentCollision(null);
+            entity.setPresentCollision(mapManager.getTempGrass());
             return;
         }
         entity.setPresentCollision(tileEntity);

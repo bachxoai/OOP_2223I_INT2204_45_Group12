@@ -1,5 +1,6 @@
 package bomberman.entities.moving.enemy;
 
+import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.MovingEntity;
 import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.bomb.Explosion;
@@ -23,9 +24,7 @@ public abstract class Enemy extends MovingEntity {
             if (presentCollision instanceof Explosion) {
                 state = DEAD_STATE;
                 isAlive = false;
-                if(SoundEffect.hasSoundEffect) {
-                    SoundEffect.playSE(SoundEffect.enemyDeath);
-                }
+                SoundEffect.playSE(SoundEffect.enemyDeath);
                 return;
             }
             if (inABlock()) {
@@ -100,5 +99,9 @@ public abstract class Enemy extends MovingEntity {
                 && !canMove(getXUnit() - 1, getYUnit())
                 && !canMove(getXUnit(), getYUnit() - 1)
                 && !canMove(getXUnit(), getYUnit() + 1);
+    }
+    public boolean handleEntityCollision(Bomber bomber) {
+        bomber.handleDeath();
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package bomberman.entities.tile.bomb;
 
+import bomberman.entities.moving.Bomber;
 import bomberman.managers.*;
 import bomberman.screen.levelscreen.InformationPane;
 import bomberman.entities.DynamicEntity;
@@ -158,5 +159,10 @@ public class Bomb extends TileEntity implements DynamicEntity {
             return true;
         }
         return e instanceof Wall;
+    }
+
+    @Override
+    public boolean handleEntityCollision(Bomber bomber) {
+        return false;
     }
 }

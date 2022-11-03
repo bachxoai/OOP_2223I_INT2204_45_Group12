@@ -35,7 +35,9 @@ public class SoundEffect extends Sound{
         }
     }
     public static void playSE(URL url) {
-        setFile(url);
-        play();
+        if (hasSoundEffect) {
+            setFile(url);
+            play();
+        }
     }
 }

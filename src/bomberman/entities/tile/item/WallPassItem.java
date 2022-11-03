@@ -11,9 +11,9 @@ public class WallPassItem extends Item {
         img = Sprite.powerup_wallpass.getFxImage();
     }
 
-    @Override
-    public void handleBomberCollision(Bomber bomber) {
-        super.handleBomberCollision(bomber);
+    public boolean handleEntityCollision(Bomber bomber) {
         bomber.setCanWalkThroughBrick(true);
+        super.handleEntityCollision(bomber);
+        return true;
     }
 }

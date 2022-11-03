@@ -12,9 +12,9 @@ public class BombPassItem extends Item {
         img = Sprite.powerup_bombpass.getFxImage();
     }
 
-    @Override
-    public void handleBomberCollision(Bomber bomber) {
-        super.handleBomberCollision(bomber);
+    public boolean handleEntityCollision(Bomber bomber) {
         bomber.setCanWalkThroughBomb(true);
+        super.handleEntityCollision(bomber);
+        return true;
     }
 }

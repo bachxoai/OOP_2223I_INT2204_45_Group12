@@ -16,6 +16,5 @@ public abstract class TileEntity extends Entity {
         mapManager.addTileEntity(this);
     }
 
-    public void handleBomberCollision(Bomber bomber) {
-    }
+    public abstract boolean handleEntityCollision(Bomber bomber);
 }

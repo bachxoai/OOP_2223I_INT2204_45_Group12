@@ -12,11 +12,10 @@ public class SpeedItem extends Item {
         img = Sprite.powerup_speed.getFxImage();
     }
 
-    @Override
-    public void handleBomberCollision(Bomber bomber) {
-        super.handleBomberCollision(bomber);
-        int newVelocity = bomber.getVelocity() + 1;
-        bomber.setVelocity(newVelocity);
-        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.SPEED, newVelocity);
+    public boolean handleEntityCollision(Bomber bomber) {
+        bomber.setVelocity(bomber.getVelocity() + 1);
+        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.SPEED, bomber.getVelocity());
+        super.handleEntityCollision(bomber);
+        return true;
     }
 }

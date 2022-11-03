@@ -1,5 +1,6 @@
 package bomberman.entities;
 
+import bomberman.entities.moving.Bomber;
 import bomberman.graphics.Sprite;
 import bomberman.managers.GamePlay;
 import bomberman.managers.MapManager;
@@ -77,4 +78,6 @@ public abstract class Entity {
     public void setMapManager(MapManager mapManager) {
         this.mapManager = mapManager;
     }
+
+    public abstract boolean handleEntityCollision(Bomber bomber);
 }
