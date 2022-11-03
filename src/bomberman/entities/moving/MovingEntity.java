@@ -5,8 +5,10 @@ import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.entities.Entity;
 import bomberman.graphics.Sprite;
+import bomberman.managers.MapManager;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Class dành cho các đối tượng có thể di chuyển. Liên quan đến toạ độ pixel.
@@ -48,9 +50,9 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     //Biến thể hiện rằng Entity còn sống
     protected boolean isAlive = true;
 
-    public MovingEntity(int xUnit, int yUnit, GamePlay gamePlay) {
-        super(xUnit, yUnit, gamePlay);
-        gamePlay.getMapManager().addMovingEntities(this);
+    public MovingEntity(int xUnit, int yUnit, MapManager mapManager) {
+        super(xUnit, yUnit, mapManager);
+        mapManager.addMovingEntities(this);
         state = NORMAL_STATE;
     }
 
@@ -144,8 +146,8 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
             if (this instanceof Bomber && ((Bomber) this).lives != 0) {
                 return;
             }
-            gamePlay.getMapManager().getEnemies().remove(this);
-            gamePlay.getMapManager().getMovingEntities().remove(this);
+            mapManager.getEnemies().remove(this);
+            mapManager.getMovingEntities().remove(this);
             return;
         }
         animation(DEAD_STATE);

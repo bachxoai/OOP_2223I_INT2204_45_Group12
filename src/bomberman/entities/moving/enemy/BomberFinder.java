@@ -24,10 +24,10 @@ public class BomberFinder {
     ArrayList<ArrayList<Integer>> myQueue;
     int left;
     int right;
-    public BomberFinder(Enemy owner, int lengthToFindBomber) {
+    public BomberFinder(Enemy owner, int lengthToFindBomber, MapManager mapManager) {
         this.owner = owner;
         this.lengthToFindBomber = lengthToFindBomber;
-        mapManager = ((Entity) owner).getGamePlay().getMapManager();
+        this.mapManager = mapManager;
         vision = new ArrayList<>();
         for (int j = 0; j < mapManager.getRow(); j++) {
             vision.add(new ArrayList<>());
@@ -47,7 +47,7 @@ public class BomberFinder {
                 }
             }
         }
-        vision.get(owner.getGamePlay().getBomberman().getYUnit()).set(owner.getGamePlay().getBomberman().getXUnit(), BOMBER);
+        vision.get(mapManager.getBomberman().getYUnit()).set(mapManager.getBomberman().getXUnit(), BOMBER);
         vision.get(owner.getYUnit()).set(owner.getXUnit(), ROOT);
         return vision;
     }

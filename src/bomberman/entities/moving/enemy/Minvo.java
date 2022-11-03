@@ -1,7 +1,7 @@
 package bomberman.entities.moving.enemy;
 
 import bomberman.graphics.Sprite;
-import bomberman.managers.GamePlay;
+import bomberman.managers.MapManager;
 
 import java.awt.*;
 
@@ -10,10 +10,10 @@ import java.awt.*;
  * Be associated with a Soft Block Pass power-up
  */
 public class Minvo extends Enemy {
-    public Minvo(int xUnit, int yUnit, GamePlay gamePlay) {
-        super(xUnit, yUnit, gamePlay);
+    public Minvo(int xUnit, int yUnit, MapManager mapManager) {
+        super(xUnit, yUnit, mapManager);
         img = Sprite.minvo_left1.getFxImage();
-        super.gamePlay = gamePlay;
+        super.mapManager = mapManager;
         velocity = 2;
 
         Sprite[] right = new Sprite[3];

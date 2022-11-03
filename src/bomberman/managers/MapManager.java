@@ -25,6 +25,7 @@ public class MapManager {
     final char WallPassItem = 'e';
 
     private GamePlay gamePlay;
+    private Bomber bomberman;
 
     //Level, số hàng, cột được đọc vào từ File Level.txt
     private int level, row, col;
@@ -81,45 +82,45 @@ public class MapManager {
                 String rowText = bufferedReader.readLine();
                 for (int i = 0; i < col; i++) {
                     char x = rowText.charAt(i);
-                    new Grass(i, j, gamePlay);
+                    new Grass(i, j, this);
                     if (x == '#') {
-                        new Wall(i, j, gamePlay);
+                        new Wall(i, j, this);
                     } else if (x == '*') {
-                        new Brick(i, j, gamePlay);
+                        new Brick(i, j, this);
                     } else if (x == 'x') {
-                        new Portal(i, j, gamePlay);
-                        new Brick(i, j, gamePlay);
+                        new Portal(i, j, this);
+                        new Brick(i, j, this);
                     } else if (x == 'p') {
-                        gamePlay.setBomberman(new Bomber(i, j, gamePlay));
+                        bomberman = new Bomber(i, j, this);
                     } else if (x == '1') {
-                        new Balloom(i, j, gamePlay);
+                        new Balloom(i, j, this);
                     } else if (x == '2') {
-                        new Oneal(i, j, gamePlay);
+                        new Oneal(i, j, this);
                     } else if (x == '3') {
-                        new Kondoria(i, j, gamePlay);
+                        new Kondoria(i, j, this);
                     } else if (x == '4') {
-                        new Doll(i, j, gamePlay);
+                        new Doll(i, j, this);
                     } else if (x == BombPassItem) {
-                        new BombPassItem(i, j, gamePlay);
-                        new Brick(i, j, gamePlay);
+                        new BombPassItem(i, j, this);
+                        new Brick(i, j, this);
                     } else if (x == BombsItem) {
-                        new BombsItem(i, j, gamePlay);
-                        new Brick(i, j, gamePlay);
+                        new BombsItem(i, j, this);
+                        new Brick(i, j, this);
                     } else if (x == DetonatorItem) {
-                        new DetonatorItem(i, j, gamePlay);
-                        new Brick(i, j, gamePlay);
+                        new DetonatorItem(i, j, this);
+                        new Brick(i, j, this);
                     } else if (x == FlamePassItem) {
-                        new FlamePassItem(i, j, gamePlay);
-                        new Brick(i, j, gamePlay);
+                        new FlamePassItem(i, j, this);
+                        new Brick(i, j, this);
                     } else if (x == FlamesItem) {
-                        new FlamesItem(i, j, gamePlay);
-                        new Brick(i, j, gamePlay);
+                        new FlamesItem(i, j, this);
+                        new Brick(i, j, this);
                     } else if (x == SpeedItem) {
-                        new SpeedItem(i, j, gamePlay);
-                        new Brick(i, j, gamePlay);
+                        new SpeedItem(i, j, this);
+                        new Brick(i, j, this);
                     } else if (x == WallPassItem) {
-                        new WallPassItem(i, j, gamePlay);
-                        new Brick(i, j, gamePlay);
+                        new WallPassItem(i, j, this);
+                        new Brick(i, j, this);
                     }
                 }
             }
@@ -175,6 +176,10 @@ public class MapManager {
         return tileEntitiesMatrix.get(y).get(x);
     }
 
+    public void removeTile(TileEntity tileEntity) {
+        getTilesAt(tileEntity.getXUnit(), tileEntity.getYUnit()).remove(tileEntity);
+    }
+
     /**
      * movingEntities getter.
      *
@@ -219,4 +224,15 @@ public class MapManager {
         return col;
     }
 
+    public GamePlay getGamePlay() {
+        return gamePlay;
+    }
+
+    public Bomber getBomberman() {
+        return bomberman;
+    }
+
+    public void setBomberman(Bomber bomberman) {
+        this.bomberman = bomberman;
+    }
 }

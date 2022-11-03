@@ -6,18 +6,19 @@ import bomberman.entities.tile.bomb.Explosion;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
+import bomberman.managers.MapManager;
 import bomberman.managers.SoundEffect;
 
 public abstract class Enemy extends MovingEntity {
 
-    public Enemy(int xUnit, int yUnit, GamePlay gamePlay) {
-        super(xUnit, yUnit, gamePlay);
-        gamePlay.getMapManager().addEnemies(this);
+    public Enemy(int xUnit, int yUnit, MapManager mapManager) {
+        super(xUnit, yUnit, mapManager);
+        mapManager.addEnemies(this);
     }
     @Override
     public void update() {
         if (isAlive) {
-            CollisionChecker.checkTileStable(this, gamePlay);
+            CollisionChecker.checkTileStable(this, mapManager);
 
             if (presentCollision instanceof Explosion) {
                 state = DEAD_STATE;

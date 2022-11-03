@@ -2,6 +2,7 @@ package bomberman.entities;
 
 import bomberman.graphics.Sprite;
 import bomberman.managers.GamePlay;
+import bomberman.managers.MapManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -20,15 +21,27 @@ public abstract class Entity {
     protected int yUnit;
     //Ảnh đc render của đối tượng.
     protected Image img;
-    //GamePlay chứa entity đó.
-    protected GamePlay gamePlay;
+    //MapManager chứa entity đó.
+    protected MapManager mapManager;
 
-    public Entity(int xUnit, int yUnit, GamePlay gamePlay) {
+    public Entity(int xUnit, int yUnit, MapManager mapManager) {
         this.xUnit = xUnit;
         this.yUnit = yUnit;
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
-        this.gamePlay = gamePlay;
+        this.mapManager = mapManager;
+    }
+
+    public void render(GraphicsContext gc) {
+        double screenX = x - mapManager.getBomberman().getX() + mapManager.getBomberman().getScreenX();
+        double screenY = y - mapManager.getBomberman().getY() + mapManager.getBomberman().getScreenY();
+
+        if (x + Sprite.SCALED_SIZE > mapManager.getBomberman().getX() - mapManager.getBomberman().getScreenX() &&
+                x - Sprite.SCALED_SIZE < mapManager.getBomberman().getX() + mapManager.getBomberman().getScreenX() &&
+                y + Sprite.SCALED_SIZE > mapManager.getBomberman().getY() - mapManager.getBomberman().getScreenY() &&
+                y - Sprite.SCALED_SIZE < mapManager.getBomberman().getY() + mapManager.getBomberman().getScreenY()) {
+            gc.drawImage(img, screenX, screenY);
+        }
     }
 
     public double getX() {
@@ -57,27 +70,11 @@ public abstract class Entity {
         return (int) (y + Sprite.SCALED_SIZE / 2) / Sprite.SCALED_SIZE;
     }
 
-    /**
-     * render đối tượng lên màn hình.
-     *
-     * @param gc gc được vẽ lên
-     */
-//    public void render(GraphicsContext gc) {
-//        gc.drawImage(img, x, y);
-//    }
-    public void render(GraphicsContext gc) {
-        double screenX = x - gamePlay.getBomberman().getX() + gamePlay.getBomberman().getScreenX();
-        double screenY = y - gamePlay.getBomberman().getY() + gamePlay.getBomberman().getScreenY();
-
-        if (x + Sprite.SCALED_SIZE > gamePlay.getBomberman().getX() - gamePlay.getBomberman().getScreenX() &&
-                x - Sprite.SCALED_SIZE < gamePlay.getBomberman().getX() + gamePlay.getBomberman().getScreenX() &&
-                y + Sprite.SCALED_SIZE > gamePlay.getBomberman().getY() - gamePlay.getBomberman().getScreenY() &&
-                y - Sprite.SCALED_SIZE < gamePlay.getBomberman().getY() + gamePlay.getBomberman().getScreenY()) {
-            gc.drawImage(img, screenX, screenY);
-        }
+    public MapManager getMapManager() {
+        return mapManager;
     }
 
-    public GamePlay getGamePlay() {
-        return gamePlay;
+    public void setMapManager(MapManager mapManager) {
+        this.mapManager = mapManager;
     }
 }

@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class CollisionChecker {
 
     /**
-     * Hàm kiểm tra va chạm với các TileEntity trong GamePlay nào đó.
+     * Hàm kiểm tra va chạm với các TileEntity trong MapManager nào đó.
      *
      * @param entity
-     * @param gamePlay
+     * @param mapManager
      */
-    public static void checkTileEntity(MovingEntity entity, GamePlay gamePlay) {
+    public static void checkTileEntity(MovingEntity entity, MapManager mapManager) {
         double entityLeftX = entity.getX();
         double entityRightX = entity.getX() + Sprite.SCALED_SIZE - 1;
         double entityTopY = entity.getY();
@@ -34,27 +34,27 @@ public class CollisionChecker {
         //Kiểm tra va chạm theo từng hướng
         switch (entity.getState()) {
             case MovingEntity.UP_STATE: {
-                checkTileVertical(entity, (int) (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
+                checkTileVertical(entity, (int) (entityTopY - entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, mapManager);
                 break;
             }
             case MovingEntity.DOWN_STATE: {
-                checkTileVertical(entity, (int) (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, gamePlay);
+                checkTileVertical(entity, (int) (entityBottomY + entity.getVelocity())/Sprite.SCALED_SIZE, entityLeftX, entityRightX, entityLeftCol, entityRightCol, entity, mapManager);
                 break;
             }
             case MovingEntity.LEFT_STATE: {
-                checkTileHorizontal(entity, (int) (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
+                checkTileHorizontal(entity, (int) (entityLeftX - entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, mapManager);
                 break;
             }
             case MovingEntity.RIGHT_STATE: {
-                checkTileHorizontal(entity,  (int ) (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, gamePlay);
+                checkTileHorizontal(entity,  (int ) (entityRightX + entity.getVelocity())/Sprite.SCALED_SIZE, entityTopRow, entityBottomRow, entityTopY, entityBottomY, entity, mapManager);
                 break;
             }
         }
     }
 
-    private static void checkTileVertical(MovingEntity moving, int row, double entityLeftX, double entityRightX, int entityLeftCol, int entityRightCol, MovingEntity entity, GamePlay gamePlay) {
+    private static void checkTileVertical(MovingEntity moving, int row, double entityLeftX, double entityRightX, int entityLeftCol, int entityRightCol, MovingEntity entity, MapManager mapManager) {
         if (entityLeftCol == entityRightCol) {
-            Entity collision = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityLeftCol, row));
+            Entity collision = ((TileEntity) mapManager.getTopTileAt(entityLeftCol, row));
             if (collision instanceof Grass) {
                 collision = null;
             }
@@ -67,14 +67,14 @@ public class CollisionChecker {
                 }
             }
             if (collision != null) {
-                if (collision instanceof Bomb && getCollisionAtCurrentPosition(moving, gamePlay) instanceof Bomb) {
+                if (collision instanceof Bomb && getCollisionAtCurrentPosition(moving, mapManager) instanceof Bomb) {
                     return;
                 }
                 entity.setFutureCollision(collision);
             }
         } else {
-            Entity collision1 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityLeftCol, row));
-            Entity collision2 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(entityRightCol, row));
+            Entity collision1 = ((TileEntity) mapManager.getTopTileAt(entityLeftCol, row));
+            Entity collision2 = ((TileEntity) mapManager.getTopTileAt(entityRightCol, row));
             if (collision1 instanceof Grass) {
                 collision1 = null;
             }
@@ -114,9 +114,9 @@ public class CollisionChecker {
         }
     }
 
-    private static void checkTileHorizontal(MovingEntity moving, int col, int entityTopRow, int entityBottomRow, double entityTopY, double entityBottomY, MovingEntity entity, GamePlay gamePlay) {
+    private static void checkTileHorizontal(MovingEntity moving, int col, int entityTopRow, int entityBottomRow, double entityTopY, double entityBottomY, MovingEntity entity, MapManager mapManager) {
         if (entityTopRow == entityBottomRow) {
-            Entity collision = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityTopRow));
+            Entity collision = ((TileEntity) mapManager.getTopTileAt(col, entityTopRow));
             if (collision instanceof Grass) {
                 collision = null;
             }
@@ -129,14 +129,14 @@ public class CollisionChecker {
                 }
             }
             if (collision != null) {
-                if (collision instanceof Bomb && getCollisionAtCurrentPosition(moving, gamePlay) instanceof Bomb) {
+                if (collision instanceof Bomb && getCollisionAtCurrentPosition(moving, mapManager) instanceof Bomb) {
                     return;
                 }
                 entity.setFutureCollision(collision);
             }
         } else {
-            Entity collision1 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityTopRow));
-            Entity collision2 = ((TileEntity) gamePlay.getMapManager().getTopTileAt(col, entityBottomRow));
+            Entity collision1 = ((TileEntity) mapManager.getTopTileAt(col, entityTopRow));
+            Entity collision2 = ((TileEntity) mapManager.getTopTileAt(col, entityBottomRow));
             if (collision1 instanceof Grass) {
                 collision1 = null;
             }
@@ -176,12 +176,12 @@ public class CollisionChecker {
     }
 
     /**
-     * Hàm kiểm tra va chạm bomberman với các enemies trong một gamePlay nào đó
+     * Hàm kiểm tra va chạm bomberman với các enemies trong một mapManager nào đó
      *
      * @param bomber Tham chiếu bomberman
-     * @param gamePlay tham chiếu đến gamePlay hện tại
+     * @param mapManager tham chiếu đến mapManager hện tại
      */
-    public static void checkMovingEntity(MovingEntity bomber, GamePlay gamePlay) {
+    public static void checkMovingEntity(MovingEntity bomber, MapManager mapManager) {
         if (bomber instanceof Bomber && ((Bomber) bomber).isImmortal()) {
             bomber.setPresentCollision(null);
             return;
@@ -191,7 +191,7 @@ public class CollisionChecker {
         double bomberTopY = bomber.getY();
         double bomberBottomY = bomber.getY() + Sprite.SCALED_SIZE - 1;
 
-        ArrayList<Enemy> newEnemies = gamePlay.getMapManager().getEnemies();
+        ArrayList<Enemy> newEnemies = mapManager.getEnemies();
         for (int i = 0; i < newEnemies.size(); i++) {
             double enemyLeftX = newEnemies.get(i).getX();
             double enemyRightX = newEnemies.get(i).getX() + Sprite.SCALED_SIZE - 1;
@@ -207,21 +207,21 @@ public class CollisionChecker {
      * Hàm trả về Collision của TileEntity mà Bomberman đang đứng lên
      *
      * @param entity
-     * @param gamePlay
+     * @param mapManager
      * @return String là Collision của TileEntity đó
      */
-    private static Entity getCollisionAtCurrentPosition(MovingEntity entity, GamePlay gamePlay) {
-        return (TileEntity) gamePlay.getMapManager().getTopTileAt(entity.getXUnit(), entity.getYUnit());
+    private static Entity getCollisionAtCurrentPosition(MovingEntity entity, MapManager mapManager) {
+        return (TileEntity) mapManager.getTopTileAt(entity.getXUnit(), entity.getYUnit());
     }
 
     /**
      * Hàm kiểm tra va chạm nếu như Entity đứng yên ko di chuyen.
      *
      * @param entity
-     * @param gamePlay
+     * @param mapManager
      */
-    public static void checkTileStable(MovingEntity entity, GamePlay gamePlay) {
-        TileEntity tileEntity = (TileEntity) gamePlay.getMapManager().getTopTileAt(entity.getXUnit(), entity.getYUnit());
+    public static void checkTileStable(MovingEntity entity, MapManager mapManager) {
+        TileEntity tileEntity = (TileEntity) mapManager.getTopTileAt(entity.getXUnit(), entity.getYUnit());
         if (tileEntity instanceof Bomb) {
             return;
         }

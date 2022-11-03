@@ -3,6 +3,7 @@ package bomberman.entities.tile;
 import bomberman.entities.moving.Bomber;
 import bomberman.managers.GamePlay;
 import bomberman.entities.Entity;
+import bomberman.managers.MapManager;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -10,8 +11,11 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public abstract class TileEntity extends Entity {
 
-    public TileEntity(int xUnit, int yUnit, GamePlay gamePlay) {
-        super(xUnit, yUnit, gamePlay);
-        gamePlay.getMapManager().addTileEntity(this);
+    public TileEntity(int xUnit, int yUnit, MapManager mapManager) {
+        super(xUnit, yUnit, mapManager);
+        mapManager.addTileEntity(this);
+    }
+
+    public void handleBomberCollision(Bomber bomber) {
     }
 }

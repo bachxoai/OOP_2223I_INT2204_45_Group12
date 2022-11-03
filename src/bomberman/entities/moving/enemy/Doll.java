@@ -5,6 +5,7 @@ import bomberman.entities.tile.Grass;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
+import bomberman.managers.MapManager;
 
 import java.awt.*;
 
@@ -14,10 +15,9 @@ import java.awt.*;
  * It takes 1 hit to defeat and yields a score of 400 points.
  */
 public class Doll extends Enemy {
-    public Doll(int xUnit, int yUnit, GamePlay gamePlay) {
-        super(xUnit, yUnit, gamePlay);
+    public Doll(int xUnit, int yUnit, MapManager mapManager) {
+        super(xUnit, yUnit, mapManager);
         img = Sprite.doll_left1.getFxImage();
-        super.gamePlay = gamePlay;
         velocity = 2;
 
         Sprite[] right = new Sprite[3];
@@ -40,7 +40,7 @@ public class Doll extends Enemy {
 
     @Override
     protected boolean canMove(int x, int y) {
-        Entity e = gamePlay.getMapManager().getTopTileAt(x, y);
+        Entity e = mapManager.getTopTileAt(x, y);
         return e instanceof Grass;
     }
 }

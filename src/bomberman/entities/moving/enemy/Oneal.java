@@ -2,7 +2,7 @@ package bomberman.entities.moving.enemy;
 
 import bomberman.entities.Entity;
 import bomberman.entities.tile.Grass;
-import bomberman.managers.GamePlay;
+import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -16,10 +16,9 @@ import java.util.ArrayList;
 public class Oneal extends Enemy {
     BomberFinder bomberFinder;
     private static final int LENGTH_TO_CHASE_BOMBER = 4;
-    public Oneal(int xUnit, int yUnit, GamePlay gamePlay) {
-        super(xUnit, yUnit, gamePlay);
+    public Oneal(int xUnit, int yUnit, MapManager mapManager) {
+        super(xUnit, yUnit, mapManager);
         img = Sprite.oneal_left1.getFxImage();
-        super.gamePlay = gamePlay;
         velocity = 1;
 
         // Create sprite.
@@ -35,7 +34,7 @@ public class Oneal extends Enemy {
         dead[0] = Sprite.oneal_dead;
         setSprite(left, right, left, right, dead);
 
-        bomberFinder = new BomberFinder(this, LENGTH_TO_CHASE_BOMBER);
+        bomberFinder = new BomberFinder(this, LENGTH_TO_CHASE_BOMBER, mapManager);
 
         state = NORMAL_STATE;
     }
@@ -54,7 +53,7 @@ public class Oneal extends Enemy {
     }
 
     protected boolean canMove(int x, int y) {
-        Entity e = gamePlay.getMapManager().getTopTileAt(x, y);
+        Entity e = mapManager.getTopTileAt(x, y);
         return e instanceof Grass;
     }
 }

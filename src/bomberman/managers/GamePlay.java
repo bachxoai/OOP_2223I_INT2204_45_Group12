@@ -24,7 +24,6 @@ public class GamePlay {
     int mapHeight;
     public static final int gameplayScreenWidth = 640;
     public static final int gameplayScreenHeight = 640;
-    Bomber bomberman;
     private GraphicsContext gc;
     private Canvas canvas;
 
@@ -84,15 +83,6 @@ public class GamePlay {
         return mapManager;
     }
 
-
-    public Bomber getBomberman() {
-        return bomberman;
-    }
-
-    public void setBomberman(Bomber bomberman) {
-        this.bomberman = bomberman;
-    }
-
     public void update() {
         // update tile entity
         for (int j = 0; j < mapManager.getRow(); j++) {
@@ -130,11 +120,11 @@ public class GamePlay {
     //Phương thức handleEvent cho người chơi.
     public void handleEvent() {
         containedLevelScreen.getScene().setOnKeyPressed(keyEvent -> {
-            bomberman.handleEvent(keyEvent);
+            mapManager.getBomberman().handleEvent(keyEvent);
         });
 
         containedLevelScreen.getScene().setOnKeyReleased(keyEvent -> {
-            bomberman.handleReleasedEvent(keyEvent);
+            mapManager.getBomberman().handleReleasedEvent(keyEvent);
         });
     }
 

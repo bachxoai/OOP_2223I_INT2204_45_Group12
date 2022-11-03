@@ -1,5 +1,6 @@
 package bomberman.screen.levelscreen;
 
+import bomberman.managers.MapManager;
 import bomberman.screen.Screen;
 import bomberman.managers.GamePlay;
 import javafx.scene.Scene;
@@ -101,8 +102,8 @@ public class LevelScreen extends Screen {
         this.informationPane = informationPane;
     }
 
-    public GamePlay getMap() {
-        return gamePlay;
+    public MapManager getMapManager() {
+        return gamePlay.getMapManager();
     }
 
     public void setMap(GamePlay gamePlay) {

@@ -2,17 +2,16 @@ package bomberman.entities.moving.enemy;
 
 import bomberman.entities.Entity;
 import bomberman.entities.tile.Grass;
-import bomberman.managers.GamePlay;
+import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 
 /**
  * di chuyển ngẫu nhiên với vận tốc cố định.
  */
 public class Balloom extends Enemy {
-    public Balloom(int xUnit, int yUnit, GamePlay gamePlay) {
-        super(xUnit, yUnit, gamePlay);
+    public Balloom(int xUnit, int yUnit, MapManager mapManager) {
+        super(xUnit, yUnit, mapManager);
         img = Sprite.balloom_left1.getFxImage();
-        super.gamePlay = gamePlay;
         velocity = 1;
 
         Sprite[] right = new Sprite[3];
@@ -42,7 +41,7 @@ public class Balloom extends Enemy {
     }
 
     protected boolean canMove(int x, int y) {
-        Entity e = gamePlay.getMapManager().getTopTileAt(x, y);
+        Entity e = mapManager.getTopTileAt(x, y);
         return e instanceof Grass;
     }
 }

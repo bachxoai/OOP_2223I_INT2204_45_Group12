@@ -2,7 +2,6 @@ package bomberman.screen.levelscreen;
 
 import bomberman.graphics.Sprite;
 import bomberman.managers.GamePlay;
-import bomberman.managers.SoundBackground;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -79,9 +78,9 @@ public class InformationPane extends HBox {
     }
 
     public void setBomberStats() {
-        setStat(SPEED, (int) containedLevelScreen.getMap().getBomberman().getVelocity());
-        setStat(BOMBNO, (int) containedLevelScreen.getMap().getBomberman().getBombNums());
-        setStat(FLAME_RANGE, (int) containedLevelScreen.getMap().getBomberman().getFlameRange());
+        setStat(SPEED, (int) containedLevelScreen.getMapManager().getBomberman().getVelocity());
+        setStat(BOMBNO, (int) containedLevelScreen.getMapManager().getBomberman().getBombNums());
+        setStat(FLAME_RANGE, (int) containedLevelScreen.getMapManager().getBomberman().getFlameRange());
         setStat(TIME_LEFT, (int) GamePlay.playedTime);
     }
 

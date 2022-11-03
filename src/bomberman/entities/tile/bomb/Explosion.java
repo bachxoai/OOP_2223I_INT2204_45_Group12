@@ -5,6 +5,7 @@ import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.CollisionChecker;
 import bomberman.managers.GamePlay;
+import bomberman.managers.MapManager;
 import bomberman.managers.Sound;
 
 /**
@@ -15,11 +16,11 @@ public class Explosion extends TileEntity implements DynamicEntity {
     int timeLeft;
     Sprite[] sprites;
 
-    public Explosion(int xUnit, int yUnit, GamePlay gamePlay,
+    public Explosion(int xUnit, int yUnit, MapManager mapManager,
                      Sprite sprite,
                      Sprite sprite1,
                      Sprite sprite2) {
-        super(xUnit, yUnit, gamePlay);
+        super(xUnit, yUnit, mapManager);
         timeLeft = ANIMATED_FRAME;
         sprites = new Sprite[5];
         sprites[0] = sprite;
@@ -36,7 +37,7 @@ public class Explosion extends TileEntity implements DynamicEntity {
             img = sprites[timeLeft / (ANIMATED_FRAME / 5)].getFxImage();
 
         } else if (timeLeft == 0) {
-            gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
+            mapManager.getTilesAt(getXUnit(), getYUnit()).remove(this);
         }
     }
 }

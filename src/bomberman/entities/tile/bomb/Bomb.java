@@ -1,7 +1,6 @@
 package bomberman.entities.tile.bomb;
 
-import bomberman.managers.Sound;
-import bomberman.managers.SoundEffect;
+import bomberman.managers.*;
 import bomberman.screen.levelscreen.InformationPane;
 import bomberman.entities.DynamicEntity;
 import bomberman.entities.Entity;
@@ -9,8 +8,6 @@ import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.TileEntity;
 import bomberman.entities.tile.Wall;
 import bomberman.graphics.Sprite;
-import bomberman.managers.CollisionChecker;
-import bomberman.managers.GamePlay;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -23,8 +20,8 @@ public class Bomb extends TileEntity implements DynamicEntity {
     int timeToExplode;
     Sprite[] bombs;
 
-    public Bomb(int xUnit, int yUnit, GamePlay gamePlay, int range) {
-        super(xUnit, yUnit, gamePlay);
+    public Bomb(int xUnit, int yUnit, MapManager mapManager, int range) {
+        super(xUnit, yUnit, mapManager);
         this.range = range;
         img = Sprite.bomb.getFxImage();
         bombs = new Sprite[6];
@@ -48,13 +45,13 @@ public class Bomb extends TileEntity implements DynamicEntity {
     }
 
     private void handleAfterExplosion() {
-        new Explosion(getXUnit(), getYUnit(), gamePlay,
+        new Explosion(getXUnit(), getYUnit(), mapManager,
                 Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2);
         createExplosion();
-        gamePlay.getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
-        int addedBombNums = gamePlay.getBomberman().getBombNums() + 1;
-        gamePlay.getBomberman().setBombNums(addedBombNums);
-        gamePlay.getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, addedBombNums);
+        mapManager.getTilesAt(getXUnit(), getYUnit()).remove(this);
+        int addedBombNums = mapManager.getBomberman().getBombNums() + 1;
+        mapManager.getBomberman().setBombNums(addedBombNums);
+        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, addedBombNums);
         if(SoundEffect.hasSoundEffect) {
             SoundEffect.playSE(SoundEffect.bombExplosion);
         }
@@ -74,13 +71,13 @@ public class Bomb extends TileEntity implements DynamicEntity {
                 break;
             }
             if (i == range) {
-                new Explosion(getXUnit(), getYUnit() + range, gamePlay,
+                new Explosion(getXUnit(), getYUnit() + range, mapManager,
                         Sprite.explosion_vertical_down_last,
                         Sprite.explosion_vertical_down_last1,
                         Sprite.explosion_vertical_down_last2);
                 break;
             }
-            new Explosion(getXUnit(), getYUnit() + i, gamePlay,
+            new Explosion(getXUnit(), getYUnit() + i, mapManager,
                     Sprite.explosion_vertical,
                     Sprite.explosion_vertical1,
                     Sprite.explosion_vertical2);
@@ -92,13 +89,13 @@ public class Bomb extends TileEntity implements DynamicEntity {
                 break;
             }
             if (i == range) {
-                new Explosion(getXUnit(), getYUnit() - range, gamePlay,
+                new Explosion(getXUnit(), getYUnit() - range, mapManager,
                         Sprite.explosion_vertical_top_last,
                         Sprite.explosion_vertical_top_last1,
                         Sprite.explosion_vertical_top_last2);
                 break;
             }
-            new Explosion(getXUnit(), getYUnit() - i, gamePlay,
+            new Explosion(getXUnit(), getYUnit() - i, mapManager,
                     Sprite.explosion_vertical,
                     Sprite.explosion_vertical1,
                     Sprite.explosion_vertical2);
@@ -110,13 +107,13 @@ public class Bomb extends TileEntity implements DynamicEntity {
                 break;
             }
             if (i == range) {
-                new Explosion(getXUnit() - range, getYUnit(), gamePlay,
+                new Explosion(getXUnit() - range, getYUnit(), mapManager,
                         Sprite.explosion_horizontal_left_last,
                         Sprite.explosion_horizontal_left_last1,
                         Sprite.explosion_horizontal_left_last2);
                 break;
             }
-            new Explosion(getXUnit() - i, getYUnit(), gamePlay,
+            new Explosion(getXUnit() - i, getYUnit(), mapManager,
                     Sprite.explosion_horizontal,
                     Sprite.explosion_horizontal1,
                     Sprite.explosion_horizontal2);
@@ -128,13 +125,13 @@ public class Bomb extends TileEntity implements DynamicEntity {
                 break;
             }
             if (i == range) {
-                new Explosion(getXUnit() + range, getYUnit(), gamePlay,
+                new Explosion(getXUnit() + range, getYUnit(), mapManager,
                         Sprite.explosion_horizontal_right_last,
                         Sprite.explosion_horizontal_right_last1,
                         Sprite.explosion_horizontal_right_last2);
                 break;
             }
-            new Explosion(getXUnit() + i, getYUnit(), gamePlay,
+            new Explosion(getXUnit() + i, getYUnit(), mapManager,
                     Sprite.explosion_horizontal,
                     Sprite.explosion_horizontal1,
                     Sprite.explosion_horizontal2);
@@ -149,13 +146,13 @@ public class Bomb extends TileEntity implements DynamicEntity {
      * @param y toạ độ y của gạch bị bom phá.
      */
     private void createExplodedBrick(int x, int y) {
-        Entity tmp = gamePlay.getMapManager().getTopTileAt(x, y);
-        gamePlay.getMapManager().getTilesAt(x, y).remove(tmp);
-        new ExplosionBrick(x, y, gamePlay);
+        Entity tmp = mapManager.getTopTileAt(x, y);
+        mapManager.getTilesAt(x, y).remove(tmp);
+        new ExplosionBrick(x, y, mapManager);
     }
 
     private boolean flameBlocked(int x, int y) {
-        Entity e = gamePlay.getMapManager().getTopTileAt(x, y);
+        Entity e = mapManager.getTopTileAt(x, y);
         if (e instanceof Brick) {
             createExplodedBrick(x, y);
             return true;
