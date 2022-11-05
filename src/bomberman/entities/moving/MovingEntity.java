@@ -1,14 +1,11 @@
 package bomberman.entities.moving;
 
 import bomberman.entities.DynamicEntity;
-import bomberman.managers.CollisionChecker;
+import bomberman.entities.tile.TileEntity;
 import bomberman.managers.GamePlay;
 import bomberman.entities.Entity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.MapManager;
-
-import java.awt.*;
-import java.util.Map;
 
 /**
  * Class dành cho các đối tượng có thể di chuyển. Liên quan đến toạ độ pixel.
@@ -39,7 +36,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     protected Entity presentCollision = null;
 
     //Vận tốc
-    protected int velocity;
+    protected double velocity;
 
     //Số khung hình trên giây
     public final int ANIMATED_FRAME = 6;
@@ -49,6 +46,14 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
 
     //Biến thể hiện rằng Entity còn sống
     protected boolean isAlive = true;
+
+    protected boolean canWalkThroughBomb;
+    protected boolean canWalkThroughBrick;
+    protected boolean canWalkThroughFlame;
+
+    protected final TileEntity[] futureTilesCollision = new TileEntity[2];
+    protected TileEntity presentTileCollision;
+
 
     public MovingEntity(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
@@ -77,11 +82,11 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         this.presentCollision = presentCollision;
     }
 
-    public int getVelocity() {
+    public double getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(int velocity) {
+    public void setVelocity(double velocity) {
         this.velocity = velocity;
     }
 
@@ -153,7 +158,103 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         animation(DEAD_STATE);
     }
 
-    public boolean  handleEntityCollision(Bomber bomber) {
+    public boolean handleOtherBomberCollision(Bomber bomber) {
         return true;
+    }
+
+    /**
+     * Check two front tiles in the direction of this.
+     *
+     * @return sth.
+     */
+    public TileEntity[] updateFutureTilesCollision() {
+//        futureTilesCollision[0] = null;
+
+        int leftCol = (int) getX() / Sprite.SCALED_SIZE;
+        int rightCol = (int) (getX() + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
+        int topRow = (int) getY() / Sprite.SCALED_SIZE;
+        int bottomRow = (int) (getY() + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
+
+        switch (getState()) {
+            case MovingEntity.UP_STATE: {
+                futureTilesCollision[0] = getMapManager().getTopTileAt(leftCol, topRow);
+                futureTilesCollision[1] = getMapManager().getTopTileAt(rightCol, topRow);
+                break;
+            }
+            case MovingEntity.DOWN_STATE: {
+                futureTilesCollision[0] = getMapManager().getTopTileAt(leftCol, bottomRow);
+                futureTilesCollision[1] = getMapManager().getTopTileAt(rightCol, bottomRow);
+                break;
+            }
+            case MovingEntity.RIGHT_STATE: {
+                futureTilesCollision[0] = getMapManager().getTopTileAt(rightCol, topRow);
+                futureTilesCollision[1] = getMapManager().getTopTileAt(rightCol, bottomRow);
+                break;
+            }
+            case MovingEntity.LEFT_STATE: {
+                futureTilesCollision[0] = getMapManager().getTopTileAt(leftCol, topRow);
+                futureTilesCollision[1] = getMapManager().getTopTileAt(leftCol, bottomRow);
+                break;
+            }
+            default: {
+                futureTilesCollision[0] = mapManager.getTopTileAt(leftCol, topRow);
+                futureTilesCollision[1] = mapManager.getTopTileAt(leftCol, topRow);
+            }
+        }
+
+
+
+        return this.futureTilesCollision;
+    }
+
+    /**
+     * check what is standing tile
+     *
+     * @return the
+     */
+    public TileEntity updatePresentTileCollision() {
+        presentTileCollision = mapManager.getTopTileAt(getXUnit(), getYUnit());
+        return this.presentTileCollision;
+    }
+
+    /**
+     * Check collision with all MovingEntity in Map
+     * until all the MovingEntity are checked
+     * or the checkHandleOtherXCollision return false;
+     */
+    public void checkMovingCollisions() {
+
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public boolean isCanWalkThroughBomb() {
+        return canWalkThroughBomb;
+    }
+
+    public void setCanWalkThroughBomb(boolean canWalkThroughBomb) {
+        this.canWalkThroughBomb = canWalkThroughBomb;
+    }
+
+    public boolean isCanWalkThroughBrick() {
+        return canWalkThroughBrick;
+    }
+
+    public void setCanWalkThroughBrick(boolean canWalkThroughBrick) {
+        this.canWalkThroughBrick = canWalkThroughBrick;
+    }
+
+    public boolean isCanWalkThroughFlame() {
+        return canWalkThroughFlame;
+    }
+
+    public void setCanWalkThroughFlame(boolean canWalkThroughFlame) {
+        this.canWalkThroughFlame = canWalkThroughFlame;
     }
 }

@@ -1,7 +1,6 @@
 package bomberman.entities.tile.item;
 
 import bomberman.entities.moving.Bomber;
-import bomberman.managers.CollisionChecker;
 import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 import bomberman.screen.levelscreen.InformationPane;
@@ -12,10 +11,10 @@ public class SpeedItem extends Item {
         img = Sprite.powerup_speed.getFxImage();
     }
 
-    public boolean handleEntityCollision(Bomber bomber) {
+    public boolean handleOtherBomberCollision(Bomber bomber) {
+        super.handleOtherBomberCollision(bomber);
         bomber.setVelocity(bomber.getVelocity() + 1);
         mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.SPEED, bomber.getVelocity());
-        super.handleEntityCollision(bomber);
         return true;
     }
 }

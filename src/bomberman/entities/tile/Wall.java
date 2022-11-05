@@ -1,7 +1,7 @@
 package bomberman.entities.tile;
 
 import bomberman.entities.moving.Bomber;
-import bomberman.managers.CollisionChecker;
+import bomberman.entities.moving.MovingEntity;
 import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 
@@ -13,7 +13,12 @@ public class Wall extends TileEntity {
     }
 
     @Override
-    public boolean handleEntityCollision(Bomber bomber) {
+    public boolean handleOtherBomberCollision(Bomber bomber) {
+        return false;
+    }
+
+    @Override
+    public boolean allowWalkThrough(MovingEntity movingEntity) {
         return false;
     }
 }

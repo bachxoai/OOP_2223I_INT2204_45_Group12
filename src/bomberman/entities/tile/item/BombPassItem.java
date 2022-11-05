@@ -1,7 +1,6 @@
 package bomberman.entities.tile.item;
 
 import bomberman.entities.moving.Bomber;
-import bomberman.managers.CollisionChecker;
 import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 
@@ -12,9 +11,9 @@ public class BombPassItem extends Item {
         img = Sprite.powerup_bombpass.getFxImage();
     }
 
-    public boolean handleEntityCollision(Bomber bomber) {
+    public boolean handleOtherBomberCollision(Bomber bomber) {
         bomber.setCanWalkThroughBomb(true);
-        super.handleEntityCollision(bomber);
+        super.handleOtherBomberCollision(bomber);
         return true;
     }
 }

@@ -2,12 +2,12 @@ package bomberman.entities.tile.bomb;
 
 import bomberman.entities.DynamicEntity;
 import bomberman.entities.moving.Bomber;
+import bomberman.entities.moving.MovingEntity;
+import bomberman.entities.moving.enemy.Enemy;
 import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
-import bomberman.managers.CollisionChecker;
-import bomberman.managers.GamePlay;
 import bomberman.managers.MapManager;
-import bomberman.managers.Sound;
+import bomberman.managers.SoundEffect;
 
 /**
  * Đối tượng được sinh ra sau khi bom nổ.
@@ -43,10 +43,17 @@ public class Explosion extends TileEntity implements DynamicEntity {
     }
 
     @Override
-    public boolean handleEntityCollision(Bomber bomber) {
-        if (!(bomber.isCanWalkThroughFlame())) {
+    public boolean handleOtherBomberCollision(Bomber bomber) {
+        if (!(bomber.isCanWalkThroughFlame()) && !bomber.isImmortal()) {
             bomber.handleDeath();
         }
+        return true;
+    }
+
+    @Override
+    public boolean handleOtherEnemyCollision(Enemy enemy) {
+        enemy.setAlive(false);
+        SoundEffect.playSE(SoundEffect.enemyDeath);
         return true;
     }
 }

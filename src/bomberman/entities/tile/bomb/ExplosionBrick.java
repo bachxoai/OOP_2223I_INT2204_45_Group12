@@ -2,7 +2,6 @@ package bomberman.entities.tile.bomb;
 
 import bomberman.entities.tile.Brick;
 import bomberman.graphics.Sprite;
-import bomberman.managers.CollisionChecker;
 import bomberman.managers.MapManager;
 
 /**

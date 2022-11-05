@@ -12,7 +12,7 @@ public abstract class Item extends TileEntity {
     }
 
     @Override
-    public boolean handleEntityCollision(Bomber bomber) {
+    public boolean handleOtherBomberCollision(Bomber bomber) {
         SoundEffect.playSE(SoundEffect.collectingItem);
         mapManager.getGamePlay().getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
         return true;

@@ -117,7 +117,7 @@ public class LevelScreen extends Screen {
         getInformationPane().setBomberStats();
     }
 
-    public void setBomberStat(int type, int value) {
+    public void setBomberStat(int type, double value) {
         getInformationPane().setStat(type, value);
     }
 

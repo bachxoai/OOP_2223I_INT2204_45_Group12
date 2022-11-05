@@ -1,8 +1,8 @@
 package bomberman.entities;
 
 import bomberman.entities.moving.Bomber;
+import bomberman.entities.moving.enemy.Enemy;
 import bomberman.graphics.Sprite;
-import bomberman.managers.GamePlay;
 import bomberman.managers.MapManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -79,5 +79,9 @@ public abstract class Entity {
         this.mapManager = mapManager;
     }
 
-    public abstract boolean handleEntityCollision(Bomber bomber);
+    public abstract boolean handleOtherBomberCollision(Bomber bomber);
+
+    public boolean handleOtherEnemyCollision(Enemy enemy) {
+        return true;
+    }
 }

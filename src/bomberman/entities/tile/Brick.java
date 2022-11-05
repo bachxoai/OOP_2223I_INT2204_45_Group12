@@ -1,11 +1,9 @@
 package bomberman.entities.tile;
 
-import bomberman.entities.DynamicEntity;
 import bomberman.entities.moving.Bomber;
-import bomberman.managers.CollisionChecker;
+import bomberman.entities.moving.MovingEntity;
 import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
-import javafx.scene.canvas.GraphicsContext;
 
 //Class cho gạch
 public class Brick extends TileEntity {
@@ -14,7 +12,12 @@ public class Brick extends TileEntity {
         img = Sprite.brick.getFxImage();
     }
 
-    public boolean handleEntityCollision(Bomber bomber) {
+    public boolean handleOtherBomberCollision(Bomber bomber) {
         return false;
+    }
+
+//    @Override
+    public boolean allowWalkThrough(MovingEntity movingEntity) {
+        return movingEntity.isCanWalkThroughBrick();
     }
 }

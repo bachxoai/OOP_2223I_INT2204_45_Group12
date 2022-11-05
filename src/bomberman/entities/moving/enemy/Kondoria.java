@@ -4,10 +4,7 @@ import bomberman.entities.Entity;
 import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.Grass;
 import bomberman.graphics.Sprite;
-import bomberman.managers.GamePlay;
 import bomberman.managers.MapManager;
-
-import java.awt.*;
 
 /**
  * It moves really slow, making Doria the slowest, but it can move through Soft Blocks.
@@ -22,7 +19,7 @@ public class Kondoria extends Enemy {
     public Kondoria(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.kondoria_left1.getFxImage();
-        velocity = 1;
+        velocity = 0.5;
 
         Sprite[] right = new Sprite[3];
         right[0] = Sprite.kondoria_right1;
@@ -47,7 +44,7 @@ public class Kondoria extends Enemy {
         bomberFinder.updatedVision();
         bomberFinder.bfs();
         state = bomberFinder.getFinalDirection();
-        if (!stuck()) {
+        if (notStuck()) {
             changeDirWhenBlockedRandomly();
         } else {
             state = NORMAL_STATE;

@@ -9,7 +9,6 @@ import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.TileEntity;
 import bomberman.entities.tile.Wall;
 import bomberman.graphics.Sprite;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Charging bomb class.
@@ -162,7 +161,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
     }
 
     @Override
-    public boolean handleEntityCollision(Bomber bomber) {
+    public boolean handleOtherBomberCollision(Bomber bomber) {
         return false;
     }
 }

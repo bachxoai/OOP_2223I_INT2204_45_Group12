@@ -2,13 +2,8 @@ package bomberman.entities.moving.enemy;
 
 import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.MovingEntity;
-import bomberman.entities.tile.Brick;
-import bomberman.entities.tile.bomb.Explosion;
 import bomberman.graphics.Sprite;
-import bomberman.managers.CollisionChecker;
-import bomberman.managers.GamePlay;
 import bomberman.managers.MapManager;
-import bomberman.managers.SoundEffect;
 
 public abstract class Enemy extends MovingEntity {
 
@@ -19,14 +14,16 @@ public abstract class Enemy extends MovingEntity {
     @Override
     public void update() {
         if (isAlive) {
-            CollisionChecker.checkTileStable(this, mapManager);
-
-            if (presentCollision instanceof Explosion) {
-                state = DEAD_STATE;
-                isAlive = false;
-                SoundEffect.playSE(SoundEffect.enemyDeath);
-                return;
-            }
+//            CollisionChecker.checkTileStable(this, mapManager);
+//
+//            if (presentCollision instanceof Explosion) {
+//                state = DEAD_STATE;
+//                isAlive = false;
+//                SoundEffect.playSE(SoundEffect.enemyDeath);
+//                return;
+//            }
+            updatePresentTileCollision();
+            presentTileCollision.handleOtherEnemyCollision(this);
             if (inABlock()) {
                 setDirection();
             }
@@ -94,13 +91,17 @@ public abstract class Enemy extends MovingEntity {
         return getX() == getXUnit() * Sprite.SCALED_SIZE && getY() == getYUnit() * Sprite.SCALED_SIZE;
     }
 
-    protected boolean stuck() {
-        return !canMove(getXUnit() + 1, getYUnit())
-                && !canMove(getXUnit() - 1, getYUnit())
-                && !canMove(getXUnit(), getYUnit() - 1)
-                && !canMove(getXUnit(), getYUnit() + 1);
+    protected boolean notStuck() {
+        return canMove(getXUnit() + 1, getYUnit())
+                || canMove(getXUnit() - 1, getYUnit())
+                || canMove(getXUnit(), getYUnit() - 1)
+                || canMove(getXUnit(), getYUnit() + 1);
     }
-    public boolean handleEntityCollision(Bomber bomber) {
+
+    public boolean handleOtherBomberCollision(Bomber bomber) {
+//        if (!bomber.isImmortal()) {
+//            bomber.handleDeath();
+//        }
         bomber.handleDeath();
         return true;
     }

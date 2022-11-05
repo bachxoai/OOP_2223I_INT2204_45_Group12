@@ -88,7 +88,9 @@ public class InformationPane extends HBox {
         return heartPane;
     }
 
-    public void setStat(int type, int value) {
+    public void setStat(int type, double valueD) {
+        int value = (int) valueD;
+
         switch (type) {
             case SPEED: {
                 speedNumber.setText(String.valueOf(value));

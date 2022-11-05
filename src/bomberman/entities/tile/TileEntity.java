@@ -1,10 +1,10 @@
 package bomberman.entities.tile;
 
 import bomberman.entities.moving.Bomber;
-import bomberman.managers.GamePlay;
+import bomberman.entities.moving.MovingEntity;
+import bomberman.entities.moving.enemy.Enemy;
 import bomberman.entities.Entity;
 import bomberman.managers.MapManager;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Class dành cho các đối tượng đứng yên. Liên quan đến toạ độ trong map
@@ -16,5 +16,13 @@ public abstract class TileEntity extends Entity {
         mapManager.addTileEntity(this);
     }
 
-    public abstract boolean handleEntityCollision(Bomber bomber);
+    public abstract boolean handleOtherBomberCollision(Bomber bomber);
+
+    public boolean handleOtherEnemyCollision(Enemy enemy) {
+        return true;
+    }
+
+    public boolean allowWalkThrough(MovingEntity movingEntity) {
+        return true;
+    }
 }

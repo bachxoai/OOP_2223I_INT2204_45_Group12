@@ -1,35 +1,25 @@
 package bomberman.entities.moving;
 
-import bomberman.entities.Entity;
 import bomberman.entities.moving.enemy.Enemy;
 import bomberman.entities.tile.Brick;
-import bomberman.entities.tile.Portal;
-import bomberman.entities.tile.Wall;
 import bomberman.entities.tile.bomb.Bomb;
-import bomberman.entities.tile.bomb.Explosion;
-import bomberman.entities.tile.item.*;
 import bomberman.graphics.Sprite;
 import bomberman.managers.*;
 import bomberman.screen.levelscreen.HeartPane;
 import bomberman.screen.levelscreen.InformationPane;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
-import javafx.application.Platform;
 
 /**
  * Class bomber.
  */
 public class Bomber extends MovingEntity {
-
-    private final int IMMORTAL_TIME = 3;
+    public static final double MAX_DISTANCE_TO_REFINE = 5;
+    public final int IMMORTAL_TIME = 3;
     int lives;
     int bombNums;
     int flameRange;
-    boolean canWalkThroughBomb;
-    boolean canWalkThroughBrick;
-    boolean canWalkThroughFlame;
     boolean canDetonate;
-
     boolean isImmortal;
     int immortalTime;
 
@@ -39,13 +29,13 @@ public class Bomber extends MovingEntity {
     private boolean rightPressed = false;
     private boolean leftPressed = false;
 
-    private double screenX;
-    private double screenY;
+    private final int screenX = GamePlay.gameplayScreenWidth/2 - Sprite.SCALED_SIZE/2;
+    private final int screenY = GamePlay.gameplayScreenHeight/2 - Sprite.SCALED_SIZE/2;
 
     public Bomber(int x, int y, MapManager mapManager) {
         super(x, y, mapManager);
         img = Sprite.player_down.getFxImage();
-        //Thêm các Spite animation cho Bomber
+//        Thêm các Spite animation cho Bomber
         Sprite[] up = new Sprite[2];
         up[0] = Sprite.player_up_1;
         up[1] = Sprite.player_up_2;
@@ -62,8 +52,6 @@ public class Bomber extends MovingEntity {
         dead[0] = Sprite.player_dead1;
         dead[1] = Sprite.player_dead2;
         dead[2] = Sprite.player_dead3;
-        screenX = GamePlay.gameplayScreenWidth/2 - Sprite.SCALED_SIZE/2;
-        screenY = GamePlay.gameplayScreenHeight/2 - Sprite.SCALED_SIZE/2;
 
         setSprite(up, down, left, right, dead);
         velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
@@ -82,18 +70,23 @@ public class Bomber extends MovingEntity {
     @Override
     public void update() {
         if (isAlive) {
-            CollisionChecker.checkTileStable(this, mapManager);
-            CollisionChecker.checkMovingEntity(this, mapManager);
-            presentCollision.handleEntityCollision(this);
             changeState();
             handleImmortal();
-
-            //Kiểm tra xem nhân vật có bị kẹt không.
-            futureCollision = mapManager.tempGrass;
-            CollisionChecker.checkTileEntity(this, mapManager);
-            if (futureCollision.handleEntityCollision(this)) {
-                move();
+            updateFutureTilesCollision();
+            updatePresentTileCollision();
+            presentTileCollision.handleOtherBomberCollision(this);
+            if (futureTilesCollision[0].allowWalkThrough(this)
+                    || futureTilesCollision[1].allowWalkThrough(this)) {
+                if (!futureTilesCollision[0].allowWalkThrough(this)) {
+                    refineMovement(0, 1);
+                } else if (!futureTilesCollision[1].allowWalkThrough(this)) {
+                    refineMovement(1, 0);
+                } else {
+                    move();
+                }
             }
+            checkMovingCollisions();
+
         } else {
             handleDeadState();
         }
@@ -102,45 +95,29 @@ public class Bomber extends MovingEntity {
     public void handleEvent(KeyEvent event) {
         //Handle Event nhận vào, bấm W thì đi lên, S đi xuống, A sang trái, D sang phải
         //Nhân vật chỉ có thể được đi một hướng duy nhất
+        upPressed = false;
+        downPressed = false;
+        leftPressed = false;
+        rightPressed = false;
         switch (event.getCode()) {
             case W:  {
                 upPressed = true;
-                downPressed = false;
-                leftPressed = false;
-                rightPressed = false;
                 break;
             }
             case S: {
-                upPressed = false;
                 downPressed = true;
-                leftPressed = false;
-                rightPressed = false;
                 break;
             }
             case A: {
-                upPressed = false;
-                downPressed = false;
                 leftPressed = true;
-                rightPressed = false;
                 break;
             }
             case D: {
-                upPressed = false;
-                downPressed = false;
-                leftPressed = false;
                 rightPressed = true;
                 break;
             }
             case B: {
-                CollisionChecker.checkTileStable(this, mapManager);
-                if (bombNums > 0 && !(presentCollision instanceof Brick)) {
-                    new Bomb(getXUnit(), getYUnit(), mapManager, flameRange);
-                    mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, --bombNums);
-                    if(SoundEffect.hasSoundEffect) {
-                        SoundEffect.playSE(SoundEffect.plantingBomb);
-                        SoundEffect.playSE(SoundEffect.bombCountDown);
-                    }
-                }
+                placeBomb();
                 break;
             }
         }
@@ -219,23 +196,19 @@ public class Bomber extends MovingEntity {
     }
 
     private void changeState() {
-        if (upPressed || downPressed || leftPressed || rightPressed) {
-            if (upPressed) {
-                state = UP_STATE;
-            }
-            if (downPressed) {
-                state = DOWN_STATE;
-            }
-
-            if (leftPressed) {
-                state = LEFT_STATE;
-            }
-
-            if (rightPressed) {
-                state = RIGHT_STATE;
-            }
-            animation(state);
+        if (upPressed) {
+            state = UP_STATE;
         }
+        if (downPressed) {
+            state = DOWN_STATE;
+        }
+        if (leftPressed) {
+            state = LEFT_STATE;
+        }
+        if (rightPressed) {
+            state = RIGHT_STATE;
+        }
+        animation(state);
     }
 
     private void handleImmortal() {
@@ -248,6 +221,58 @@ public class Bomber extends MovingEntity {
             }
         } else {
             isImmortal = false;
+        }
+    }
+
+    private void placeBomb() {
+        if (bombNums > 0 && !(presentCollision instanceof Brick)) {
+            new Bomb(getXUnit(), getYUnit(), mapManager, flameRange);
+            mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, --bombNums);
+            if(SoundEffect.hasSoundEffect) {
+                SoundEffect.playSE(SoundEffect.plantingBomb);
+                SoundEffect.playSE(SoundEffect.bombCountDown);
+            }
+        }
+    }
+
+    private void refineMovement(int unWalkableTile, int walkableTile) {
+        if (futureTilesCollision[unWalkableTile].getX() == futureTilesCollision[walkableTile].getX()) {
+            if (getY() < futureTilesCollision[walkableTile].getY()
+                    && getY() > futureTilesCollision[walkableTile].getY() - MAX_DISTANCE_TO_REFINE) {
+                setY(futureTilesCollision[unWalkableTile].getY() + Sprite.SCALED_SIZE);
+                move();
+            } else if (getY() > futureTilesCollision[walkableTile].getY()
+                    && getY() < futureTilesCollision[walkableTile].getY() + MAX_DISTANCE_TO_REFINE) {
+                setY(futureTilesCollision[walkableTile].getY());
+                move();
+            }
+        } else {
+            if (getX() < futureTilesCollision[walkableTile].getX()
+                    && getX() > futureTilesCollision[walkableTile].getX()- MAX_DISTANCE_TO_REFINE) {
+                setX(futureTilesCollision[unWalkableTile].getX() + Sprite.SCALED_SIZE);
+                move();
+            } else if (getX() > futureTilesCollision[walkableTile].getX()
+                    && getX() < futureTilesCollision[walkableTile].getX() + MAX_DISTANCE_TO_REFINE) {
+                setX(futureTilesCollision[walkableTile].getX());
+                move();
+            }
+        }
+    }
+
+    /**
+     * Check collision with all MovingEntity in Map
+     * until all the MovingEntity are checked
+     * or the checkHandleOtherXCollision return false;
+     */
+    @Override
+    public void checkMovingCollisions() {
+        for (Enemy enemy : getMapManager().getEnemies()) {
+            if (!(getX() + Sprite.SCALED_SIZE - 1 < enemy.getX()
+                    || getX() > enemy.getX() + Sprite.SCALED_SIZE - 1
+                    || getY() > enemy.getY() + Sprite.SCALED_SIZE - 1
+                    || getY() + Sprite.SCALED_SIZE - 1 < enemy.getY())) {
+                enemy.handleOtherBomberCollision(this);
+            }
         }
     }
 
@@ -267,30 +292,6 @@ public class Bomber extends MovingEntity {
         this.flameRange = flameRange;
     }
 
-    public boolean isCanWalkThroughBomb() {
-        return canWalkThroughBomb;
-    }
-
-    public void setCanWalkThroughBomb(boolean canWalkThroughBomb) {
-        this.canWalkThroughBomb = canWalkThroughBomb;
-    }
-
-    public boolean isCanWalkThroughBrick() {
-        return canWalkThroughBrick;
-    }
-
-    public void setCanWalkThroughBrick(boolean canWalkThroughBrick) {
-        this.canWalkThroughBrick = canWalkThroughBrick;
-    }
-
-    public boolean isCanWalkThroughFlame() {
-        return canWalkThroughFlame;
-    }
-
-    public void setCanWalkThroughFlame(boolean canWalkThroughFlame) {
-        this.canWalkThroughFlame = canWalkThroughFlame;
-    }
-
     public boolean isCanDetonate() {
         return canDetonate;
     }
@@ -299,11 +300,11 @@ public class Bomber extends MovingEntity {
         this.canDetonate = canDetonate;
     }
 
-    public void setVelocity(int velocity) {
+    public void setVelocity(double velocity) {
         super.setVelocity(velocity);
     }
 
-    public int getVelocity() {
+    public double getVelocity() {
         return super.getVelocity();
     }
 

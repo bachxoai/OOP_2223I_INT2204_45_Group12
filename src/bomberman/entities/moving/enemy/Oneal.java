@@ -5,8 +5,6 @@ import bomberman.entities.tile.Grass;
 import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 
-import java.util.ArrayList;
-
 /**
  * Oneal moves quickly and randomly.
  * It will move toward Bomberman when he is nearby. no
@@ -45,7 +43,7 @@ public class Oneal extends Enemy {
         bomberFinder.updatedVision();
         bomberFinder.bfs();
         state = bomberFinder.getFinalDirection();
-        if (!stuck()) {
+        if (notStuck()) {
             changeDirWhenBlockedRandomly();
         } else {
             state = NORMAL_STATE;

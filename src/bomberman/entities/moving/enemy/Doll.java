@@ -2,12 +2,8 @@ package bomberman.entities.moving.enemy;
 
 import bomberman.entities.Entity;
 import bomberman.entities.tile.Grass;
-import bomberman.managers.CollisionChecker;
-import bomberman.managers.GamePlay;
 import bomberman.graphics.Sprite;
 import bomberman.managers.MapManager;
-
-import java.awt.*;
 
 /**
  * Move fast, randomly
@@ -35,7 +31,8 @@ public class Doll extends Enemy {
 
     @Override
     protected void setDirection() {
-        changeDirRandomly();
+        if (notStuck())
+            changeDirRandomly();
     }
 
     @Override

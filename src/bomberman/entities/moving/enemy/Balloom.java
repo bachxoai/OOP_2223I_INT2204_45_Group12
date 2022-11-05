@@ -2,6 +2,7 @@ package bomberman.entities.moving.enemy;
 
 import bomberman.entities.Entity;
 import bomberman.entities.tile.Grass;
+import bomberman.entities.tile.TileEntity;
 import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 
@@ -33,7 +34,7 @@ public class Balloom extends Enemy {
      * Hàm chọn hướng di chuyển phù hợp
      */
     protected void setDirection() {
-        if (!stuck()) {
+        if (notStuck()) {
             changeDirWhenBlockedRandomly();
         } else {
             state = NORMAL_STATE;
@@ -41,7 +42,8 @@ public class Balloom extends Enemy {
     }
 
     protected boolean canMove(int x, int y) {
-        Entity e = mapManager.getTopTileAt(x, y);
-        return e instanceof Grass;
+        TileEntity e = mapManager.getTopTileAt(x, y);
+        return e.allowWalkThrough(this);
+//        return e instanceof Grass;
     }
 }
