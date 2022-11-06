@@ -1,4 +1,4 @@
-package bomberman.UI.buttons;
+package bomberman.UI.Buttons;
 
 import bomberman.screen.Screen;
 import bomberman.screen.levelscreen.LevelScreen;
@@ -13,7 +13,7 @@ public class SwitchToLevelScreenButton extends SwitchScreenButton {
     }
 
     @Override
-    public void switchScreen(String nameScreen) {
+    public void switchScreen() {
         LevelScreen tmp = (LevelScreen) Screen.allScreens.get(screenToSwitchTo);
         tmp.getGamePlay().loadMap("res/levels/Level" + mapOfButton + ".txt");
         tmp.getGamePlay().resetPlayTime();

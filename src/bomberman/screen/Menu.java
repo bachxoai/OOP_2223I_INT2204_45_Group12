@@ -1,9 +1,9 @@
 package bomberman.screen;
 
-import bomberman.UI.buttons.ExitButton;
-import bomberman.UI.buttons.SwitchPaneButton;
-import bomberman.UI.buttons.SwitchScreenButton;
-import bomberman.UI.buttons.SwitchToLevelScreenButton;
+import bomberman.UI.Buttons.ExitButton;
+import bomberman.UI.Buttons.SwitchPaneButton;
+import bomberman.UI.Buttons.SwitchScreenButton;
+import bomberman.UI.Buttons.SwitchToLevelScreenButton;
 import bomberman.managers.Sound;
 import bomberman.managers.SoundBackground;
 import bomberman.managers.SoundEffect;
@@ -145,22 +145,22 @@ public class Menu extends Screen {
         createFont(musicOff);
         createImageButton("/ImageButton/umnute.png",musicOff);
         musicOff.setOnAction(actionEvent -> {
+            chooseMusic.getChildren().removeAll(musicOff, feed, sinnes, back);
+            chooseMusic.getChildren().addAll(musicOn,feed,sinnes,back);
             isUnmute = true;
             SoundBackground.stopMusic();
             SoundEffect.hasSoundEffect = false;
-            chooseMusic.getChildren().removeAll(musicOff, feed, sinnes, back);
-            chooseMusic.getChildren().addAll(musicOn,feed,sinnes,back);
         });
 
         musicOn.setPrefWidth(160);
         createFont(musicOn);
         createImageButton("/ImageButton/umnute.png",musicOn);
         musicOn.setOnAction(actionEvent -> {
+            chooseMusic.getChildren().removeAll(musicOn, feed, sinnes, back);
+            chooseMusic.getChildren().addAll(musicOff,feed,sinnes,back);
             isUnmute = false;
             SoundBackground.clip.start();
             SoundEffect.hasSoundEffect = true;
-            chooseMusic.getChildren().removeAll(musicOn, feed, sinnes, back);
-            chooseMusic.getChildren().addAll(musicOff,feed,sinnes,back);
         });
 
 

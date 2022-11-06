@@ -1,8 +1,8 @@
 package bomberman.screen.levelscreen;
 
-import bomberman.UI.buttons.BackToMenuFromLevel;
-import bomberman.UI.buttons.ExitButton;
-import bomberman.UI.buttons.SwitchScreenButton;
+import bomberman.UI.Buttons.BackToMenuFromLevel;
+import bomberman.UI.Buttons.ExitButton;
+import bomberman.UI.Buttons.SwitchScreenButton;
 import bomberman.managers.SoundBackground;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

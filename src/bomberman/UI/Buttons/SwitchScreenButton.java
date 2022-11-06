@@ -1,4 +1,4 @@
-package bomberman.UI.buttons;
+package bomberman.UI.Buttons;
 
 import bomberman.screen.Screen;
 import javafx.scene.control.Button;
@@ -12,9 +12,9 @@ public class SwitchScreenButton extends Button {
         super(name);
         this.screenHoldThisButton = screenHoldThisButton;
         this.screenToSwitchTo = screenToSwitchTo;
-        setOnAction(actionEvent -> {switchScreen(name);});
+        setOnAction(actionEvent -> {switchScreen();});
     }
-    public void switchScreen(String nameScreen) {
+    public void switchScreen() {
         Stage s = (Stage) this.getScene().getWindow();
         Screen scr = Screen.allScreens.get(screenToSwitchTo);
         s.setScene(scr.getScene());

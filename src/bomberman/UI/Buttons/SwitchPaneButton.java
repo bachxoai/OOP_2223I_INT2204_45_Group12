@@ -1,4 +1,4 @@
-package bomberman.UI.buttons;
+package bomberman.UI.Buttons;
 
 import bomberman.managers.Sound;
 import bomberman.managers.SoundBackground;

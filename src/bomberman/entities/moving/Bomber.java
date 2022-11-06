@@ -110,25 +110,33 @@ public class Bomber extends MovingEntity {
     public void handleEvent(KeyEvent event) {
         //Handle Event nhận vào, bấm W thì đi lên, S đi xuống, A sang trái, D sang phải
         //Nhân vật chỉ có thể được đi một hướng duy nhất
-        upPressed = false;
-        downPressed = false;
-        leftPressed = false;
-        rightPressed = false;
         switch (event.getCode()) {
             case W:  {
                 upPressed = true;
+                downPressed = false;
+                leftPressed = false;
+                rightPressed = false;
                 break;
             }
             case S: {
                 downPressed = true;
+                upPressed = false;
+                leftPressed = false;
+                rightPressed = false;
                 break;
             }
             case A: {
                 leftPressed = true;
+                upPressed = false;
+                downPressed = false;
+                rightPressed = false;
                 break;
             }
             case D: {
                 rightPressed = true;
+                upPressed = false;
+                downPressed = false;
+                leftPressed = false;
                 break;
             }
             case B: {

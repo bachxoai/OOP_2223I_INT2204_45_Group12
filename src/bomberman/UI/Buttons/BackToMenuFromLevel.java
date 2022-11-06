@@ -1,6 +1,7 @@
-package bomberman.UI.buttons;
+package bomberman.UI.Buttons;
 
 import bomberman.managers.SoundBackground;
+import bomberman.screen.Menu;
 import bomberman.screen.Screen;
 import bomberman.screen.levelscreen.LevelScreen;
 import javafx.scene.layout.Pane;
@@ -19,14 +20,16 @@ public class BackToMenuFromLevel extends SwitchScreenButton {
     }
 
     @Override
-    public void switchScreen(String nameScreen) {
+    public void switchScreen() {
         Stage s = (Stage) this.getScene().getWindow();
         Screen scr = Screen.allScreens.get(screenToSwitchTo);
         s.setScene(scr.getScene());
         s.setWidth(500);
         s.setHeight(800);
         levelScreen.getRoot().getChildren().remove(containedPane);
-        SoundBackground.clip.stop();
-        SoundBackground.clip.start();
+        if (!Menu.isUnmute) {
+            SoundBackground.clip.stop();
+            SoundBackground.clip.start();
+        }
     }
 }
