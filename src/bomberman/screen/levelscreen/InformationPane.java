@@ -79,8 +79,8 @@ public class InformationPane extends HBox {
 
     public void setBomberStats() {
         setStat(SPEED, (int) containedLevelScreen.getMapManager().getBomberman().getVelocity());
-        setStat(BOMBNO, (int) containedLevelScreen.getMapManager().getBomberman().getBombNums());
-        setStat(FLAME_RANGE, (int) containedLevelScreen.getMapManager().getBomberman().getFlameRange());
+        setStat(BOMBNO, containedLevelScreen.getMapManager().getBomberman().getBombNums());
+        setStat(FLAME_RANGE, containedLevelScreen.getMapManager().getBomberman().getFlameRange());
         setStat(TIME_LEFT, (int) GamePlay.playedTime);
     }
 

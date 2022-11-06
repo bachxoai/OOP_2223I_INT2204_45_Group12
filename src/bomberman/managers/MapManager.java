@@ -39,10 +39,10 @@ public class MapManager {
     private ArrayList<ArrayList<ArrayList<TileEntity>>> tileEntitiesMatrix;
 
     // Mảng gồm các moving entities.
-    private ArrayList<MovingEntity> movingEntities = new ArrayList<>();
+    private ArrayList<MovingEntity> movingEntities;
 
     //Mảng Enemy chứa các đối tượng quái vật, sử dụng để CheckCollision Bomber và Quái trong CollisionChecker
-    private ArrayList<Enemy> enemies = new ArrayList<>();
+    private ArrayList<Enemy> enemies;
 
     public MapManager(GamePlay gamePlay) {
         this.gamePlay = gamePlay;
@@ -78,7 +78,8 @@ public class MapManager {
                     tileEntitiesMatrix.get(j).add(new ArrayList<>());
                 }
             }
-
+            movingEntities = new ArrayList<>();
+            enemies = new ArrayList<>();
             //Đọc file rồi tạo đối tượng trong Map, thêm các đối tượng vào các Array stillObject,...
             for (int j = 0; j < row; j++) {
                 String rowText = bufferedReader.readLine();
@@ -126,7 +127,6 @@ public class MapManager {
                     }
                 }
             }
-            tempGrass = new Grass(1, 1, this);
         } catch (IOException e) {
             System.err.println("Cannot read file path in loadMap/MapManager.");
         } finally {

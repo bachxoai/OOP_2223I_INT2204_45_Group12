@@ -33,7 +33,7 @@ public class GamePlay {
     public GamePlay(LevelScreen containedLevelScreen) {
         this.containedLevelScreen = containedLevelScreen;
         mapManager = new MapManager(this);
-        mapManager.loadMap("res/levels/Level1.txt");
+//        mapManager.loadMap("res/levels/Level1.txt");
 //        mapManager.loadMap("res/levels/Map.txt");
         // Sound.playMusic(Sound.soundBgBbm);
         createGamePlay();
@@ -70,6 +70,12 @@ public class GamePlay {
 
     public void stopTimer() {
         timer.stop();
+    }
+
+    public void resetPlayTime() {
+        playedTime = 0;
+        frameCount = 0;
+        root.setOpacity(1);
     }
 
     public void setMapWidth(int width) {
@@ -127,6 +133,10 @@ public class GamePlay {
         containedLevelScreen.getScene().setOnKeyReleased(keyEvent -> {
             mapManager.getBomberman().handleReleasedEvent(keyEvent);
         });
+    }
+
+    public void loadMap(String path) {
+        mapManager.loadMap(path);
     }
 
     public Group getRoot() {

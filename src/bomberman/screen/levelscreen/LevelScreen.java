@@ -68,6 +68,7 @@ public class LevelScreen extends Screen {
 
     public void gameOver() {
         root.getChildren().add(gameOver);
+        stopTimer();
     }
 
     public Pane getRoot() {
@@ -123,5 +124,17 @@ public class LevelScreen extends Screen {
 
     public void setBomberSpeed(int v) {
         informationPane.setSpeed(v);
+    }
+
+    public GamePlay getGamePlay() {
+        return gamePlay;
+    }
+
+    public GameOverPane getGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(GameOverPane gameOver) {
+        this.gameOver = gameOver;
     }
 }

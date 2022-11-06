@@ -59,7 +59,7 @@ public class Bomber extends MovingEntity {
         dead[2] = Sprite.player_dead3;
 
         setSprite(up, down, left, right, dead);
-        velocity = 2; //Vận tốc của Bomber = 2 pixel/frame
+        velocity = 2;
 
         canWalkThroughBomb = false;
         canWalkThroughFlame = false;
@@ -305,18 +305,18 @@ public class Bomber extends MovingEntity {
                 setY(getYUnit() * Sprite.SCALED_SIZE);
                 break;
             }
-//            case DOWN_STATE: {
-//                setY((int) ((getY()) / Sprite.SCALED_SIZE) * Sprite.SCALED_SIZE);
-//                break;
-//            }
+            case DOWN_STATE: {
+                setY((int) (((getY()) + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE) * Sprite.SCALED_SIZE);
+                break;
+            }
             case LEFT_STATE: {
                 setX(getXUnit() * Sprite.SCALED_SIZE);
                 break;
             }
-//            case RIGHT_STATE: {
-//                setX((int) ((getX()) / Sprite.SCALED_SIZE) * Sprite.SCALED_SIZE);
-//                break;
-//            }
+            case RIGHT_STATE: {
+                setX((int) (((getX()) + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE) * Sprite.SCALED_SIZE);
+                break;
+            }
         }
     }
 

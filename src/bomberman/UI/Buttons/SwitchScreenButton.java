@@ -1,48 +1,24 @@
-package bomberman.UI.Buttons;
+package bomberman.UI.buttons;
 
-import bomberman.managers.Sound;
-import bomberman.managers.SoundBackground;
-import bomberman.managers.SoundEffect;
-import bomberman.screen.Menu;
-import bomberman.screen.levelscreen.LevelScreen;
 import bomberman.screen.Screen;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.Objects;
 
 public class SwitchScreenButton extends Button {
     String screenHoldThisButton;
     String screenToSwitchTo;
 
-    public SwitchScreenButton(String name, String screenHoldThisButton, String screenToSwitchTo, boolean isPaneGameOver ) {
+    public SwitchScreenButton(String name, String screenHoldThisButton, String screenToSwitchTo) {
         super(name);
         this.screenHoldThisButton = screenHoldThisButton;
         this.screenToSwitchTo = screenToSwitchTo;
-        setOnAction(actionEvent -> {
-            switchScreen(name);
-            //tiep tuc phat nhac
-            if(isPaneGameOver && !Menu.isUnmute) {
-                SoundBackground.clip.setMicrosecondPosition(SoundBackground.clip.getMicrosecondPosition());
-                SoundBackground.clip.start();
-            }
-        });
+        setOnAction(actionEvent -> {switchScreen(name);});
     }
-        public void switchScreen(String nameScreen) {
-            Stage s = (Stage) this.getScene().getWindow();
-            Screen scr = Screen.allScreens.get(screenToSwitchTo);
-            s.setScene(scr.getScene());
-            if(nameScreen == "Back") {
-                s.setWidth(500);
-                s.setHeight(800);
-            } else {
-                s.setWidth(640);
-                s.setHeight(640);
-            }
-            if (scr instanceof LevelScreen) {
-                ((LevelScreen) scr).startTimer();
-                ((LevelScreen) scr).setBomberStats();
-            }
-        }
+    public void switchScreen(String nameScreen) {
+        Stage s = (Stage) this.getScene().getWindow();
+        Screen scr = Screen.allScreens.get(screenToSwitchTo);
+        s.setScene(scr.getScene());
+        s.setWidth(640);
+        s.setHeight(640);
     }
+}

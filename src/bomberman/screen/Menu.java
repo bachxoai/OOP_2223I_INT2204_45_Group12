@@ -1,8 +1,9 @@
 package bomberman.screen;
 
-import bomberman.UI.Buttons.ExitButton;
-import bomberman.UI.Buttons.SwitchPaneButton;
-import bomberman.UI.Buttons.SwitchScreenButton;
+import bomberman.UI.buttons.ExitButton;
+import bomberman.UI.buttons.SwitchPaneButton;
+import bomberman.UI.buttons.SwitchScreenButton;
+import bomberman.UI.buttons.SwitchToLevelScreenButton;
 import bomberman.managers.Sound;
 import bomberman.managers.SoundBackground;
 import bomberman.managers.SoundEffect;
@@ -27,6 +28,11 @@ public class Menu extends Screen {
     Pane root;
     public static boolean isUnmute = false;
 
+
+    String chosenMapPath;
+
+    String chosenMap;
+
     public Menu(String currentScreen) throws IOException {
         super(currentScreen);
         optionPanes = new HashMap<>();
@@ -48,8 +54,7 @@ public class Menu extends Screen {
         return scene;
     }
 
-    public void createMenuPane() { //play,exit
-        //optionPanes.replace("Menu", new VBox());
+    public void createMenuPane() {
         SwitchPaneButton toChooseMap = new SwitchPaneButton("Play", optionPanes.get("Menu"), optionPanes.get("ChooseMap"), root);
         toChooseMap.setPrefWidth(150);
         createFont(toChooseMap);
@@ -69,42 +74,42 @@ public class Menu extends Screen {
         optionPanes.get("Menu").getChildren().addAll(toChooseMap,music,exit);
     }
 
-    public void createChooseMapPane() { //map1,back,exit
-        //optionPanes.replace("ChooseMap", new VBox());
+    public void createChooseMapPane() {
         Pane p = optionPanes.get("ChooseMap");
         p.relocate(175,322);
 
-        SwitchScreenButton map1 = new SwitchScreenButton("Map 1", "Menu", "Map1",false);
+        SwitchScreenButton map1 = new SwitchToLevelScreenButton("Map 1", "Menu", "Map1", 1);
         map1.setPrefWidth(150);
         createFont(map1);
         createImageButton("/ImageButton/map1.png",map1);
+
+        SwitchScreenButton map2 = new SwitchToLevelScreenButton("Map 2", "Menu", "Map1", 2);
+        map2.setPrefWidth(150);
+        createFont(map2);
+        createImageButton("/ImageButton/map1.png",map2);
+
+        SwitchScreenButton map3 = new SwitchToLevelScreenButton("Map 3", "Menu", "Map1", 3);
+        map3.setPrefWidth(150);
+        createFont(map3);
+        createImageButton("/ImageButton/map1.png",map3);
 
         SwitchPaneButton back = new SwitchPaneButton("Back", optionPanes.get("ChooseMap"), optionPanes.get("Menu"), root);
         back.setPrefWidth(150);
         createFont(back);
         createImageButton("/ImageButton/back.png",back);
 
-        Button exit = new ExitButton();
-        exit.setPrefWidth(150);
-        createFont(exit);
-        createImageButton("/ImageButton/exit.png",exit);
+//        Button exit = new ExitButton();
+//        exit.setPrefWidth(150);
+//        createFont(exit);
+//        createImageButton("/ImageButton/exit.png",exit);
 
-        p.getChildren().addAll(map1,back,exit);
+//        p.getChildren().addAll(map1,back,exit);
+        p.getChildren().addAll(map1, map2, map3, back);
     }
 
     public void createChooseMusic() {
         Pane chooseMusic = optionPanes.get("ChooseMusic");
         chooseMusic.relocate(175,290);
-
-        Button noMusic = new Button("Unmute");
-        noMusic.setPrefWidth(160);
-        createFont(noMusic);
-        createImageButton("/ImageButton/umnute.png",noMusic);
-        noMusic.setOnAction(actionEvent -> {
-            isUnmute = true;
-            SoundBackground.stopMusic();
-            SoundEffect.hasSoundEffect = false;
-        });
 
         SwitchPaneButton back = new SwitchPaneButton("Back", optionPanes.get("ChooseMusic"), optionPanes.get("Menu"), root);
         back.setPrefWidth(160);
@@ -133,7 +138,33 @@ public class Menu extends Screen {
             SoundBackground.playMusic(SoundBackground.soundSinnes);
         });
 
-        chooseMusic.getChildren().addAll(noMusic,feed,sinnes,back);
+
+        Button musicOn = new Button("Un Mute");
+        Button musicOff = new Button("Mute");
+        musicOff.setPrefWidth(160);
+        createFont(musicOff);
+        createImageButton("/ImageButton/umnute.png",musicOff);
+        musicOff.setOnAction(actionEvent -> {
+            isUnmute = true;
+            SoundBackground.stopMusic();
+            SoundEffect.hasSoundEffect = false;
+            chooseMusic.getChildren().removeAll(musicOff, feed, sinnes, back);
+            chooseMusic.getChildren().addAll(musicOn,feed,sinnes,back);
+        });
+
+        musicOn.setPrefWidth(160);
+        createFont(musicOn);
+        createImageButton("/ImageButton/umnute.png",musicOn);
+        musicOn.setOnAction(actionEvent -> {
+            isUnmute = false;
+            SoundBackground.clip.start();
+            SoundEffect.hasSoundEffect = true;
+            chooseMusic.getChildren().removeAll(musicOn, feed, sinnes, back);
+            chooseMusic.getChildren().addAll(musicOff,feed,sinnes,back);
+        });
+
+
+        chooseMusic.getChildren().addAll(musicOff,feed,sinnes,back);
     }
     public void createRoot()  {
         //root = new Pane();
@@ -162,5 +193,13 @@ public class Menu extends Screen {
         imageView.setFitWidth(32);
         imageView.setFitHeight(32);
         a.setGraphic(imageView);
+    }
+
+    public String getChosenMapPath() {
+        return chosenMapPath;
+    }
+
+    public void setChosenMapPath(String chosenMapPath) {
+        this.chosenMapPath = chosenMapPath;
     }
 }

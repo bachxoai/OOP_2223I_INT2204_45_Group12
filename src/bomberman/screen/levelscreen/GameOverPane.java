@@ -1,7 +1,8 @@
 package bomberman.screen.levelscreen;
 
-import bomberman.UI.Buttons.ExitButton;
-import bomberman.UI.Buttons.SwitchScreenButton;
+import bomberman.UI.buttons.BackToMenuFromLevel;
+import bomberman.UI.buttons.ExitButton;
+import bomberman.UI.buttons.SwitchScreenButton;
 import bomberman.managers.SoundBackground;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,7 +36,7 @@ public class GameOverPane extends VBox {
         createImageButton("/ImageButton/exit.png",exit);
         exit.setPrefWidth(150);
 
-        SwitchScreenButton p = new SwitchScreenButton("Back", containedLevelScreen.getCurrentScreen(), "Menu",true);
+        SwitchScreenButton p = new BackToMenuFromLevel("Back", containedLevelScreen.getCurrentScreen(), "Menu", containedLevelScreen.getGameOver(), containedLevelScreen);
         createFont(p);
         createImageButton("/ImageButton/back.png",p);
         p.setPrefWidth(150);
