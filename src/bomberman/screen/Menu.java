@@ -25,11 +25,10 @@ import java.util.Objects;
 public class Menu extends Screen {
     HashMap<String, Pane> optionPanes;
     Pane root;
-    DropShadow dropShadow;
+    public static boolean isUnmute = false;
 
     public Menu(String currentScreen) throws IOException {
         super(currentScreen);
-        dropShadow = new DropShadow();
         optionPanes = new HashMap<>();
         optionPanes.put("Menu", new VBox(30));
         optionPanes.put("ChooseMap", new VBox(30));
@@ -45,8 +44,6 @@ public class Menu extends Screen {
         createRoot();
 
         scene = new Scene(root);
-
-        //scene.getStylesheets().add(getClass().getResource("/background.css").toExternalForm());
 
         return scene;
     }
@@ -68,14 +65,14 @@ public class Menu extends Screen {
         createFont(music);
         createImageButton("/ImageButton/music.png",music);
 
-        optionPanes.get("Menu").relocate(30,230);
+        optionPanes.get("Menu").relocate(175,322);
         optionPanes.get("Menu").getChildren().addAll(toChooseMap,music,exit);
     }
 
     public void createChooseMapPane() { //map1,back,exit
         //optionPanes.replace("ChooseMap", new VBox());
         Pane p = optionPanes.get("ChooseMap");
-        p.relocate(30,230);
+        p.relocate(175,322);
 
         SwitchScreenButton map1 = new SwitchScreenButton("Map 1", "Menu", "Map1",false);
         map1.setPrefWidth(150);
@@ -97,13 +94,14 @@ public class Menu extends Screen {
 
     public void createChooseMusic() {
         Pane chooseMusic = optionPanes.get("ChooseMusic");
-        chooseMusic.relocate(30,200);
+        chooseMusic.relocate(175,290);
 
         Button noMusic = new Button("Unmute");
         noMusic.setPrefWidth(160);
         createFont(noMusic);
         createImageButton("/ImageButton/umnute.png",noMusic);
         noMusic.setOnAction(actionEvent -> {
+            isUnmute = true;
             SoundBackground.stopMusic();
             SoundEffect.hasSoundEffect = false;
         });
@@ -118,6 +116,7 @@ public class Menu extends Screen {
         createImageButton("/ImageButton/music.png",feed);
         feed.setPrefWidth(160);
         feed.setOnAction(actionEvent -> {
+            isUnmute = false;
             SoundEffect.hasSoundEffect = true;
             SoundBackground.stopMusic();
             SoundBackground.playMusic(SoundBackground.soundFeed);
@@ -128,6 +127,7 @@ public class Menu extends Screen {
         createImageButton("/ImageButton/music.png",sinnes);
         sinnes.setPrefWidth(160);
         sinnes.setOnAction(actionEvent -> {
+            isUnmute = false;
             SoundEffect.hasSoundEffect = true;
             SoundBackground.stopMusic();
             SoundBackground.playMusic(SoundBackground.soundSinnes);
@@ -139,11 +139,6 @@ public class Menu extends Screen {
         //root = new Pane();
         root.getChildren().add(optionPanes.get("Menu"));
         SoundBackground.playMusic(SoundBackground.soundMenu);
-        /*Color color = Color.YELLOW;
-        CornerRadii cornerRadii = new CornerRadii(5);
-        Insets insets = new Insets(5, 2, 3, 3);
-        BackgroundFill backgroundFill = new BackgroundFill(color, cornerRadii, insets);
-        Background background = new Background(backgroundFill);*/
 
         Image image= new Image(getClass().getResourceAsStream("/textures/MenuBackground.png"));
         BackgroundImage backgroundImage = new BackgroundImage(

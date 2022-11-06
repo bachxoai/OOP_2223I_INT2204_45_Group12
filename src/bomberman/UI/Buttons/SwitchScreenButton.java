@@ -3,6 +3,7 @@ package bomberman.UI.Buttons;
 import bomberman.managers.Sound;
 import bomberman.managers.SoundBackground;
 import bomberman.managers.SoundEffect;
+import bomberman.screen.Menu;
 import bomberman.screen.levelscreen.LevelScreen;
 import bomberman.screen.Screen;
 import javafx.scene.control.Button;
@@ -22,7 +23,7 @@ public class SwitchScreenButton extends Button {
         setOnAction(actionEvent -> {
             switchScreen(name);
             //tiep tuc phat nhac
-            if(isPaneGameOver) {
+            if(isPaneGameOver && !Menu.isUnmute) {
                 SoundBackground.clip.setMicrosecondPosition(SoundBackground.clip.getMicrosecondPosition());
                 SoundBackground.clip.start();
             }

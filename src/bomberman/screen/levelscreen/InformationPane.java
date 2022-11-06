@@ -36,7 +36,7 @@ public class InformationPane extends HBox {
 
 
     public InformationPane(LevelScreen containedLevelScreen) {
-        super(30);
+        super(25);
         this.containedLevelScreen = containedLevelScreen;
 
         bom = Sprite.bomb.getFxImage();
@@ -122,12 +122,12 @@ public class InformationPane extends HBox {
     }
     Label createLabel(String s) {
         Label a = new Label(s);
-        a.setFont(Font.loadFont("file:res/font/font.ttf",20));
+        a.setFont(Font.loadFont("file:res/font/font.ttf",25));
         a.setTextFill(Paint.valueOf("#bf00b3"));
         return a;
     }
     Label FixLabel(Label a) {
-        a.setFont(Font.loadFont("file:res/font/font.ttf",20));
+        a.setFont(Font.loadFont("file:res/font/font.ttf",25));
         a.setTextFill(Paint.valueOf("#bf00b3"));
         return a;
     }

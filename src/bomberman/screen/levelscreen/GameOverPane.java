@@ -21,9 +21,9 @@ public class GameOverPane extends VBox {
     public GameOverPane(LevelScreen containedLevelScreen) {
         super(40);
         this.containedLevelScreen = containedLevelScreen;
-        relocate(100,200);
+        relocate(80,200);
 
-        buttonBox = new HBox(200);
+        buttonBox = new HBox(170);
 
         gameOver = new Label("Game Over");
         gameOver.setFont(Font.loadFont("file:res/font/font.ttf",70));
