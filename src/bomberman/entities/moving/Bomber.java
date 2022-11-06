@@ -14,24 +14,29 @@ import javafx.scene.input.KeyEvent;
  * Class bomber.
  */
 public class Bomber extends MovingEntity {
-    public static final double MAX_DISTANCE_TO_REFINE = 5;
-    public final int IMMORTAL_TIME = 3;
+    public static final double MAX_DISTANCE_TO_REFINE = 10;
+    public static final int IMMORTAL_TIME = 3;
     int lives;
     int bombNums;
     int flameRange;
     boolean canDetonate;
     boolean isImmortal;
     int immortalTime;
-
     //Kiểm tra xem nút Up có đang được bấm hay không? Các nút còn lại tương tự.
     private boolean upPressed = false;
     private boolean downPressed = false;
     private boolean rightPressed = false;
     private boolean leftPressed = false;
+    private final int screenX = GamePlay.gameplayScreenWidth / 2 - Sprite.SCALED_SIZE / 2;
+    private final int screenY = GamePlay.gameplayScreenHeight / 2 - Sprite.SCALED_SIZE / 2;
 
-    private final int screenX = GamePlay.gameplayScreenWidth/2 - Sprite.SCALED_SIZE/2;
-    private final int screenY = GamePlay.gameplayScreenHeight/2 - Sprite.SCALED_SIZE/2;
-
+    /**
+     * Constructor.
+     *
+     * @param x             position x in map.
+     * @param y             position y in map.
+     * @param mapManager    the MapManager to initialize.
+     */
     public Bomber(int x, int y, MapManager mapManager) {
         super(x, y, mapManager);
         img = Sprite.player_down.getFxImage();
@@ -74,7 +79,6 @@ public class Bomber extends MovingEntity {
             handleImmortal();
             updateFutureTilesCollision();
             updatePresentTileCollision();
-            presentTileCollision.handleOtherBomberCollision(this);
             if (futureTilesCollision[0].allowWalkThrough(this)
                     || futureTilesCollision[1].allowWalkThrough(this)) {
                 if (!futureTilesCollision[0].allowWalkThrough(this)) {
@@ -84,14 +88,25 @@ public class Bomber extends MovingEntity {
                 } else {
                     move();
                 }
+            } else {
+                moveToFitTile();
             }
-            checkMovingCollisions();
+            if (presentTileCollision.handleOtherBomberCollision(this)
+                    && futureTilesCollision[0].handleOtherBomberCollision(this)
+                    && (futureTilesCollision[0] == futureTilesCollision[1]
+                    || futureTilesCollision[1].handleOtherBomberCollision(this)))
+                checkMovingCollisions();
 
         } else {
             handleDeadState();
         }
     }
 
+    /**
+     * Handle key pressed event.
+     *
+     * @param event the key event.
+     */
     public void handleEvent(KeyEvent event) {
         //Handle Event nhận vào, bấm W thì đi lên, S đi xuống, A sang trái, D sang phải
         //Nhân vật chỉ có thể được đi một hướng duy nhất
@@ -123,13 +138,18 @@ public class Bomber extends MovingEntity {
         }
     }
 
+    /**
+     * handle released key event.
+     *
+     * @param event key event.
+     */
     public void handleReleasedEvent(KeyEvent event) {
         //Khi thả nút ra thì hướng di chuyển sẽ = none
         state = NORMAL_STATE;
 
         //Handle sự kiện thả phím, thả phím nào thì img sẽ đứng yên theo hướng đó.
         switch (event.getCode()) {
-            case W:  {
+            case W: {
                 upPressed = false;
                 img = Sprite.player_up.getFxImage();
                 break;
@@ -152,20 +172,23 @@ public class Bomber extends MovingEntity {
         }
     }
 
+    /**
+     * handle bomber's death.
+     */
     public void handleDeath() {
-        if(4 - lives == 1) {
+        if (4 - lives == 1) {
             mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf3);
         }
-        if(4 - lives == 2) {
+        if (4 - lives == 2) {
             mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf2);
         }
-        if(4 - lives == 3) {
+        if (4 - lives == 3) {
             mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf1);
         }
         lives--;
         state = DEAD_STATE;
         isAlive = false;
-        if(SoundEffect.hasSoundEffect) {
+        if (SoundEffect.hasSoundEffect) {
             SoundEffect.playSE(SoundEffect.bomberDeath);
         }
     }
@@ -208,7 +231,7 @@ public class Bomber extends MovingEntity {
         if (rightPressed) {
             state = RIGHT_STATE;
         }
-        animation(state);
+        animation();
     }
 
     private void handleImmortal() {
@@ -225,10 +248,10 @@ public class Bomber extends MovingEntity {
     }
 
     private void placeBomb() {
-        if (bombNums > 0 && !(presentCollision instanceof Brick)) {
+        if (bombNums > 0 && !(presentTileCollision instanceof Brick)) {
             new Bomb(getXUnit(), getYUnit(), mapManager, flameRange);
             mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, --bombNums);
-            if(SoundEffect.hasSoundEffect) {
+            if (SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.plantingBomb);
                 SoundEffect.playSE(SoundEffect.bombCountDown);
             }
@@ -248,7 +271,7 @@ public class Bomber extends MovingEntity {
             }
         } else {
             if (getX() < futureTilesCollision[walkableTile].getX()
-                    && getX() > futureTilesCollision[walkableTile].getX()- MAX_DISTANCE_TO_REFINE) {
+                    && getX() > futureTilesCollision[walkableTile].getX() - MAX_DISTANCE_TO_REFINE) {
                 setX(futureTilesCollision[unWalkableTile].getX() + Sprite.SCALED_SIZE);
                 move();
             } else if (getX() > futureTilesCollision[walkableTile].getX()
@@ -273,6 +296,27 @@ public class Bomber extends MovingEntity {
                     || getY() + Sprite.SCALED_SIZE - 1 < enemy.getY())) {
                 enemy.handleOtherBomberCollision(this);
             }
+        }
+    }
+
+    private void moveToFitTile() {
+        switch (state) {
+            case UP_STATE: {
+                setY(getYUnit() * Sprite.SCALED_SIZE);
+                break;
+            }
+//            case DOWN_STATE: {
+//                setY((int) ((getY()) / Sprite.SCALED_SIZE) * Sprite.SCALED_SIZE);
+//                break;
+//            }
+            case LEFT_STATE: {
+                setX(getXUnit() * Sprite.SCALED_SIZE);
+                break;
+            }
+//            case RIGHT_STATE: {
+//                setX((int) ((getX()) / Sprite.SCALED_SIZE) * Sprite.SCALED_SIZE);
+//                break;
+//            }
         }
     }
 

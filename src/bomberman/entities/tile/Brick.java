@@ -1,22 +1,19 @@
 package bomberman.entities.tile;
 
-import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.MovingEntity;
-import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
+import bomberman.managers.MapManager;
 
-//Class cho gạch
+/**
+ * Brick Class.
+ */
 public class Brick extends TileEntity {
     public Brick(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.brick.getFxImage();
     }
 
-    public boolean handleOtherBomberCollision(Bomber bomber) {
-        return false;
-    }
-
-//    @Override
+    @Override
     public boolean allowWalkThrough(MovingEntity movingEntity) {
         return movingEntity.isCanWalkThroughBrick();
     }

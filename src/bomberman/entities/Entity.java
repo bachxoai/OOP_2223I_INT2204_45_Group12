@@ -25,6 +25,13 @@ public abstract class Entity {
     //MapManager chứa entity đó.
     protected MapManager mapManager;
 
+    /**
+     * Constructor 1.
+     *
+     * @param xUnit         x position in map.
+     * @param yUnit         y position in map.
+     * @param mapManager    the MapManager to initialize.
+     */
     public Entity(int xUnit, int yUnit, MapManager mapManager) {
         this.xUnit = xUnit;
         this.yUnit = yUnit;
@@ -33,14 +40,19 @@ public abstract class Entity {
         this.mapManager = mapManager;
     }
 
+    /**
+     * Render Entities in map with bomber to be center.
+     *
+     * @param gc GraphicsContext to draw on.
+     */
     public void render(GraphicsContext gc) {
         double screenX = x - mapManager.getBomberman().getX() + mapManager.getBomberman().getScreenX();
         double screenY = y - mapManager.getBomberman().getY() + mapManager.getBomberman().getScreenY();
 
-        if (x + Sprite.SCALED_SIZE > mapManager.getBomberman().getX() - mapManager.getBomberman().getScreenX() &&
-                x - Sprite.SCALED_SIZE < mapManager.getBomberman().getX() + mapManager.getBomberman().getScreenX() &&
-                y + Sprite.SCALED_SIZE > mapManager.getBomberman().getY() - mapManager.getBomberman().getScreenY() &&
-                y - Sprite.SCALED_SIZE < mapManager.getBomberman().getY() + mapManager.getBomberman().getScreenY()) {
+        if (x + Sprite.SCALED_SIZE > mapManager.getBomberman().getX() - mapManager.getBomberman().getScreenX()
+                && x - Sprite.SCALED_SIZE < mapManager.getBomberman().getX() + mapManager.getBomberman().getScreenX()
+                && y + Sprite.SCALED_SIZE > mapManager.getBomberman().getY() - mapManager.getBomberman().getScreenY()
+                && y - Sprite.SCALED_SIZE < mapManager.getBomberman().getY() + mapManager.getBomberman().getScreenY()) {
             gc.drawImage(img, screenX, screenY);
         }
     }
@@ -79,8 +91,24 @@ public abstract class Entity {
         this.mapManager = mapManager;
     }
 
+    /**
+     * Handle collision effect when other bomber collide with this entity.
+     *
+     * @param bomber the bomber that collide with this entity.
+     * @return true if the effect is not final (e.g. death is qualified as final)
+     * and can pass to other effects to check
+     * (when the bomber collide with multiple entities at a time), false otherwise.
+     */
     public abstract boolean handleOtherBomberCollision(Bomber bomber);
 
+    /**
+     * Handle collision effect when an enemy collide with this entity.
+     *
+     * @param enemy the enemy that collide with this entity.
+     * @return true if the effect is not final (e.g. death is qualified as final)
+     * and can pass to other effects to check
+     * (when the enemy collide with multiple entities at a time), false otherwise.
+     */
     public boolean handleOtherEnemyCollision(Enemy enemy) {
         return true;
     }

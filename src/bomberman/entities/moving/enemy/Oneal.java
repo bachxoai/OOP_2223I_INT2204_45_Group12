@@ -1,9 +1,7 @@
 package bomberman.entities.moving.enemy;
 
-import bomberman.entities.Entity;
-import bomberman.entities.tile.Grass;
-import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
+import bomberman.managers.MapManager;
 
 /**
  * Oneal moves quickly and randomly.
@@ -14,6 +12,14 @@ import bomberman.graphics.Sprite;
 public class Oneal extends Enemy {
     BomberFinder bomberFinder;
     private static final int LENGTH_TO_CHASE_BOMBER = 4;
+
+    /**
+     * Constructor.
+     *
+     * @param xUnit         position x in map.
+     * @param yUnit         position y in map.
+     * @param mapManager    the MapManager to initialize.
+     */
     public Oneal(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.oneal_left1.getFxImage();
@@ -32,6 +38,10 @@ public class Oneal extends Enemy {
         dead[0] = Sprite.oneal_dead;
         setSprite(left, right, left, right, dead);
 
+        canWalkThroughBomb = false;
+        canWalkThroughBrick = false;
+        canWalkThroughFlame = false;
+
         bomberFinder = new BomberFinder(this, LENGTH_TO_CHASE_BOMBER, mapManager);
 
         state = NORMAL_STATE;
@@ -48,10 +58,5 @@ public class Oneal extends Enemy {
         } else {
             state = NORMAL_STATE;
         }
-    }
-
-    protected boolean canMove(int x, int y) {
-        Entity e = mapManager.getTopTileAt(x, y);
-        return e instanceof Grass;
     }
 }

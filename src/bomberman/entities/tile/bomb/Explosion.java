@@ -2,7 +2,6 @@ package bomberman.entities.tile.bomb;
 
 import bomberman.entities.DynamicEntity;
 import bomberman.entities.moving.Bomber;
-import bomberman.entities.moving.MovingEntity;
 import bomberman.entities.moving.enemy.Enemy;
 import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
@@ -17,6 +16,16 @@ public class Explosion extends TileEntity implements DynamicEntity {
     int timeLeft;
     Sprite[] sprites;
 
+    /**
+     * Constructor 1.
+     *
+     * @param xUnit         position x in map.
+     * @param yUnit         position y in map.
+     * @param mapManager    the MapManager to be initialized.
+     * @param sprite        sprite.
+     * @param sprite1       sprite1.
+     * @param sprite2       sprite2.
+     */
     public Explosion(int xUnit, int yUnit, MapManager mapManager,
                      Sprite sprite,
                      Sprite sprite1,
@@ -44,16 +53,16 @@ public class Explosion extends TileEntity implements DynamicEntity {
 
     @Override
     public boolean handleOtherBomberCollision(Bomber bomber) {
-        if (!(bomber.isCanWalkThroughFlame()) && !bomber.isImmortal()) {
+        if (!bomber.isCanWalkThroughFlame() && !bomber.isImmortal()) {
             bomber.handleDeath();
         }
-        return true;
+        return false;
     }
 
     @Override
     public boolean handleOtherEnemyCollision(Enemy enemy) {
         enemy.setAlive(false);
         SoundEffect.playSE(SoundEffect.enemyDeath);
-        return true;
+        return false;
     }
 }

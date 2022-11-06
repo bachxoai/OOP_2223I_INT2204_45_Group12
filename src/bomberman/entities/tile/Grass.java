@@ -1,19 +1,14 @@
 package bomberman.entities.tile;
 
-import bomberman.entities.moving.Bomber;
-import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
+import bomberman.managers.MapManager;
 
-//Grass là một vật thể đứng yên nên kế thừa TileEntity
+/**
+ * Grass.
+ */
 public class Grass extends TileEntity {
-
     public Grass(int x, int y, MapManager mapManager) {
         super(x, y, mapManager);
         img = Sprite.grass.getFxImage();
-    }
-
-    @Override
-    public boolean handleOtherBomberCollision(Bomber bomber) {
-        return true;
     }
 }

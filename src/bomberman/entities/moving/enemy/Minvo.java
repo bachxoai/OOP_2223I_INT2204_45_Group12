@@ -3,13 +3,18 @@ package bomberman.entities.moving.enemy;
 import bomberman.graphics.Sprite;
 import bomberman.managers.MapManager;
 
-import java.awt.*;
-
 /**
  * Đuổi theo bomberman nếu ở gần
- * Be associated with a Soft Block Pass power-up
+ * Be associated with a Soft Block Pass power-up.
  */
 public class Minvo extends Enemy {
+    /**
+     * Constructor.
+     *
+     * @param xUnit         position x in map.
+     * @param yUnit         position y in map.
+     * @param mapManager    the MapManager to initialize.
+     */
     public Minvo(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.minvo_left1.getFxImage();
@@ -27,6 +32,10 @@ public class Minvo extends Enemy {
         Sprite[] dead = new Sprite[1];
         dead[0] = Sprite.minvo_dead;
         setSprite(left, right, left, right, dead);
+
+        canWalkThroughBomb = false;
+        canWalkThroughBrick = false;
+        canWalkThroughFlame = false;
     }
 
     @Override

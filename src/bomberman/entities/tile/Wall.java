@@ -5,8 +5,10 @@ import bomberman.entities.moving.MovingEntity;
 import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
 
+/**
+ * Wall: for now, wall blocks all moving entities.
+ */
 public class Wall extends TileEntity {
-
     public Wall(int x, int y, MapManager mapManager) {
         super(x, y, mapManager);
         img = Sprite.wall.getFxImage();

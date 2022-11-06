@@ -11,6 +11,13 @@ import bomberman.managers.MapManager;
  * It takes 1 hit to defeat and yields a score of 400 points.
  */
 public class Doll extends Enemy {
+    /**
+     * Constructor.
+     *
+     * @param xUnit         position x in map.
+     * @param yUnit         position y in map.
+     * @param mapManager    the MapManager to initialize.
+     */
     public Doll(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.doll_left1.getFxImage();
@@ -27,12 +34,17 @@ public class Doll extends Enemy {
         Sprite[] dead = new Sprite[1];
         dead[0] = Sprite.doll_dead;
         setSprite(left, right, left, right, dead);
+
+        canWalkThroughBomb = false;
+        canWalkThroughBrick = false;
+        canWalkThroughFlame = false;
     }
 
     @Override
     protected void setDirection() {
-        if (notStuck())
+        if (notStuck()) {
             changeDirRandomly();
+        }
     }
 
     @Override

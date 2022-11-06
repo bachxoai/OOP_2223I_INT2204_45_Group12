@@ -1,10 +1,10 @@
 package bomberman.entities.moving;
 
 import bomberman.entities.DynamicEntity;
-import bomberman.entities.tile.TileEntity;
-import bomberman.managers.GamePlay;
 import bomberman.entities.Entity;
+import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
+import bomberman.managers.GamePlay;
 import bomberman.managers.MapManager;
 
 /**
@@ -21,84 +21,44 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     public static final int DEAD_TIME = 20;
     //Trạng thái của Moving Entity
     protected int state;
-
     //Các Sprite lưu animation của Entity.
     protected Sprite[] up;
     protected Sprite[] down;
     protected Sprite[] left;
     protected Sprite[] right;
     protected Sprite[] dead;
-
-    //Va chạm của ô sắp gặp
-    protected Entity futureCollision = null;
-
-    //Va chạm của ô đang đứng
-    protected Entity presentCollision = null;
-
     //Vận tốc
     protected double velocity;
-
     //Số khung hình trên giây
     public final int ANIMATED_FRAME = 6;
-
     //Thời gian hoạt ảnh animation luc chết
     protected int animationDeadTime = DEAD_TIME;
-
     //Biến thể hiện rằng Entity còn sống
     protected boolean isAlive = true;
-
     protected boolean canWalkThroughBomb;
     protected boolean canWalkThroughBrick;
     protected boolean canWalkThroughFlame;
-
     protected final TileEntity[] futureTilesCollision = new TileEntity[2];
     protected TileEntity presentTileCollision;
 
-
+    /**
+     * Constructor.
+     *
+     * @param xUnit         position x in map.
+     * @param yUnit         position y in map.
+     * @param mapManager    the MapManager to initialize.
+     */
     public MovingEntity(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         mapManager.addMovingEntities(this);
         state = NORMAL_STATE;
     }
 
-    //Phương thức gán các hình ảnh để tạo animation cho MovingEntity
-    public void setSprite(Sprite[] up, Sprite[] down, Sprite[] left, Sprite[] right, Sprite[] dead) {
-        this.up = up;
-        this.down = down;
-        this.left = left;
-        this.right = right;
-        this.dead = dead;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setFutureCollision(Entity collisionStatus) {
-        this.futureCollision = collisionStatus;
-    }
-
-    public void setPresentCollision(Entity presentCollision) {
-        this.presentCollision = presentCollision;
-    }
-
-    public double getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(double velocity) {
-        this.velocity = velocity;
-    }
-
-    @Override
-    public abstract void update();
-
     /**
-     * Hàm tạo hoạt ảnh cho nhân vật
-     * @param state
+     * Hàm tạo hoạt ảnh cho nhân vật.
      */
-    protected void animation(int state) {
-        int n = GamePlay.frameCount/(60/ANIMATED_FRAME);
+    protected void animation() {
+        int n = GamePlay.frameCount / (60 / ANIMATED_FRAME);
         switch (state) {
             case UP_STATE:
                 img = up[n % up.length].getFxImage();
@@ -119,7 +79,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     }
 
     /**
-     * Hàm thay đổi vị trí cho nhân vật
+     * Hàm thay đổi vị trí cho nhân vật.
      */
     protected void move() {
         switch (state) {
@@ -143,21 +103,15 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     }
 
     /**
-     * Hàm thực hiện khi nhân vật chết
+     * Hàm thực hiện khi nhân vật chết.
      */
     protected void handleDeadState() {
+        state = DEAD_STATE;
         animationDeadTime--;
-        if (animationDeadTime == 0) {
-            if (this instanceof Bomber && ((Bomber) this).lives != 0) {
-                return;
-            }
-            mapManager.getEnemies().remove(this);
-            mapManager.getMovingEntities().remove(this);
-            return;
-        }
-        animation(DEAD_STATE);
+        animation();
     }
 
+    @Override
     public boolean handleOtherBomberCollision(Bomber bomber) {
         return true;
     }
@@ -165,35 +119,39 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     /**
      * Check two front tiles in the direction of this.
      *
-     * @return sth.
+     * @return the desire tiles.
      */
     public TileEntity[] updateFutureTilesCollision() {
-//        futureTilesCollision[0] = null;
-
         int leftCol = (int) getX() / Sprite.SCALED_SIZE;
         int rightCol = (int) (getX() + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
         int topRow = (int) getY() / Sprite.SCALED_SIZE;
         int bottomRow = (int) (getY() + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
+        // technically these variable should be ... +- min(velocity, SCALED_SIZE),
+        // but velocity should always be the smaller
+        int up = (int) (getY() - velocity) / Sprite.SCALED_SIZE;
+        int down = (int) (getY() + Sprite.SCALED_SIZE - 1 + velocity) / Sprite.SCALED_SIZE;
+        int left = (int) (getX() - velocity) / Sprite.SCALED_SIZE;
+        int right = (int) (getX() + Sprite.SCALED_SIZE - 1 +  velocity) / Sprite.SCALED_SIZE;
 
         switch (getState()) {
             case MovingEntity.UP_STATE: {
-                futureTilesCollision[0] = getMapManager().getTopTileAt(leftCol, topRow);
-                futureTilesCollision[1] = getMapManager().getTopTileAt(rightCol, topRow);
+                futureTilesCollision[0] = getMapManager().getTopTileAt(leftCol, up);
+                futureTilesCollision[1] = getMapManager().getTopTileAt(rightCol, up);
                 break;
             }
             case MovingEntity.DOWN_STATE: {
-                futureTilesCollision[0] = getMapManager().getTopTileAt(leftCol, bottomRow);
-                futureTilesCollision[1] = getMapManager().getTopTileAt(rightCol, bottomRow);
+                futureTilesCollision[0] = getMapManager().getTopTileAt(leftCol, down);
+                futureTilesCollision[1] = getMapManager().getTopTileAt(rightCol, down);
                 break;
             }
             case MovingEntity.RIGHT_STATE: {
-                futureTilesCollision[0] = getMapManager().getTopTileAt(rightCol, topRow);
-                futureTilesCollision[1] = getMapManager().getTopTileAt(rightCol, bottomRow);
+                futureTilesCollision[0] = getMapManager().getTopTileAt(right, topRow);
+                futureTilesCollision[1] = getMapManager().getTopTileAt(right, bottomRow);
                 break;
             }
             case MovingEntity.LEFT_STATE: {
-                futureTilesCollision[0] = getMapManager().getTopTileAt(leftCol, topRow);
-                futureTilesCollision[1] = getMapManager().getTopTileAt(leftCol, bottomRow);
+                futureTilesCollision[0] = getMapManager().getTopTileAt(left, topRow);
+                futureTilesCollision[1] = getMapManager().getTopTileAt(left, bottomRow);
                 break;
             }
             default: {
@@ -201,16 +159,13 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
                 futureTilesCollision[1] = mapManager.getTopTileAt(leftCol, topRow);
             }
         }
-
-
-
         return this.futureTilesCollision;
     }
 
     /**
-     * check what is standing tile
+     * check the current standing tile.
      *
-     * @return the
+     * @return the desire tile.
      */
     public TileEntity updatePresentTileCollision() {
         presentTileCollision = mapManager.getTopTileAt(getXUnit(), getYUnit());
@@ -224,6 +179,35 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
      */
     public void checkMovingCollisions() {
 
+    }
+
+    /**
+     * Phương thức gán các hình ảnh để tạo animation cho MovingEntity.
+     *
+     * @param up        Sprite up.
+     * @param down      Sprite down.
+     * @param left      Sprite left.
+     * @param right     Sprite right.
+     * @param dead      Sprite dead.
+     */
+    public void setSprite(Sprite[] up, Sprite[] down, Sprite[] left, Sprite[] right, Sprite[] dead) {
+        this.up = up;
+        this.down = down;
+        this.left = left;
+        this.right = right;
+        this.dead = dead;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public double getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(double velocity) {
+        this.velocity = velocity;
     }
 
     public boolean isAlive() {

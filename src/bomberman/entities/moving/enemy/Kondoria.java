@@ -16,6 +16,13 @@ public class Kondoria extends Enemy {
     BomberFinder bomberFinder;
     private static final int LENGTH_TO_CHASE_BOMBER = 20;
 
+    /**
+     * Constructor.
+     *
+     * @param xUnit         position x in map.
+     * @param yUnit         position y in map.
+     * @param mapManager    the MapManager to initialize.
+     */
     public Kondoria(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.kondoria_left1.getFxImage();
@@ -33,6 +40,10 @@ public class Kondoria extends Enemy {
         dead[0] = Sprite.kondoria_dead;
         setSprite(left, right, left, right, dead);
 
+        canWalkThroughBomb = false;
+        canWalkThroughBrick = true;
+        canWalkThroughFlame = false;
+
         bomberFinder = new BomberFinder(this, LENGTH_TO_CHASE_BOMBER, mapManager);
 
         state = NORMAL_STATE;
@@ -49,12 +60,5 @@ public class Kondoria extends Enemy {
         } else {
             state = NORMAL_STATE;
         }
-    }
-
-    @Override
-    protected boolean canMove(int x, int y) {
-        Entity e = mapManager.getTopTileAt(x, y);
-        return e instanceof Grass
-                || e instanceof Brick;
     }
 }

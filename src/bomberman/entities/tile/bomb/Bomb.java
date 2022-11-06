@@ -1,14 +1,15 @@
 package bomberman.entities.tile.bomb;
 
-import bomberman.entities.moving.Bomber;
-import bomberman.managers.*;
-import bomberman.screen.levelscreen.InformationPane;
 import bomberman.entities.DynamicEntity;
 import bomberman.entities.Entity;
+import bomberman.entities.moving.Bomber;
+import bomberman.entities.moving.MovingEntity;
 import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.TileEntity;
 import bomberman.entities.tile.Wall;
 import bomberman.graphics.Sprite;
+import bomberman.managers.*;
+import bomberman.screen.levelscreen.InformationPane;
 
 /**
  * Charging bomb class.
@@ -20,6 +21,14 @@ public class Bomb extends TileEntity implements DynamicEntity {
     int timeToExplode;
     Sprite[] bombs;
 
+    /**
+     * Constructor.
+     *
+     * @param xUnit         position x in map.
+     * @param yUnit         position y in map.
+     * @param mapManager    the MapManager to be initialized.
+     * @param range         range of this bomb.
+     */
     public Bomb(int xUnit, int yUnit, MapManager mapManager, int range) {
         super(xUnit, yUnit, mapManager);
         this.range = range;
@@ -52,7 +61,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
         int addedBombNums = mapManager.getBomberman().getBombNums() + 1;
         mapManager.getBomberman().setBombNums(addedBombNums);
         mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, addedBombNums);
-        if(SoundEffect.hasSoundEffect) {
+        if (SoundEffect.hasSoundEffect) {
             SoundEffect.playSE(SoundEffect.bombExplosion);
         }
     }
@@ -163,5 +172,14 @@ public class Bomb extends TileEntity implements DynamicEntity {
     @Override
     public boolean handleOtherBomberCollision(Bomber bomber) {
         return false;
+    }
+
+    @Override
+    public boolean allowWalkThrough(MovingEntity movingEntity) {
+        return movingEntity.isCanWalkThroughBomb()
+                || !(getX() + Sprite.SCALED_SIZE - 1 < movingEntity.getX()
+                || getX() > movingEntity.getX() + Sprite.SCALED_SIZE - 1
+                || getY() > movingEntity.getY() + Sprite.SCALED_SIZE - 1
+                || getY() + Sprite.SCALED_SIZE - 1 < movingEntity.getY());
     }
 }

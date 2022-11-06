@@ -1,15 +1,19 @@
 package bomberman.entities.moving.enemy;
 
-import bomberman.entities.Entity;
-import bomberman.entities.tile.Grass;
-import bomberman.entities.tile.TileEntity;
-import bomberman.managers.MapManager;
 import bomberman.graphics.Sprite;
+import bomberman.managers.MapManager;
 
 /**
  * di chuyển ngẫu nhiên với vận tốc cố định.
  */
 public class Balloom extends Enemy {
+    /**
+     * Constructor.
+     *
+     * @param xUnit         position x in map.
+     * @param yUnit         position y in map.
+     * @param mapManager    the MapManager to initialize.
+     */
     public Balloom(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.balloom_left1.getFxImage();
@@ -27,11 +31,15 @@ public class Balloom extends Enemy {
         dead[0] = Sprite.balloom_dead;
         setSprite(left, right, left, right, dead);
 
+        canWalkThroughBomb = false;
+        canWalkThroughBrick = false;
+        canWalkThroughFlame = false;
+
         state = NORMAL_STATE;
     }
 
     /**
-     * Hàm chọn hướng di chuyển phù hợp
+     * Hàm chọn hướng di chuyển phù hợp.
      */
     protected void setDirection() {
         if (notStuck()) {
@@ -39,11 +47,5 @@ public class Balloom extends Enemy {
         } else {
             state = NORMAL_STATE;
         }
-    }
-
-    protected boolean canMove(int x, int y) {
-        TileEntity e = mapManager.getTopTileAt(x, y);
-        return e.allowWalkThrough(this);
-//        return e instanceof Grass;
     }
 }

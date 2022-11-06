@@ -1,9 +1,9 @@
 package bomberman.entities.tile;
 
+import bomberman.entities.Entity;
 import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.MovingEntity;
 import bomberman.entities.moving.enemy.Enemy;
-import bomberman.entities.Entity;
 import bomberman.managers.MapManager;
 
 /**
@@ -16,12 +16,22 @@ public abstract class TileEntity extends Entity {
         mapManager.addTileEntity(this);
     }
 
-    public abstract boolean handleOtherBomberCollision(Bomber bomber);
+    @Override
+    public boolean handleOtherBomberCollision(Bomber bomber) {
+        return true;
+    }
 
+    @Override
     public boolean handleOtherEnemyCollision(Enemy enemy) {
         return true;
     }
 
+    /**
+     * Check if an entity can walk through this tile entity.
+     *
+     * @param movingEntity the movingEntity needs to be checked.
+     * @return true if the moving entity can walk through this tile.
+     */
     public boolean allowWalkThrough(MovingEntity movingEntity) {
         return true;
     }

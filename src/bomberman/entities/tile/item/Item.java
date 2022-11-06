@@ -1,11 +1,13 @@
 package bomberman.entities.tile.item;
 
 import bomberman.entities.moving.Bomber;
-import bomberman.managers.MapManager;
 import bomberman.entities.tile.TileEntity;
+import bomberman.managers.MapManager;
 import bomberman.managers.SoundEffect;
 
-//Class dành cho các vật phẩm nâng cấp
+/**
+ * Items that can have effect on bomber who walks on this item.
+ */
 public abstract class Item extends TileEntity {
     public Item(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);

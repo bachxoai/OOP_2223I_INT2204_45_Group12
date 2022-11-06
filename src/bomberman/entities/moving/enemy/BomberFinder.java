@@ -1,15 +1,13 @@
 package bomberman.entities.moving.enemy;
 
-import bomberman.entities.Entity;
-import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.MovingEntity;
 import bomberman.managers.GamePlay;
 import bomberman.managers.MapManager;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
+/**
+ * class contains algorithms to find bomber.
+ */
 public class BomberFinder {
     public static final int CAN_WALK = 0;
     public static final int BLOCKED = 1;
@@ -24,6 +22,14 @@ public class BomberFinder {
     ArrayList<ArrayList<Integer>> myQueue;
     int left;
     int right;
+
+    /**
+     * Constructor.
+     *
+     * @param owner                 Enemy that owns this bomberFinder.
+     * @param lengthToFindBomber    length to find bomber.
+     * @param mapManager            mapManager .
+     */
     public BomberFinder(Enemy owner, int lengthToFindBomber, MapManager mapManager) {
         this.owner = owner;
         this.lengthToFindBomber = lengthToFindBomber;
@@ -37,7 +43,12 @@ public class BomberFinder {
         }
     }
 
-    ArrayList<ArrayList<Integer>> updatedVision() {
+    /**
+     * update the walkable map of the owner.
+     *
+     * @return the desire map.
+     */
+    public ArrayList<ArrayList<Integer>> updatedVision() {
         for (int j = 0; j < mapManager.getRow(); j++) {
             for (int i = 0; i < mapManager.getCol(); i++) {
                 if (owner.canMove(i, j)) {
@@ -52,16 +63,19 @@ public class BomberFinder {
         return vision;
     }
 
-    void bfs() {
-        int length = lengthToFindBomber;
+    /**
+     * bfs algorithm.
+     */
+    public void bfs() {
         myQueue = new ArrayList<>();
+        myQueue.add(new ArrayList<>());
+        myQueue.get(0).add(owner.getXUnit());
+        myQueue.get(0).add(owner.getYUnit());
         left = 0;
         right = 1;
         int curX = owner.getXUnit();
         int curY = owner.getYUnit();
-        myQueue.add(new ArrayList<>());
-        myQueue.get(0).add(owner.getXUnit());
-        myQueue.get(0).add(owner.getYUnit());
+        int length = lengthToFindBomber;
         int oldRight = right;
 
         if (checkDirectionsForBfs(curX, curY, 0, true)) {
@@ -147,16 +161,6 @@ public class BomberFinder {
         a.add(x);
         a.add(y);
         myQueue.add(a);
-    }
-
-    public void printMap() {
-        for (int j = 0; j < mapManager.getRow(); j++) {
-            for (int i = 0; i < mapManager.getCol(); i++) {
-                System.out.print(vision.get(j).get(i) + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 
     public int getFinalDirection() {
