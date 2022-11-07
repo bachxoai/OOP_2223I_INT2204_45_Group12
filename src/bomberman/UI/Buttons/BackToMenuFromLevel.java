@@ -12,9 +12,9 @@ public class BackToMenuFromLevel extends SwitchScreenButton {
 
     LevelScreen levelScreen;
 
-    public BackToMenuFromLevel(String name, String screenHoldThisButton, String screenToSwitchTo,
+    public BackToMenuFromLevel(String name, String path, String screenHoldThisButton, String screenToSwitchTo,
                                Pane containedPane, LevelScreen levelScreen) {
-        super(name, screenHoldThisButton, screenToSwitchTo);
+        super(name, path, screenHoldThisButton, screenToSwitchTo);
         this.containedPane = containedPane;
         this.levelScreen = levelScreen;
     }

@@ -5,17 +5,17 @@ import bomberman.screen.levelscreen.LevelScreen;
 import javafx.stage.Stage;
 
 public class SwitchToLevelScreenButton extends SwitchScreenButton {
-    int mapOfButton;
+    String mapOfButton;
 
-    public SwitchToLevelScreenButton(String name, String screenHoldThisButton, String screenToSwitchTo, int mapOfButton) {
-        super(name, screenHoldThisButton, screenToSwitchTo);
+    public SwitchToLevelScreenButton(String name, String path, String screenHoldThisButton, String screenToSwitchTo, String mapOfButton) {
+        super(name, path, screenHoldThisButton, screenToSwitchTo);
         this.mapOfButton = mapOfButton;
     }
 
     @Override
     public void switchScreen() {
         LevelScreen tmp = (LevelScreen) Screen.allScreens.get(screenToSwitchTo);
-        tmp.getGamePlay().loadMap("res/levels/Level" + mapOfButton + ".txt");
+        tmp.getGamePlay().loadMap("res/levels/" + mapOfButton + ".txt");
         tmp.getGamePlay().resetPlayTime();
         tmp.startTimer();
         tmp.setBomberStats();

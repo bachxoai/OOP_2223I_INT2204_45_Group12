@@ -15,8 +15,8 @@ public class DetonatorItem extends Item {
 
     @Override
     public boolean handleOtherBomberCollision(Bomber bomber) {
-        //Modify here
         super.handleOtherBomberCollision(bomber);
+        bomber.setCanDetonate(true);
         return true;
     }
 }

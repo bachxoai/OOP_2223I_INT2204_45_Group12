@@ -27,6 +27,7 @@ public class LevelScreen extends Screen {
         gameOver = new GameOverPane(this);
         createScene();
     }
+
     public Pane createPlayingPane() {
         playingPane = new VBox();
         gamePlay = new GamePlay(this);
@@ -35,15 +36,11 @@ public class LevelScreen extends Screen {
         return playingPane;
     }
 
-    //public abstract Group createGamePlay();
-
-
     public Scene createScene() {
         root = new Pane();
         createPlayingPane();
         root.getChildren().addAll(playingPane);
         scene = new Scene(root);
-        //scene.getStylesheets().add(getClass().getResource("/background.css").toExternalForm());
 
         image = new Image(getClass().getResourceAsStream("/textures/GamePlayBackground.png"));
         BackgroundImage backgroundImage = new BackgroundImage(

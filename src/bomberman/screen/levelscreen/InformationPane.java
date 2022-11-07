@@ -1,5 +1,6 @@
 package bomberman.screen.levelscreen;
 
+import bomberman.UI.Buttons.MyButton;
 import bomberman.graphics.Sprite;
 import bomberman.managers.GamePlay;
 import javafx.geometry.Insets;
@@ -13,7 +14,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 public class InformationPane extends HBox {
-
     Button pause;
     LevelScreen containedLevelScreen;
     public static final int SPEED = 0;
@@ -33,7 +33,6 @@ public class InformationPane extends HBox {
     HBox bomBox;
     HBox flameRangeBox;
     HBox clockBox;
-
 
     public InformationPane(LevelScreen containedLevelScreen) {
         super(25);
@@ -58,9 +57,8 @@ public class InformationPane extends HBox {
 
         heartPane = new HeartPane();
 
-        pause = new Button();
-        pause.setGraphic(createImageView("/ImageButton/pause.png"));
-        pause.setStyle("-fx-background-color: #33ff36");
+        pause = new MyButton("", MyButton.PAUSE);
+        pause.setPrefWidth(20);
         pause.setOnAction(actionEvent -> {
             handlePause();
         });
@@ -120,17 +118,20 @@ public class InformationPane extends HBox {
             System.out.println("Pausing!");
         }
     }
+
     Label createLabel(String s) {
         Label a = new Label(s);
         a.setFont(Font.loadFont("file:res/font/font.ttf",25));
-        a.setTextFill(Paint.valueOf("#bf00b3"));
+        a.setTextFill(Paint.valueOf("#FFFAD7"));
         return a;
     }
+
     Label FixLabel(Label a) {
         a.setFont(Font.loadFont("file:res/font/font.ttf",25));
-        a.setTextFill(Paint.valueOf("#bf00b3"));
+        a.setTextFill(Paint.valueOf("#FFFAD7"));
         return a;
     }
+
     ImageView createImageView(String path) {
         Image image = new Image(getClass().getResourceAsStream(path));
         ImageView imageView = new ImageView(image);

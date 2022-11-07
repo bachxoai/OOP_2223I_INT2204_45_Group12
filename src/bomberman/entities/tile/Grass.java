@@ -11,4 +11,9 @@ public class Grass extends TileEntity {
         super(x, y, mapManager);
         img = Sprite.grass.getFxImage();
     }
+
+    @Override
+    public boolean canPlaceBomb() {
+        return true;
+    }
 }

@@ -35,4 +35,8 @@ public abstract class TileEntity extends Entity {
     public boolean allowWalkThrough(MovingEntity movingEntity) {
         return true;
     }
+
+    public boolean canPlaceBomb() {
+        return false;
+    }
 }

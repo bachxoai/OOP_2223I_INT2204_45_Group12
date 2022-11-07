@@ -20,6 +20,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
     int range;
     int timeToExplode;
     Sprite[] bombs;
+    private Bomber bomber;
 
     /**
      * Constructor.
@@ -29,9 +30,10 @@ public class Bomb extends TileEntity implements DynamicEntity {
      * @param mapManager    the MapManager to be initialized.
      * @param range         range of this bomb.
      */
-    public Bomb(int xUnit, int yUnit, MapManager mapManager, int range) {
+    public Bomb(int xUnit, int yUnit, MapManager mapManager, int range, Bomber bomber) {
         super(xUnit, yUnit, mapManager);
         this.range = range;
+        this.bomber = bomber;
         img = Sprite.bomb.getFxImage();
         bombs = new Sprite[6];
         bombs[0] = Sprite.bomb;
@@ -49,15 +51,16 @@ public class Bomb extends TileEntity implements DynamicEntity {
             timeToExplode--;
             img = bombs[(timeToExplode / ANIMATED_FRAME) % 6].getFxImage();
         } else if (timeToExplode == 0) {
-            handleAfterExplosion();
+            explode();
         }
     }
 
-    private void handleAfterExplosion() {
+    public void explode() {
         new Explosion(getXUnit(), getYUnit(), mapManager,
                 Sprite.bomb_exploded, Sprite.bomb_exploded1, Sprite.bomb_exploded2);
         createExplosion();
         mapManager.getTilesAt(getXUnit(), getYUnit()).remove(this);
+        bomber.getPlacedBombs().remove(this);
         int addedBombNums = mapManager.getBomberman().getBombNums() + 1;
         mapManager.getBomberman().setBombNums(addedBombNums);
         mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, addedBombNums);
@@ -164,6 +167,10 @@ public class Bomb extends TileEntity implements DynamicEntity {
         Entity e = mapManager.getTopTileAt(x, y);
         if (e instanceof Brick) {
             createExplodedBrick(x, y);
+            return true;
+        }
+        if (e instanceof Bomb) {
+            ((Bomb) e).explode();
             return true;
         }
         return e instanceof Wall;

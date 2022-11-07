@@ -28,10 +28,4 @@ import java.net.URL;
     public static void stopMusic() {
         stop();
     }
-    /*public static void pause() {
-        long clipTime = clip.getMicrosecondPosition();
-        clip.stop();
-        clip.setMicrosecondPosition(clipTime);
-        clip.start();
-    }*/
 }

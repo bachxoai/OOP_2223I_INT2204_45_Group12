@@ -10,6 +10,8 @@ import bomberman.screen.levelscreen.InformationPane;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 
+import java.util.ArrayList;
+
 /**
  * Class bomber.
  */
@@ -29,6 +31,7 @@ public class Bomber extends MovingEntity {
     private boolean leftPressed = false;
     private final int screenX = GamePlay.gameplayScreenWidth / 2 - Sprite.SCALED_SIZE / 2;
     private final int screenY = GamePlay.gameplayScreenHeight / 2 - Sprite.SCALED_SIZE / 2;
+    private ArrayList<Bomb> placedBombs;
 
     /**
      * Constructor.
@@ -70,6 +73,7 @@ public class Bomber extends MovingEntity {
         bombNums = 1;
         lives = 3;
         flameRange = 1;
+        placedBombs = new ArrayList<>();
     }
 
     @Override
@@ -142,6 +146,11 @@ public class Bomber extends MovingEntity {
             case B: {
                 placeBomb();
                 break;
+            }
+            case N: {
+                if (isCanDetonate()) {
+                    detonateBombs();
+                }
             }
         }
     }
@@ -256,8 +265,8 @@ public class Bomber extends MovingEntity {
     }
 
     private void placeBomb() {
-        if (bombNums > 0 && !(presentTileCollision instanceof Brick)) {
-            new Bomb(getXUnit(), getYUnit(), mapManager, flameRange);
+        if (bombNums > 0 && presentTileCollision.canPlaceBomb()) {
+            placedBombs.add(new Bomb(getXUnit(), getYUnit(), mapManager, flameRange, this));
             mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, --bombNums);
             if (SoundEffect.hasSoundEffect) {
                 SoundEffect.playSE(SoundEffect.plantingBomb);
@@ -328,6 +337,14 @@ public class Bomber extends MovingEntity {
         }
     }
 
+    private void detonateBombs() {
+        for (int i = placedBombs.size() - 1; i >= 0; i--) {
+            if (i < placedBombs.size()) {
+                placedBombs.get(i).explode();
+            }
+        }
+    }
+
     public int getBombNums() {
         return bombNums;
     }
@@ -368,6 +385,7 @@ public class Bomber extends MovingEntity {
         this.lives = lives;
     }
 
+    @Override
     public void render(GraphicsContext gc) {
         gc.drawImage(img, screenX, screenY);
     }
@@ -382,5 +400,9 @@ public class Bomber extends MovingEntity {
 
     public boolean isImmortal() {
         return isImmortal;
+    }
+
+    public ArrayList<Bomb> getPlacedBombs() {
+        return placedBombs;
     }
 }

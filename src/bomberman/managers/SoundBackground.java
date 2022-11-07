@@ -1,8 +1,5 @@
 package bomberman.managers;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import java.net.URL;
 
 public class SoundBackground extends Sound{
@@ -14,15 +11,5 @@ public class SoundBackground extends Sound{
         setFile(url);
         play();
         loop();
-    }
-    /*public static void pause() {
-        long clipTime = clip.getMicrosecondPosition();
-        clip.stop();
-        pause = true;
-        clip.setMicrosecondPosition(clipTime);
-        clip.start();
-    }*/
-    public static void conti() {
-
     }
 }

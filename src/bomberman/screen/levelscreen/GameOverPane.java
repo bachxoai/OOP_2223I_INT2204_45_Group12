@@ -2,15 +2,12 @@ package bomberman.screen.levelscreen;
 
 import bomberman.UI.Buttons.BackToMenuFromLevel;
 import bomberman.UI.Buttons.ExitButton;
+import bomberman.UI.Buttons.MyButton;
 import bomberman.UI.Buttons.SwitchScreenButton;
-import bomberman.managers.SoundBackground;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
@@ -24,36 +21,18 @@ public class GameOverPane extends VBox {
         this.containedLevelScreen = containedLevelScreen;
         relocate(80,200);
 
-        buttonBox = new HBox(170);
+        buttonBox = new HBox(100);
 
         gameOver = new Label("Game Over");
         gameOver.setFont(Font.loadFont("file:res/font/font.ttf",70));
-        gameOver.setTextFill(Paint.valueOf("#bf00b3"));
+        gameOver.setTextFill(Paint.valueOf("#FFFAD7"));
         getChildren().add(gameOver);
 
-        Button exit = new ExitButton();
-        createFont(exit);
-        createImageButton("/ImageButton/exit.png",exit);
-        exit.setPrefWidth(150);
+        Button exit = new ExitButton(MyButton.EXIT);
 
-        SwitchScreenButton p = new BackToMenuFromLevel("Back", containedLevelScreen.getCurrentScreen(), "Menu", containedLevelScreen.getGameOver(), containedLevelScreen);
-        createFont(p);
-        createImageButton("/ImageButton/back.png",p);
-        p.setPrefWidth(150);
+        SwitchScreenButton p = new BackToMenuFromLevel("Back", MyButton.BACK, containedLevelScreen.getCurrentScreen(), "Menu", this, containedLevelScreen);
 
         buttonBox.getChildren().addAll(p,exit);
         getChildren().add(buttonBox);
-    }
-    void createFont(Button a) {
-        a.setFont(Font.loadFont("file:res/font/font.ttf",20));
-        a.setStyle("-fx-background-color: #33ff36");
-        a.setTextFill(Paint.valueOf("#bf00b3"));
-    }
-    void createImageButton(String path, Button a) {
-        Image image = new Image(getClass().getResourceAsStream(path));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(32);
-        imageView.setFitHeight(32);
-        a.setGraphic(imageView);
     }
 }
