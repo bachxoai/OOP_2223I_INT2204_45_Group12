@@ -1,20 +1,27 @@
-package bomberman;
+package bomberman.managers;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.Random;
 
 public class GenerateMap {
-    public static void generate(String mapName, int row, int col) {
+    public static void generate(String mapName) {
         Random random = new Random();
-        int randomBlock = row * col - row * 2 - col * 2 - (row / 2 - 1) * (col / 2 - 1) + 4;
-        int randomItems[] = new int[12];
-        int randomEnemies[] = new int[8];
-        for (int i = 0; i < 12; i++) {
-            randomItems[i] = random.nextInt((randomBlock / 2) / 12) + 1;
+
+        int col = 1 + 2 * random.nextInt(20) + 5;
+        int row = 1 + 2 * random.nextInt(20) + 5;
+
+        int emptySpace = row * col - row * 2 - col * 2 - (row / 2 - 1) * (col / 2 - 1) + 4;
+
+        int itemTotal = emptySpace / 2 / 5;
+        int monsterTotal = emptySpace / 2 / 10;
+        int[] items = new int[itemTotal];
+        int[] enemies = new int[monsterTotal];
+        for (int i = 0; i < itemTotal; i++) {
+            items[i] = random.nextInt((emptySpace / 2) / itemTotal) + 1;
         }
-        for (int i = 0; i < 8; i++) {
-            randomEnemies[i] = random.nextInt((randomBlock / 2) / 8) + 1;
+        for (int i = 0; i < monsterTotal; i++) {
+            enemies[i] = random.nextInt((emptySpace / 2) / monsterTotal) + 1;
         }
         char arr[][] = new char[row][col];
         for (int i = 0; i < row; i++) {
@@ -43,30 +50,30 @@ public class GenerateMap {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (arr[i][j] == '*') {
-                    for (int k = 0; k < randomItems.length; k++) {
-                        if (randomItems[k] == 0) {
+                    for (int k = 0; k < items.length; k++) {
+                        if (items[k] == 0) {
                             arr[i][j] = charOfItem(k);
-                            randomItems[k]--;
+                            items[k]--;
                             break;
                         }
-                        if (randomItems[k] > 0) {
-                            randomItems[k]--;
+                        if (items[k] > 0) {
+                            items[k]--;
                             break;
                         }
                     }
                 }
                 if (arr[i][j] == ' ') {
-                    for (int k = 0; k < randomEnemies.length; k++) {
+                    for (int k = 0; k < enemies.length; k++) {
                         if ((i == 1 && j == 1) || (i == 1 && j == 2) || (i == 2 && j == 1)) {
                             break;
                         }
-                        if (randomEnemies[k] == 0) {
+                        if (enemies[k] == 0) {
                             arr[i][j] = charOfEnemy(k);
-                            randomEnemies[k]--;
+                            enemies[k]--;
                             break;
                         }
-                        if (randomEnemies[k] > 0) {
-                            randomEnemies[k]--;
+                        if (enemies[k] > 0) {
+                            enemies[k]--;
                             break;
                         }
                     }
@@ -95,41 +102,26 @@ public class GenerateMap {
         }
     }
 
-    private static void countdown(int arr[]) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i]);
-        }
-        System.out.println();
-    }
-
-    private static boolean done(int arr[]) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] > 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private static char charOfItem(int k) {
-        switch (k) {
+        switch (k % 12) {
             case 0:
                 return 'x';
             case 1:
-                return 'a';
+                return 's';
             case 2:
             case 3:
             case 4:
                 return 'b';
-            case 5:
-                return 'c';
             case 6:
+            case 5:
             case 7:
-            case 8:
                 return 'f';
+            case 8:
+                return 'a';
             case 9:
+                return 'c';
             case 10:
-                return 's';
+                return 'd';
             case 11:
                 return 'e';
 
@@ -137,7 +129,7 @@ public class GenerateMap {
         return '1';
     }
     private static char charOfEnemy(int k) {
-        switch (k) {
+        switch (k % 8) {
             case 0:
             case 1:
             case 2:

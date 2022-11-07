@@ -15,14 +15,21 @@ import java.util.ArrayList;
  * Class quản lý các đối tượng có trong Map.
  */
 public class MapManager {
-    //Liên kết Class quản lý map với một map nào đó.
-    final char BombPassItem = 'a';
-    final char BombsItem = 'b';
-    final char DetonatorItem = 'c';
-    final char FlamePassItem = 'd';
-    final char FlamesItem = 'f';
-    final char SpeedItem = 's';
-    final char WallPassItem = 'e';
+    private final char BombPassItem = 'a';
+    private final char BombsItem = 'b';
+    private final char DetonatorItem = 'c';
+    private final char FlamePassItem = 'd';
+    private final char FlamesItem = 'f';
+    private final char SpeedItem = 's';
+    private final char WallPassItem = 'e';
+    private final char Brick = '*';
+    private final char Wall = '#';
+    private final char Portal = 'x';
+    private final char Bomber = 'p';
+    private final char Balloom = '1';
+    private final char Oneal = '2';
+    private final char Kondoria = '3';
+    private final char Doll = '4';
 
     private GamePlay gamePlay;
     private Bomber bomberman;
@@ -86,44 +93,60 @@ public class MapManager {
                 for (int i = 0; i < col; i++) {
                     char x = rowText.charAt(i);
                     new Grass(i, j, this);
-                    if (x == '#') {
-                        new Wall(i, j, this);
-                    } else if (x == '*') {
-                        new Brick(i, j, this);
-                    } else if (x == 'x') {
-                        new Portal(i, j, this);
-                        new Brick(i, j, this);
-                    } else if (x == 'p') {
-                        bomberman = new Bomber(i, j, this);
-                    } else if (x == '1') {
-                        new Balloom(i, j, this);
-                    } else if (x == '2') {
-                        new Oneal(i, j, this);
-                    } else if (x == '3') {
-                        new Kondoria(i, j, this);
-                    } else if (x == '4') {
-                        new Doll(i, j, this);
-                    } else if (x == BombPassItem) {
-                        new BombPassItem(i, j, this);
-                        new Brick(i, j, this);
-                    } else if (x == BombsItem) {
-                        new BombsItem(i, j, this);
-                        new Brick(i, j, this);
-                    } else if (x == DetonatorItem) {
-                        new DetonatorItem(i, j, this);
-                        new Brick(i, j, this);
-                    } else if (x == FlamePassItem) {
-                        new FlamePassItem(i, j, this);
-                        new Brick(i, j, this);
-                    } else if (x == FlamesItem) {
-                        new FlamesItem(i, j, this);
-                        new Brick(i, j, this);
-                    } else if (x == SpeedItem) {
-                        new SpeedItem(i, j, this);
-                        new Brick(i, j, this);
-                    } else if (x == WallPassItem) {
-                        new WallPassItem(i, j, this);
-                        new Brick(i, j, this);
+                    switch (x) {
+                        case Wall:
+                            new Wall(i, j, this);
+                            break;
+                        case Brick:
+                            new Brick(i, j, this);
+                            break;
+                        case Portal:
+                            new Portal(i, j, this);
+                            new Brick(i, j, this);
+                            break;
+                        case Bomber:
+                            bomberman = new Bomber(i, j, this);
+                            break;
+                        case Balloom:
+                            new Balloom(i, j, this);
+                            break;
+                        case Oneal:
+                            new Oneal(i, j, this);
+                            break;
+                        case Kondoria:
+                            new Kondoria(i, j, this);
+                            break;
+                        case Doll:
+                            new Doll(i, j, this);
+                            break;
+                        case BombPassItem:
+                            new BombPassItem(i, j, this);
+                            new Brick(i, j, this);
+                            break;
+                        case BombsItem:
+                            new BombsItem(i, j, this);
+                            new Brick(i, j, this);
+                            break;
+                        case DetonatorItem:
+                            new DetonatorItem(i, j, this);
+                            new Brick(i, j, this);
+                            break;
+                        case FlamePassItem:
+                            new FlamePassItem(i, j, this);
+                            new Brick(i, j, this);
+                            break;
+                        case FlamesItem:
+                            new FlamesItem(i, j, this);
+                            new Brick(i, j, this);
+                            break;
+                        case SpeedItem:
+                            new SpeedItem(i, j, this);
+                            new Brick(i, j, this);
+                            break;
+                        case WallPassItem:
+                            new WallPassItem(i, j, this);
+                            new Brick(i, j, this);
+                            break;
                     }
                 }
             }

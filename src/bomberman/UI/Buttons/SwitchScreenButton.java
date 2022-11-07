@@ -1,5 +1,6 @@
 package bomberman.UI.Buttons;
 
+import bomberman.managers.GenerateMap;
 import bomberman.screen.Screen;
 import javafx.stage.Stage;
 
@@ -11,7 +12,11 @@ public class SwitchScreenButton extends MyButton {
         super(name, path);
         this.screenHoldThisButton = screenHoldThisButton;
         this.screenToSwitchTo = screenToSwitchTo;
-        setOnAction(actionEvent -> {switchScreen();});
+        setOnAction(actionEvent -> {
+            if (name.equals("Random")) {
+                GenerateMap.generate("RandomMap");
+            }
+            switchScreen();});
     }
     public void switchScreen() {
         Stage s = (Stage) this.getScene().getWindow();

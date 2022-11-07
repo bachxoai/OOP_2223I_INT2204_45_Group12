@@ -14,7 +14,6 @@ public class BombermanGame extends Application {
     }
 
     public void start(Stage stage) throws IOException {
-//        GenerateMap.generate("Map",13,51);
         Screen a = new Menu("Menu");
         new LevelScreen("Map1");
         stage.setWidth(500);

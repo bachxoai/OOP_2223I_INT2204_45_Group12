@@ -24,4 +24,9 @@ public class Portal extends TileEntity {
         }
         return false;
     }
+
+    @Override
+    public boolean canPlaceBomb() {
+        return true;
+    }
 }
