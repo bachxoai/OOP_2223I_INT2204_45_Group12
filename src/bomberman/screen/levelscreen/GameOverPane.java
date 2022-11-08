@@ -4,6 +4,7 @@ import bomberman.UI.Buttons.BackToMenuFromLevel;
 import bomberman.UI.Buttons.ExitButton;
 import bomberman.UI.Buttons.MyButton;
 import bomberman.UI.Buttons.SwitchScreenButton;
+import bomberman.screen.Menu;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -16,16 +17,19 @@ public class GameOverPane extends VBox {
     Label gameOver;
     String title;
     HBox buttonBox;
+    final int X_OF_HBOX_GAMEOVER = 50;
+    final int Y_OF_HBOX_GAMEOVER = 200;
+    final int BUTTON_GAMEOVER_DISTANCE = 140;
 
     public GameOverPane(LevelScreen containedLevelScreen) {
-        super(40);
+        super(MyButton.BUTTON_DISTANCE);
         this.containedLevelScreen = containedLevelScreen;
-        relocate(80,200);
+        relocate(X_OF_HBOX_GAMEOVER,Y_OF_HBOX_GAMEOVER);
 
-        buttonBox = new HBox(100);
+        buttonBox = new HBox(BUTTON_GAMEOVER_DISTANCE);
 
         gameOver = new Label(title);
-        gameOver.setFont(Font.loadFont("file:res/font/font.ttf",70));
+        gameOver.setFont(Font.loadFont("file:res/font/font.ttf",MyButton.FONT_SIZE * 4));
         gameOver.setTextFill(Paint.valueOf("#FFFAD7"));
         getChildren().add(gameOver);
 

@@ -24,8 +24,8 @@ public class BackToMenuFromLevel extends SwitchScreenButton {
         Stage s = (Stage) this.getScene().getWindow();
         Screen scr = Screen.allScreens.get(screenToSwitchTo);
         s.setScene(scr.getScene());
-        s.setWidth(500);
-        s.setHeight(800);
+        s.setWidth(WIDTH_SCREEN_MENU);
+        s.setHeight(HEIGHT_SCREEN_MENU);
         levelScreen.getRoot().getChildren().remove(containedPane);
         if (!Menu.isUnmute) {
             SoundBackground.clip.stop();

@@ -14,13 +14,15 @@ public class Menu extends Screen {
     HashMap<String, Pane> optionPanes;
     Pane root;
     public static boolean isUnmute = false;
+    final int X_OF_VBOX_MENU = 150;
+    final int Y_OF_VBOX_MENU = 322;
 
     public Menu(String currentScreen) throws IOException {
         super(currentScreen);
         optionPanes = new HashMap<>();
-        optionPanes.put("Menu", new VBox(30));
-        optionPanes.put("ChooseMap", new VBox(30));
-        optionPanes.put("ChooseMusic",new VBox(30));
+        optionPanes.put("Menu", new VBox(MyButton.BUTTON_DISTANCE));
+        optionPanes.put("ChooseMap", new VBox(MyButton.BUTTON_DISTANCE));
+        optionPanes.put("ChooseMusic",new VBox(MyButton.BUTTON_DISTANCE));
         createScene();
     }
 
@@ -41,13 +43,13 @@ public class Menu extends Screen {
         Button exit = new ExitButton(MyButton.EXIT);
         SwitchPaneButton music = new SwitchPaneButton("Music", MyButton.MUSIC, optionPanes.get("Menu"), optionPanes.get("ChooseMusic"), root);
 
-        optionPanes.get("Menu").relocate(150,322);
+        optionPanes.get("Menu").relocate(X_OF_VBOX_MENU,Y_OF_VBOX_MENU);
         optionPanes.get("Menu").getChildren().addAll(toChooseMap,music,exit);
     }
 
     public void createChooseMapPane() {
         Pane p = optionPanes.get("ChooseMap");
-        p.relocate(150,322);
+        p.relocate(X_OF_VBOX_MENU,Y_OF_VBOX_MENU);
 
         SwitchScreenButton map1 = new SwitchToLevelScreenButton("Map 1", MyButton.MAP, "Menu", "Map1", "Level1");
         SwitchScreenButton map2 = new SwitchToLevelScreenButton("Map 2", MyButton.MAP, "Menu", "Map1", "Level2");
@@ -60,33 +62,33 @@ public class Menu extends Screen {
 
     public void createChooseMusic() {
         Pane chooseMusic = optionPanes.get("ChooseMusic");
-        chooseMusic.relocate(150,290);
+        chooseMusic.relocate(X_OF_VBOX_MENU,Y_OF_VBOX_MENU);
 
         SwitchPaneButton back = new SwitchPaneButton("Back", MyButton.BACK, optionPanes.get("ChooseMusic"), optionPanes.get("Menu"), root);
 
         Button feed = new MusicButton("Feed", MyButton.MUSIC, SoundBackground.soundFeed);
 
-        Button sinnes = new MusicButton("Sinnes", MyButton.MUSIC, SoundBackground.soundSinnes);
+        Button sines = new MusicButton("Sines", MyButton.MUSIC, SoundBackground.soundSinnes);
 
         Button musicOn = new MyButton("Un Mute", MyButton.MUTE);
         Button musicOff = new MyButton("Mute", MyButton.MUTE);
         musicOff.setOnAction(actionEvent -> {
-            chooseMusic.getChildren().removeAll(musicOff, feed, sinnes, back);
-            chooseMusic.getChildren().addAll(musicOn,feed,sinnes,back);
+            chooseMusic.getChildren().removeAll(musicOff, feed, sines, back);
+            chooseMusic.getChildren().addAll(musicOn,feed,sines,back);
             isUnmute = true;
             SoundBackground.stopMusic();
             SoundEffect.hasSoundEffect = false;
         });
 
         musicOn.setOnAction(actionEvent -> {
-            chooseMusic.getChildren().removeAll(musicOn, feed, sinnes, back);
-            chooseMusic.getChildren().addAll(musicOff,feed,sinnes,back);
+            chooseMusic.getChildren().removeAll(musicOn, feed, sines, back);
+            chooseMusic.getChildren().addAll(musicOff,feed,sines,back);
             isUnmute = false;
             SoundBackground.clip.start();
             SoundEffect.hasSoundEffect = true;
         });
 
-        chooseMusic.getChildren().addAll(musicOff,feed,sinnes,back);
+        chooseMusic.getChildren().addAll(musicOff,feed,sines,back);
     }
 
     public void createRoot()  {

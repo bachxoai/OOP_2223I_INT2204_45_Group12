@@ -1,5 +1,6 @@
 package bomberman.screen.levelscreen;
 
+import bomberman.UI.Buttons.MyButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -13,14 +14,14 @@ public class HeartPane extends HBox {
     public HeartPane() {
         HeartFull = new Image(HeartPane.class.getResourceAsStream("/HRed.png"));
         hf1 = new ImageView(HeartFull);
-        hf1.setFitHeight(32);
-        hf1.setFitWidth(32);
+        hf1.setFitHeight(MyButton.IMAGE_SIZE);
+        hf1.setFitWidth(MyButton.IMAGE_SIZE);
         hf2 = new ImageView(HeartFull);
-        hf2.setFitHeight(32);
-        hf2.setFitWidth(32);
+        hf2.setFitHeight(MyButton.IMAGE_SIZE);
+        hf2.setFitWidth(MyButton.IMAGE_SIZE);
         hf3 = new ImageView(HeartFull);
-        hf3.setFitHeight(32);
-        hf3.setFitWidth(32);
+        hf3.setFitHeight(MyButton.IMAGE_SIZE);
+        hf3.setFitWidth(MyButton.IMAGE_SIZE);
         getChildren().addAll(hf1,hf2,hf3);
 
     }

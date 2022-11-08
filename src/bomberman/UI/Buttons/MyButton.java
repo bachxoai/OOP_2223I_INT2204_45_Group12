@@ -15,6 +15,10 @@ public class MyButton extends Button {
     public static final String MAP = "/ImageButton/map1.png";
     public static final String BACK = "/ImageButton/back.png";
     public static final String MUTE = "/ImageButton/unmute.png";
+    public static final int FONT_SIZE = 20;
+    public  static final int BUTTON_WIDTH = 200;
+    public static final int IMAGE_SIZE = 32;
+    public static final int BUTTON_DISTANCE = 30;
 
     private final String path;
 
@@ -23,7 +27,7 @@ public class MyButton extends Button {
         this.path = path;
         createFont();
         createImageButton();
-        setPrefWidth(200);
+        setPrefWidth(BUTTON_WIDTH);
         setOnMouseEntered(mouseEvent -> {
             setOpacity(0.75);
         });
@@ -33,7 +37,7 @@ public class MyButton extends Button {
     }
 
     private void createFont() {
-        setFont(Font.loadFont("file:res/font/font.ttf",20));
+        setFont(Font.loadFont("file:res/font/font.ttf",FONT_SIZE));
         setStyle("-fx-background-color: #FF9F9F");
         setTextFill(Paint.valueOf("#FFFAD7"));
     }
@@ -44,8 +48,8 @@ public class MyButton extends Button {
         }
         Image image = new Image(getClass().getResourceAsStream(path));
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(32);
-        imageView.setFitHeight(32);
+        imageView.setFitWidth(IMAGE_SIZE);
+        imageView.setFitHeight(IMAGE_SIZE);
         setGraphic(imageView);
     }
 }

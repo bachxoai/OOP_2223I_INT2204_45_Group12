@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
 public class LevelScreen extends Screen { Pane root;
-    Pane pausePane; // 3 nut o man pause
+    Pane pausePane;
     Pane playingPane;
     InformationPane informationPane;
     GamePlay gamePlay;
@@ -58,13 +58,13 @@ public class LevelScreen extends Screen { Pane root;
     }
 
     public void defeat() {
-        gameOver.setTitle("Defeat");
+        gameOver.setTitle("GAME OVER");
         root.getChildren().add(gameOver);
         stopTimer();
     }
 
     public void victory() {
-        gameOver.setTitle("Vitory");
+        gameOver.setTitle(" VICTORY");
         root.getChildren().add(gameOver);
         stopTimer();
     }

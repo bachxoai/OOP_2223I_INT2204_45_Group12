@@ -13,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
+import java.util.Objects;
+
 public class InformationPane extends HBox {
     Button pause;
     LevelScreen containedLevelScreen;
@@ -33,6 +35,7 @@ public class InformationPane extends HBox {
     HBox bomBox;
     HBox flameRangeBox;
     HBox clockBox;
+    final int DISTANCE_OF_HBOX = 5;
 
     public InformationPane(LevelScreen containedLevelScreen) {
         super(25);
@@ -40,19 +43,19 @@ public class InformationPane extends HBox {
 
         bom = Sprite.bomb.getFxImage();
         bomView = new ImageView(bom);
-        bomView.setFitWidth(32);
-        bomView.setFitHeight(32);
+        bomView.setFitWidth(MyButton.IMAGE_SIZE);
+        bomView.setFitHeight(MyButton.IMAGE_SIZE);
 
-        flameRangeBox = new HBox(5);
+        flameRangeBox = new HBox(DISTANCE_OF_HBOX);
         flameRangeBox.getChildren().addAll(createImageView("/flameRange.png"),createLabel("x"),FixLabel(flameRange));
 
-        speedBox = new HBox(5);
+        speedBox = new HBox(DISTANCE_OF_HBOX);
         speedBox.getChildren().addAll(createImageView("/boot.png"),createLabel("x"),FixLabel(speedNumber));
 
-        clockBox = new HBox(5);
+        clockBox = new HBox(DISTANCE_OF_HBOX);
         clockBox.getChildren().addAll(createImageView("/clock.png"),FixLabel(timeLeft));
 
-        bomBox = new HBox(5);
+        bomBox = new HBox(DISTANCE_OF_HBOX);
         bomBox.getChildren().addAll(bomView,createLabel("x"),FixLabel(bombNo));
 
         heartPane = new HeartPane();
@@ -127,22 +130,22 @@ public class InformationPane extends HBox {
 
     Label createLabel(String s) {
         Label a = new Label(s);
-        a.setFont(Font.loadFont("file:res/font/font.ttf",25));
+        a.setFont(Font.loadFont("file:res/font/font.ttf",MyButton.FONT_SIZE + 5));
         a.setTextFill(Paint.valueOf("#FFFAD7"));
         return a;
     }
 
     Label FixLabel(Label a) {
-        a.setFont(Font.loadFont("file:res/font/font.ttf",25));
+        a.setFont(Font.loadFont("file:res/font/font.ttf",MyButton.FONT_SIZE + 5));
         a.setTextFill(Paint.valueOf("#FFFAD7"));
         return a;
     }
 
     ImageView createImageView(String path) {
-        Image image = new Image(getClass().getResourceAsStream(path));
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(32);
-        imageView.setFitWidth(32);
+        imageView.setFitHeight(MyButton.IMAGE_SIZE);
+        imageView.setFitWidth(MyButton.IMAGE_SIZE);
         return imageView;
     }
 }

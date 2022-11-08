@@ -23,7 +23,7 @@ public class SwitchToLevelScreenButton extends SwitchScreenButton {
 
         Stage s = (Stage) this.getScene().getWindow();
         s.setScene(tmp.getScene());
-        s.setWidth(640);
-        s.setHeight(640);
+        s.setWidth(WIDTH_SCREEN_GAMEPLAY);
+        s.setHeight(HEIGHT_SCREEN_GAMEPLAY);
     }
 }
