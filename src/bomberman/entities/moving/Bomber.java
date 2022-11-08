@@ -214,6 +214,7 @@ public class Bomber extends MovingEntity {
         super.handleDeadState();
         if (animationDeadTime == 0) {
             if (lives <= 0) {
+                getMapManager().getGamePlay().getContainedLevelScreen().getGameOver().setTitle("Defeat");
                 mapManager.getGamePlay().getContainedLevelScreen().gameOver();
                 mapManager.getGamePlay().stopTimer();
                 SoundEffect.playSE(SoundEffect.gameOver);

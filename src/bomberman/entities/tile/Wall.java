@@ -23,4 +23,9 @@ public class Wall extends TileEntity {
     public boolean allowWalkThrough(MovingEntity movingEntity) {
         return false;
     }
+
+    @Override
+    public boolean blockFlame() {
+        return true;
+    }
 }

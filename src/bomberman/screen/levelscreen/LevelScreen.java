@@ -7,13 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
-public class LevelScreen extends Screen {
-//    AnimationTimer timer;
-//
-//    //Một biến đếm số frame của từng giây, sẽ sử dụng kết hợp với MovingEntity để tạo Animation
-//    public static int frameCount = 0;
-
-    Pane root;
+public class LevelScreen extends Screen { Pane root;
     Pane pausePane; // 3 nut o man pause
     Pane playingPane;
     InformationPane informationPane;

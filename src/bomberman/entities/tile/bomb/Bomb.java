@@ -1,12 +1,9 @@
 package bomberman.entities.tile.bomb;
 
 import bomberman.entities.DynamicEntity;
-import bomberman.entities.Entity;
 import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.MovingEntity;
-import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.TileEntity;
-import bomberman.entities.tile.Wall;
 import bomberman.graphics.Sprite;
 import bomberman.managers.*;
 import bomberman.screen.levelscreen.InformationPane;
@@ -74,12 +71,12 @@ public class Bomb extends TileEntity implements DynamicEntity {
      */
     private void createExplosion() {
         // nếu muốn cho bom phá xuyên tường thì chỉ cần thêm đk ở
-//        if (flameBlocked(getXUnit(), getYUnit() + i) && cannotPierce) {
+//        if (getMapManager().getTopTileAt(getXUnit(), getYUnit() + i).blockFlame() && bomber.canPierce()) {
 //            break;
 //        }
         // DOWN
         for (int i = 1; i <= range; i++) {
-            if (flameBlocked(getXUnit(), getYUnit() + i)) {
+            if (getMapManager().getTopTileAt(getXUnit(), getYUnit() + i).blockFlame()) {
                 break;
             }
             if (i == range) {
@@ -97,7 +94,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
 
         // UP
         for (int i = 1; i <= range; i++) {
-            if (flameBlocked(getXUnit(), getYUnit() - i)) {
+            if (getMapManager().getTopTileAt(getXUnit(), getYUnit() - 1).blockFlame()) {
                 break;
             }
             if (i == range) {
@@ -115,7 +112,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
 
         // LEFT
         for (int i = 1; i <= range; i++) {
-            if (flameBlocked(getXUnit() - i, getYUnit())) {
+            if (getMapManager().getTopTileAt(getXUnit() - i, getYUnit()).blockFlame()) {
                 break;
             }
             if (i == range) {
@@ -133,7 +130,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
 
         // RIGHT
         for (int i = 1; i <= range; i++) {
-            if (flameBlocked(getXUnit() + i, getYUnit())) {
+            if (getMapManager().getTopTileAt(getXUnit() + i, getYUnit()).blockFlame()) {
                 break;
             }
             if (i == range) {
@@ -150,32 +147,6 @@ public class Bomb extends TileEntity implements DynamicEntity {
         }
     }
 
-    /**
-     * Xử lí gạch vỡ khi bị bom phá.
-     * Thay Brick bằng ExplosionBrick.
-     *
-     * @param x toạ độ x của gạch bị bom phá
-     * @param y toạ độ y của gạch bị bom phá.
-     */
-    private void createExplodedBrick(int x, int y) {
-        Entity tmp = mapManager.getTopTileAt(x, y);
-        mapManager.getTilesAt(x, y).remove(tmp);
-        new ExplosionBrick(x, y, mapManager);
-    }
-
-    private boolean flameBlocked(int x, int y) {
-        Entity e = mapManager.getTopTileAt(x, y);
-        if (e instanceof Brick) {
-            createExplodedBrick(x, y);
-            return true;
-        }
-        if (e instanceof Bomb) {
-            ((Bomb) e).explode();
-            return true;
-        }
-        return e instanceof Wall;
-    }
-
     @Override
     public boolean handleOtherBomberCollision(Bomber bomber) {
         return false;
@@ -188,5 +159,11 @@ public class Bomb extends TileEntity implements DynamicEntity {
                 || getX() > movingEntity.getX() + Sprite.SCALED_SIZE - 1
                 || getY() > movingEntity.getY() + Sprite.SCALED_SIZE - 1
                 || getY() + Sprite.SCALED_SIZE - 1 < movingEntity.getY());
+    }
+
+    @Override
+    public boolean blockFlame() {
+        explode();
+        return true;
     }
 }

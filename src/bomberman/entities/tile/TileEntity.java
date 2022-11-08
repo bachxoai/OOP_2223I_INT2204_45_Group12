@@ -10,7 +10,6 @@ import bomberman.managers.MapManager;
  * Class dành cho các đối tượng đứng yên. Liên quan đến toạ độ trong map
  */
 public abstract class TileEntity extends Entity {
-
     public TileEntity(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         mapManager.addTileEntity(this);
@@ -18,11 +17,6 @@ public abstract class TileEntity extends Entity {
 
     @Override
     public boolean handleOtherBomberCollision(Bomber bomber) {
-        return true;
-    }
-
-    @Override
-    public boolean handleOtherEnemyCollision(Enemy enemy) {
         return true;
     }
 
@@ -36,7 +30,22 @@ public abstract class TileEntity extends Entity {
         return true;
     }
 
+    /**
+     * Check this tile entity can be placed bombs or not.
+     *
+     * @return true if bomb can be placed on this tile, false otherwise.
+     */
     public boolean canPlaceBomb() {
+        return false;
+    }
+
+    /**
+     * This method is called when a flame reach this Tile Entity.
+     * The effect is handled in this method and check if the flame can pass it or not.
+     *
+     * @return true if this tile does not block flame, false otherwise.
+     */
+    public boolean blockFlame() {
         return false;
     }
 }

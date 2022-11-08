@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 public class GameOverPane extends VBox {
     LevelScreen containedLevelScreen;
     Label gameOver;
+    String title;
     HBox buttonBox;
 
     public GameOverPane(LevelScreen containedLevelScreen) {
@@ -23,7 +24,7 @@ public class GameOverPane extends VBox {
 
         buttonBox = new HBox(100);
 
-        gameOver = new Label("Game Over");
+        gameOver = new Label(title);
         gameOver.setFont(Font.loadFont("file:res/font/font.ttf",70));
         gameOver.setTextFill(Paint.valueOf("#FFFAD7"));
         getChildren().add(gameOver);
@@ -34,5 +35,14 @@ public class GameOverPane extends VBox {
 
         buttonBox.getChildren().addAll(p,exit);
         getChildren().add(buttonBox);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        gameOver.setText(title);
     }
 }
