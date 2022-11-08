@@ -52,6 +52,9 @@ public class GamePlay {
                 if (frameCount % 6 == 0) {
                     playedTime += 0.1;
                 }
+                if (playedTime >= 200) {
+                    getContainedLevelScreen().defeat();
+                }
                 handleEvent();
                 render();
                 update();

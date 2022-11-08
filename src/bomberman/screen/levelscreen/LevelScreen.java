@@ -57,7 +57,14 @@ public class LevelScreen extends Screen { Pane root;
         gamePlay.stopTimer();
     }
 
-    public void gameOver() {
+    public void defeat() {
+        gameOver.setTitle("Defeat");
+        root.getChildren().add(gameOver);
+        stopTimer();
+    }
+
+    public void victory() {
+        gameOver.setTitle("Vitory");
         root.getChildren().add(gameOver);
         stopTimer();
     }

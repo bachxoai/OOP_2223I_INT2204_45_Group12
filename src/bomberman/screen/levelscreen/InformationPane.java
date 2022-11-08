@@ -80,6 +80,12 @@ public class InformationPane extends HBox {
         setStat(BOMBNO, containedLevelScreen.getMapManager().getBomberman().getBombNums());
         setStat(FLAME_RANGE, containedLevelScreen.getMapManager().getBomberman().getFlameRange());
         setStat(TIME_LEFT, (int) GamePlay.playedTime);
+        containedLevelScreen.getHeartpane().getChildren().remove(HeartPane.hf3);
+        containedLevelScreen.getHeartpane().getChildren().remove(HeartPane.hf2);
+        containedLevelScreen.getHeartpane().getChildren().remove(HeartPane.hf1);
+        containedLevelScreen.getHeartpane().getChildren().add(HeartPane.hf1);
+        containedLevelScreen.getHeartpane().getChildren().add(HeartPane.hf2);
+        containedLevelScreen.getHeartpane().getChildren().add(HeartPane.hf3);
     }
 
     public Pane getHeartPane() {

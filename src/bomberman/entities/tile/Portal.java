@@ -18,8 +18,7 @@ public class Portal extends TileEntity {
     public boolean handleOtherBomberCollision(Bomber bomber) {
         if (getMapManager().getEnemies().size() == 0) {
             try {
-                getMapManager().getGamePlay().getContainedLevelScreen().getGameOver().setTitle("Victory");
-                getMapManager().getGamePlay().getContainedLevelScreen().gameOver();
+                getMapManager().getGamePlay().getContainedLevelScreen().victory();
             } catch (Exception e) {
             }
         }

@@ -215,7 +215,7 @@ public class Bomber extends MovingEntity {
         if (animationDeadTime == 0) {
             if (lives <= 0) {
                 getMapManager().getGamePlay().getContainedLevelScreen().getGameOver().setTitle("Defeat");
-                mapManager.getGamePlay().getContainedLevelScreen().gameOver();
+                mapManager.getGamePlay().getContainedLevelScreen().defeat();
                 mapManager.getGamePlay().stopTimer();
                 SoundEffect.playSE(SoundEffect.gameOver);
                 SoundBackground.clip.stop();//tam dung nhac
