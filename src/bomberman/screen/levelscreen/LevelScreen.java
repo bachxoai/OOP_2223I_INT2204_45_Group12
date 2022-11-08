@@ -36,7 +36,7 @@ public class LevelScreen extends Screen { Pane root;
         root.getChildren().addAll(playingPane);
         scene = new Scene(root);
 
-        image = new Image(getClass().getResourceAsStream("/textures/GamePlayBackground.png"));
+        image = new Image(getClass().getResourceAsStream("/images/textures/GamePlayBackground.png"));
         BackgroundImage backgroundImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,

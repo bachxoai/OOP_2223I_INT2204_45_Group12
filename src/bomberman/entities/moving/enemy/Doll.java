@@ -21,7 +21,7 @@ public class Doll extends Enemy {
     public Doll(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.doll_left1.getFxImage();
-        velocity = 2;
+        velocity = DOLL_VELOCITY;
 
         Sprite[] right = new Sprite[3];
         right[0] = Sprite.doll_right1;

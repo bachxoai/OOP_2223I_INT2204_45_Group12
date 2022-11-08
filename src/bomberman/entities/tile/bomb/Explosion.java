@@ -6,7 +6,8 @@ import bomberman.entities.moving.enemy.Enemy;
 import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.MapManager;
-import bomberman.managers.SoundEffect;
+import bomberman.sounds.SoundEffect;
+import bomberman.sounds.SoundManager;
 
 /**
  * Đối tượng được sinh ra sau khi bom nổ.
@@ -44,7 +45,7 @@ public class Explosion extends TileEntity implements DynamicEntity {
     public void update() {
         if (timeLeft > 0) {
             timeLeft--;
-            img = sprites[timeLeft / (ANIMATED_FRAME / 5)].getFxImage();
+            img = sprites[timeLeft / (ANIMATED_FRAME / sprites.length)].getFxImage();
 
         } else if (timeLeft == 0) {
             mapManager.getTilesAt(getXUnit(), getYUnit()).remove(this);
@@ -62,7 +63,7 @@ public class Explosion extends TileEntity implements DynamicEntity {
     @Override
     public boolean handleOtherEnemyCollision(Enemy enemy) {
         enemy.setAlive(false);
-        SoundEffect.playSE(SoundEffect.enemyDeath);
+        SoundManager.soundEffect.play(SoundEffect.enemyDeath);
         return false;
     }
 }

@@ -1,5 +1,6 @@
 package bomberman.entities.tile.bomb;
 
+import bomberman.entities.moving.Bomber;
 import bomberman.entities.moving.MovingEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.MapManager;
@@ -23,5 +24,10 @@ public class ExplosionBrick extends Explosion {
     }
     public boolean allowWalkThrough(MovingEntity movingEntity) {
         return false;
+    }
+
+    @Override
+    public boolean handleOtherBomberCollision(Bomber bomber) {
+        return true;
     }
 }

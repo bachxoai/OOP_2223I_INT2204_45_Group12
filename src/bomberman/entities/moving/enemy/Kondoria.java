@@ -26,7 +26,7 @@ public class Kondoria extends Enemy {
     public Kondoria(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.kondoria_left1.getFxImage();
-        velocity = 0.5;
+        velocity = KONDORIA_VELOCITY;
 
         Sprite[] right = new Sprite[3];
         right[0] = Sprite.kondoria_right1;

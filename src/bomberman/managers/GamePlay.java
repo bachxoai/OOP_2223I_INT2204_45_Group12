@@ -37,7 +37,6 @@ public class GamePlay {
     }
 
     public Group createGamePlay() {
-//        canvas = new Canvas(, height);
         canvas = new Canvas(gameplayScreenWidth, gameplayScreenHeight);
         gc = canvas.getGraphicsContext2D();
         root = new Group();
@@ -45,9 +44,6 @@ public class GamePlay {
         timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                //Mỗi khung hình (frame) thì biến frameCount sẽ tăng lên 1 đơn vị
-                //Nếu frameCount >=60 thì frameCount sẽ được gán lại = 0.
-                //1s có 60 frame -> 60 lần gọi
                 frameCount = (frameCount + 1) % 60;
                 if (frameCount % 6 == 0) {
                     playedTime += 0.1;

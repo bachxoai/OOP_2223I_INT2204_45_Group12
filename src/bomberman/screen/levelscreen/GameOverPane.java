@@ -29,7 +29,7 @@ public class GameOverPane extends VBox {
         buttonBox = new HBox(BUTTON_GAMEOVER_DISTANCE);
 
         gameOver = new Label(title);
-        gameOver.setFont(Font.loadFont("file:res/font/font.ttf",MyButton.FONT_SIZE * 4));
+        gameOver.setFont(Font.loadFont("file:res/fonts/font.ttf",MyButton.FONT_SIZE * 4));
         gameOver.setTextFill(Paint.valueOf("#FFFAD7"));
         getChildren().add(gameOver);
 

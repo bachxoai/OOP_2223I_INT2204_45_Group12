@@ -17,7 +17,7 @@ public class Balloom extends Enemy {
     public Balloom(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.balloom_left1.getFxImage();
-        velocity = 1;
+        velocity = BALLOOM_VELOCITY;
 
         Sprite[] right = new Sprite[3];
         right[0] = Sprite.balloom_right1;

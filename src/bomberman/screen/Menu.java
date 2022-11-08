@@ -1,19 +1,23 @@
 package bomberman.screen;
 
 import bomberman.UI.Buttons.*;
-import bomberman.managers.SoundBackground;
-import bomberman.managers.SoundEffect;
+import bomberman.sounds.Music;
+
 import java.io.IOException;
+
+import bomberman.sounds.SoundManager;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import java.util.HashMap;
+import java.util.Objects;
+
+import static bomberman.sounds.Music.defaultMusic;
 
 public class Menu extends Screen {
     HashMap<String, Pane> optionPanes;
     Pane root;
-    public static boolean isUnmute = false;
     final int X_OF_VBOX_MENU = 150;
     final int Y_OF_VBOX_MENU = 322;
 
@@ -55,7 +59,7 @@ public class Menu extends Screen {
         SwitchScreenButton map2 = new SwitchToLevelScreenButton("Map 2", MyButton.MAP, "Menu", "Map1", "Level2");
         SwitchScreenButton map3 = new SwitchToLevelScreenButton("Map 3", MyButton.MAP, "Menu", "Map1", "Level3");
         SwitchScreenButton mapRandom = new SwitchToLevelScreenButton("Random", MyButton.MAP, "Menu", "Map1", "RandomMap");
-        SwitchPaneButton back = new SwitchPaneButton("Back", "/ImageButton/back.png", optionPanes.get("ChooseMap"), optionPanes.get("Menu"), root);
+        SwitchPaneButton back = new SwitchPaneButton("Back", "/images/icons/back.png", optionPanes.get("ChooseMap"), optionPanes.get("Menu"), root);
 
         p.getChildren().addAll(map1, map2, map3, mapRandom, back);
     }
@@ -66,26 +70,25 @@ public class Menu extends Screen {
 
         SwitchPaneButton back = new SwitchPaneButton("Back", MyButton.BACK, optionPanes.get("ChooseMusic"), optionPanes.get("Menu"), root);
 
-        Button feed = new MusicButton("Feed", MyButton.MUSIC, SoundBackground.soundFeed);
-
-        Button sines = new MusicButton("Sines", MyButton.MUSIC, SoundBackground.soundSinnes);
+        Button feed = new MusicButton("Feed", MyButton.MUSIC, Music.feed);
+        Button sines = new MusicButton("Sines", MyButton.MUSIC, Music.sines);
 
         Button musicOn = new MyButton("Un Mute", MyButton.MUTE);
         Button musicOff = new MyButton("Mute", MyButton.MUTE);
         musicOff.setOnAction(actionEvent -> {
             chooseMusic.getChildren().removeAll(musicOff, feed, sines, back);
             chooseMusic.getChildren().addAll(musicOn,feed,sines,back);
-            isUnmute = true;
-            SoundBackground.stopMusic();
-            SoundEffect.hasSoundEffect = false;
+            SoundManager.music.stop();
+            SoundManager.hasSoundEffect = false;
+            SoundManager.hasMusic = false;
         });
 
         musicOn.setOnAction(actionEvent -> {
             chooseMusic.getChildren().removeAll(musicOn, feed, sines, back);
             chooseMusic.getChildren().addAll(musicOff,feed,sines,back);
-            isUnmute = false;
-            SoundBackground.clip.start();
-            SoundEffect.hasSoundEffect = true;
+            SoundManager.music.continuePlaying();
+            SoundManager.hasSoundEffect = true;
+            SoundManager.hasMusic = true;
         });
 
         chooseMusic.getChildren().addAll(musicOff,feed,sines,back);
@@ -93,9 +96,9 @@ public class Menu extends Screen {
 
     public void createRoot()  {
         root.getChildren().add(optionPanes.get("Menu"));
-        SoundBackground.playMusic(SoundBackground.soundMenu);
+        SoundManager.music.play(defaultMusic);
 
-        Image image= new Image(getClass().getResourceAsStream("/textures/MenuBackground.png"));
+        Image image= new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/textures/MenuBackground.png")));
         BackgroundImage backgroundImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,

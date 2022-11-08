@@ -18,7 +18,7 @@ public class BombsItem extends Item {
     public boolean handleOtherBomberCollision(Bomber bomber) {
         super.handleOtherBomberCollision(bomber);
         bomber.setBombNums(bomber.getBombNums() + 1);
-        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, bomber.getBombNums());
+        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMB_NO, bomber.getBombNums());
         return true;
     }
 }

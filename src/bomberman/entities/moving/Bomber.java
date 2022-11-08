@@ -1,16 +1,19 @@
 package bomberman.entities.moving;
 
 import bomberman.entities.moving.enemy.Enemy;
-import bomberman.entities.tile.Brick;
 import bomberman.entities.tile.bomb.Bomb;
 import bomberman.graphics.Sprite;
 import bomberman.managers.*;
 import bomberman.screen.levelscreen.HeartPane;
 import bomberman.screen.levelscreen.InformationPane;
+import bomberman.sounds.SoundEffect;
+import bomberman.sounds.SoundManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
+
+import static bomberman.sounds.SoundEffect.plantingBomb;
 
 /**
  * Class bomber.
@@ -29,8 +32,12 @@ public class Bomber extends MovingEntity {
     private boolean downPressed = false;
     private boolean rightPressed = false;
     private boolean leftPressed = false;
-    private final int screenX = GamePlay.gameplayScreenWidth / 2 - Sprite.SCALED_SIZE / 2;
-    private final int screenY = GamePlay.gameplayScreenHeight / 2 - Sprite.SCALED_SIZE / 2;
+    private final int SCREEN_X = GamePlay.gameplayScreenWidth / 2 - Sprite.SCALED_SIZE / 2;
+    private final int SCREEN_Y = GamePlay.gameplayScreenHeight / 2 - Sprite.SCALED_SIZE / 2;
+    private final boolean DEFAULT_STATUS = false;
+    private final int DEFAULT_LIVES = 3;
+    private final int DEFAULT_BOMB_NUMS = 1;
+    private final int DEFAULT_FLAME_RANGE = 1;
     private ArrayList<Bomb> placedBombs;
 
     /**
@@ -43,7 +50,6 @@ public class Bomber extends MovingEntity {
     public Bomber(int x, int y, MapManager mapManager) {
         super(x, y, mapManager);
         img = Sprite.player_down.getFxImage();
-//        Thêm các Spite animation cho Bomber
         Sprite[] up = new Sprite[2];
         up[0] = Sprite.player_up_1;
         up[1] = Sprite.player_up_2;
@@ -62,17 +68,17 @@ public class Bomber extends MovingEntity {
         dead[2] = Sprite.player_dead3;
 
         setSprite(up, down, left, right, dead);
-        velocity = 2;
+        velocity = BOMBER_VELOCITY;
 
-        canWalkThroughBomb = false;
-        canWalkThroughFlame = false;
-        canWalkThroughBrick = false;
-        isImmortal = false;
+        canWalkThroughBomb = DEFAULT_STATUS;
+        canWalkThroughFlame = DEFAULT_STATUS;
+        canWalkThroughBrick = DEFAULT_STATUS;
+        isImmortal = DEFAULT_STATUS;
         immortalTime = 0;
 
-        bombNums = 1;
-        lives = 3;
-        flameRange = 1;
+        bombNums = DEFAULT_BOMB_NUMS;
+        lives = DEFAULT_LIVES;
+        flameRange = DEFAULT_FLAME_RANGE;
         placedBombs = new ArrayList<>();
     }
 
@@ -193,21 +199,21 @@ public class Bomber extends MovingEntity {
      * handle bomber's death.
      */
     public void handleDeath() {
-        if (4 - lives == 1) {
-            mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf3);
-        }
-        if (4 - lives == 2) {
-            mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf2);
-        }
-        if (4 - lives == 3) {
-            mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf1);
+        switch (lives) {
+            case 3:
+                mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf3);
+                break;
+            case 2:
+                mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf2);
+                break;
+            case 1:
+                mapManager.getGamePlay().getContainedLevelScreen().getHeartpane().getChildren().remove(HeartPane.hf1);
+                break;
         }
         lives--;
         state = DEAD_STATE;
         isAlive = false;
-        if (SoundEffect.hasSoundEffect) {
-            SoundEffect.playSE(SoundEffect.bomberDeath);
-        }
+        SoundManager.soundEffect.play(SoundEffect.bomberDeath);
     }
 
     protected void handleDeadState() {
@@ -217,8 +223,8 @@ public class Bomber extends MovingEntity {
                 getMapManager().getGamePlay().getContainedLevelScreen().getGameOver().setTitle("Defeat");
                 mapManager.getGamePlay().getContainedLevelScreen().defeat();
                 mapManager.getGamePlay().stopTimer();
-                SoundEffect.playSE(SoundEffect.gameOver);
-                SoundBackground.clip.stop();//tam dung nhac
+                SoundManager.soundEffect.play(SoundEffect.gameOver);
+                SoundManager.music.stop();
             } else {
                 isAlive = true;
                 resurrectBomber();
@@ -230,8 +236,8 @@ public class Bomber extends MovingEntity {
         animationDeadTime = MovingEntity.DEAD_TIME;
         state = NORMAL_STATE;
         img = Sprite.player_right.getFxImage();
-        setX(32);
-        setY(32);
+        setX(Sprite.SCALED_SIZE);
+        setY(Sprite.SCALED_SIZE);
         immortalTime = IMMORTAL_TIME * 60;
         isImmortal = true;
     }
@@ -253,11 +259,12 @@ public class Bomber extends MovingEntity {
     }
 
     private void handleImmortal() {
+        int cycle = 10;
         if (immortalTime != 0) {
             immortalTime--;
-            if (immortalTime % 10 == 5) {
+            if (immortalTime % cycle == cycle / 2) {
                 img = Sprite.nothing.getFxImage();
-            } else if (immortalTime % 10 == 0) {
+            } else if (immortalTime % cycle == 0) {
                 img = Sprite.player_right.getFxImage();
             }
         } else {
@@ -268,11 +275,9 @@ public class Bomber extends MovingEntity {
     private void placeBomb() {
         if (bombNums > 0 && presentTileCollision.canPlaceBomb()) {
             placedBombs.add(new Bomb(getXUnit(), getYUnit(), mapManager, flameRange, this));
-            mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, --bombNums);
-            if (SoundEffect.hasSoundEffect) {
-                SoundEffect.playSE(SoundEffect.plantingBomb);
-                SoundEffect.playSE(SoundEffect.bombCountDown);
-            }
+            mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMB_NO, --bombNums);
+            SoundManager.soundEffect.play(SoundEffect.plantingBomb);
+            SoundManager.soundEffect.play(SoundEffect.bombCountDown);
         }
     }
 
@@ -305,7 +310,6 @@ public class Bomber extends MovingEntity {
      * until all the MovingEntity are checked
      * or the checkHandleOtherXCollision return false;
      */
-    @Override
     public void checkMovingCollisions() {
         for (Enemy enemy : getMapManager().getEnemies()) {
             if (!(getX() + Sprite.SCALED_SIZE - 1 < enemy.getX()
@@ -388,15 +392,15 @@ public class Bomber extends MovingEntity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(img, screenX, screenY);
+        gc.drawImage(img, SCREEN_X, SCREEN_Y);
     }
 
     public double getScreenX() {
-        return screenX;
+        return SCREEN_X;
     }
 
     public double getScreenY() {
-        return screenY;
+        return SCREEN_Y;
     }
 
     public boolean isImmortal() {

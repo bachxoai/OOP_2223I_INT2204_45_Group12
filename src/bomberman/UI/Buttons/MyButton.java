@@ -7,14 +7,14 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 public class MyButton extends Button {
-    public static final String EXIT = "/ImageButton/exit.png";
-    public static final String CONTINUE = "/ImageButton/continue.png";
-    public static final String PAUSE = "/ImageButton/pause.png";
-    public static final String MUSIC = "/ImageButton/music.png";
-    public static final String PLAY = "/ImageButton/play.png";
-    public static final String MAP = "/ImageButton/map1.png";
-    public static final String BACK = "/ImageButton/back.png";
-    public static final String MUTE = "/ImageButton/unmute.png";
+    public static final String EXIT = "/images/icons/exit.png";
+    public static final String CONTINUE = "/images/icons/play.png";
+    public static final String PAUSE = "/images/icons/pause.png";
+    public static final String MUSIC = "/images/icons/music.png";
+    public static final String PLAY = "/images/icons/play.png";
+    public static final String MAP = "/images/icons/map1.png";
+    public static final String BACK = "/images/icons/back.png";
+    public static final String MUTE = "/images/icons/unmute.png";
     public static final int FONT_SIZE = 20;
     public  static final int BUTTON_WIDTH = 200;
     public static final int IMAGE_SIZE = 32;
@@ -37,9 +37,9 @@ public class MyButton extends Button {
     }
 
     private void createFont() {
-        setFont(Font.loadFont("file:res/font/font.ttf",FONT_SIZE));
-        setStyle("-fx-background-color: #FF9F9F");
-        setTextFill(Paint.valueOf("#FFFAD7"));
+        setFont(Font.loadFont("file:res/fonts/font.ttf",FONT_SIZE));
+        setStyle("-fx-background-color: #F9DB7B");
+        setTextFill(Paint.valueOf("#F14C8F"));
     }
 
     private void createImageButton() {

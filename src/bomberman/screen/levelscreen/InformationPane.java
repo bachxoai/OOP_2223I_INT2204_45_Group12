@@ -19,7 +19,7 @@ public class InformationPane extends HBox {
     Button pause;
     LevelScreen containedLevelScreen;
     public static final int SPEED = 0;
-    public static final int BOMBNO = 1;
+    public static final int BOMB_NO = 1;
     public static final int FLAME_RANGE = 2;
     public static final int TIME_LEFT = 4;
     int maxPlayTime = 200;
@@ -47,13 +47,13 @@ public class InformationPane extends HBox {
         bomView.setFitHeight(MyButton.IMAGE_SIZE);
 
         flameRangeBox = new HBox(DISTANCE_OF_HBOX);
-        flameRangeBox.getChildren().addAll(createImageView("/flameRange.png"),createLabel("x"),FixLabel(flameRange));
+        flameRangeBox.getChildren().addAll(createImageView("/images/icons/flame.png"),createLabel("x"),FixLabel(flameRange));
 
         speedBox = new HBox(DISTANCE_OF_HBOX);
-        speedBox.getChildren().addAll(createImageView("/boot.png"),createLabel("x"),FixLabel(speedNumber));
+        speedBox.getChildren().addAll(createImageView("/images/icons/boot.png"),createLabel("x"),FixLabel(speedNumber));
 
         clockBox = new HBox(DISTANCE_OF_HBOX);
-        clockBox.getChildren().addAll(createImageView("/clock.png"),FixLabel(timeLeft));
+        clockBox.getChildren().addAll(createImageView("/images/icons/clock.png"),FixLabel(timeLeft));
 
         bomBox = new HBox(DISTANCE_OF_HBOX);
         bomBox.getChildren().addAll(bomView,createLabel("x"),FixLabel(bombNo));
@@ -80,7 +80,7 @@ public class InformationPane extends HBox {
 
     public void setBomberStats() {
         setStat(SPEED, (int) containedLevelScreen.getMapManager().getBomberman().getVelocity());
-        setStat(BOMBNO, containedLevelScreen.getMapManager().getBomberman().getBombNums());
+        setStat(BOMB_NO, containedLevelScreen.getMapManager().getBomberman().getBombNums());
         setStat(FLAME_RANGE, containedLevelScreen.getMapManager().getBomberman().getFlameRange());
         setStat(TIME_LEFT, (int) GamePlay.playedTime);
         containedLevelScreen.getHeartpane().getChildren().remove(HeartPane.hf3);
@@ -103,7 +103,7 @@ public class InformationPane extends HBox {
                 speedNumber.setText(String.valueOf(value));
                 break;
             }
-            case BOMBNO: {
+            case BOMB_NO: {
                 bombNo.setText(String.valueOf(value));
                 break;
             }
@@ -130,14 +130,14 @@ public class InformationPane extends HBox {
 
     Label createLabel(String s) {
         Label a = new Label(s);
-        a.setFont(Font.loadFont("file:res/font/font.ttf",MyButton.FONT_SIZE + 5));
-        a.setTextFill(Paint.valueOf("#FFFAD7"));
+        a.setFont(Font.loadFont("file:res/fonts/font.ttf",MyButton.FONT_SIZE + 5));
+        a.setTextFill(Paint.valueOf("#F14C8F"));
         return a;
     }
 
     Label FixLabel(Label a) {
-        a.setFont(Font.loadFont("file:res/font/font.ttf",MyButton.FONT_SIZE + 5));
-        a.setTextFill(Paint.valueOf("#FFFAD7"));
+        a.setFont(Font.loadFont("file:res/fonts/font.ttf",MyButton.FONT_SIZE + 5));
+        a.setTextFill(Paint.valueOf("#F14C8F"));
         return a;
     }
 

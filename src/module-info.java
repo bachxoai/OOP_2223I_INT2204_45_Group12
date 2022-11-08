@@ -8,4 +8,6 @@ module bomberman {
     exports bomberman;
     exports bomberman.managers;
     opens bomberman.managers to javafx.fxml;
+    exports bomberman.sounds;
+    opens bomberman.sounds to javafx.fxml;
 }

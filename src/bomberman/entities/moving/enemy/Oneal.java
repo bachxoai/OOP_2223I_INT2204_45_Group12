@@ -23,7 +23,7 @@ public class Oneal extends Enemy {
     public Oneal(int xUnit, int yUnit, MapManager mapManager) {
         super(xUnit, yUnit, mapManager);
         img = Sprite.oneal_left1.getFxImage();
-        velocity = 1;
+        velocity = ONEAL_VELOCITY;
 
         // Create sprite.
         Sprite[] right = new Sprite[3];

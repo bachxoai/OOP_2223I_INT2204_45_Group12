@@ -41,6 +41,13 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     protected final TileEntity[] futureTilesCollision = new TileEntity[2];
     protected TileEntity presentTileCollision;
 
+    protected final double BOMBER_VELOCITY = 2;
+    protected final double BALLOOM_VELOCITY = 1;
+    protected final double DOLL_VELOCITY = 2;
+    protected final double KONDORIA_VELOCITY = 0.5;
+    protected final double ONEAL_VELOCITY = 1;
+
+
     /**
      * Constructor.
      *
@@ -121,7 +128,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
      *
      * @return the desire tiles.
      */
-    public TileEntity[] updateFutureTilesCollision() {
+    public void updateFutureTilesCollision() {
         int leftCol = (int) getX() / Sprite.SCALED_SIZE;
         int rightCol = (int) (getX() + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
         int topRow = (int) getY() / Sprite.SCALED_SIZE;
@@ -159,7 +166,6 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
                 futureTilesCollision[1] = mapManager.getTopTileAt(leftCol, topRow);
             }
         }
-        return this.futureTilesCollision;
     }
 
     /**
@@ -167,18 +173,8 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
      *
      * @return the desire tile.
      */
-    public TileEntity updatePresentTileCollision() {
+    public void updatePresentTileCollision() {
         presentTileCollision = mapManager.getTopTileAt(getXUnit(), getYUnit());
-        return this.presentTileCollision;
-    }
-
-    /**
-     * Check collision with all MovingEntity in Map
-     * until all the MovingEntity are checked
-     * or the checkHandleOtherXCollision return false;
-     */
-    public void checkMovingCollisions() {
-
     }
 
     /**

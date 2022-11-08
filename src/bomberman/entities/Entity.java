@@ -12,17 +12,11 @@ import javafx.scene.image.Image;
  * Cần được render.
  */
 public abstract class Entity {
-    //Tọa độ X tính từ góc trái trên trong Canvas
     protected double x;
-    //Tọa độ Y tính từ góc trái trên trong Canvas
     protected double y;
-    //Toạ độ x tính từ góc trái trên trong map.
     protected int xUnit;
-    //Toạ độ y tính từ góc trái trên trong map.
     protected int yUnit;
-    //Ảnh đc render của đối tượng.
     protected Image img;
-    //MapManager chứa entity đó.
     protected MapManager mapManager;
 
     /**

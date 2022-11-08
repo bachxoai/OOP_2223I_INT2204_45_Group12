@@ -12,7 +12,7 @@ public class HeartPane extends HBox {
      public static ImageView hf3;
 
     public HeartPane() {
-        HeartFull = new Image(HeartPane.class.getResourceAsStream("/HRed.png"));
+        HeartFull = new Image(HeartPane.class.getResourceAsStream("/images/icons/heart.png"));
         hf1 = new ImageView(HeartFull);
         hf1.setFitHeight(MyButton.IMAGE_SIZE);
         hf1.setFitWidth(MyButton.IMAGE_SIZE);

@@ -7,6 +7,8 @@ import bomberman.entities.tile.TileEntity;
 import bomberman.graphics.Sprite;
 import bomberman.managers.*;
 import bomberman.screen.levelscreen.InformationPane;
+import bomberman.sounds.SoundEffect;
+import bomberman.sounds.SoundManager;
 
 /**
  * Charging bomb class.
@@ -17,7 +19,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
     int range;
     int timeToExplode;
     Sprite[] bombs;
-    private Bomber bomber;
+    private final Bomber bomber;
 
     /**
      * Constructor.
@@ -46,7 +48,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
     public void update() {
         if (timeToExplode > 0) {
             timeToExplode--;
-            img = bombs[(timeToExplode / ANIMATED_FRAME) % 6].getFxImage();
+            img = bombs[(timeToExplode / ANIMATED_FRAME) % bombs.length].getFxImage();
         } else if (timeToExplode == 0) {
             explode();
         }
@@ -60,10 +62,9 @@ public class Bomb extends TileEntity implements DynamicEntity {
         bomber.getPlacedBombs().remove(this);
         int addedBombNums = mapManager.getBomberman().getBombNums() + 1;
         mapManager.getBomberman().setBombNums(addedBombNums);
-        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMBNO, addedBombNums);
-        if (SoundEffect.hasSoundEffect) {
-            SoundEffect.playSE(SoundEffect.bombExplosion);
-        }
+        mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMB_NO, addedBombNums);
+//        SoundEffect.playSE(SoundEffect.bombExplosion);
+        SoundManager.soundEffect.play(SoundEffect.bombExplosion);
     }
 
     /**

@@ -12,16 +12,19 @@ public class GenerateMap {
         int row = 1 + 2 * random.nextInt(20) + 5;
 
         int emptySpace = row * col - row * 2 - col * 2 - (row / 2 - 1) * (col / 2 - 1) + 4;
+        int grassBlocks = emptySpace / 2;
+        int brickBlocks = emptySpace - grassBlocks;
 
-        int itemTotal = emptySpace / 2 / 5;
-        int monsterTotal = emptySpace / 2 / 10;
+
+        int itemTotal = brickBlocks / 5;
+        int monsterTotal = grassBlocks / 10;
         int[] items = new int[itemTotal];
         int[] enemies = new int[monsterTotal];
         for (int i = 0; i < itemTotal; i++) {
-            items[i] = random.nextInt((emptySpace / 2) / itemTotal) + 1;
+            items[i] = random.nextInt(brickBlocks / itemTotal) + 1;
         }
         for (int i = 0; i < monsterTotal; i++) {
-            enemies[i] = random.nextInt((emptySpace / 2) / monsterTotal) + 1;
+            enemies[i] = random.nextInt(grassBlocks / monsterTotal) + 1;
         }
         char arr[][] = new char[row][col];
         for (int i = 0; i < row; i++) {
@@ -42,7 +45,6 @@ public class GenerateMap {
                     } else {
                         arr[i][j] = '*';
                     }
-
                 }
             }
         }

@@ -3,7 +3,8 @@ package bomberman.entities.tile.item;
 import bomberman.entities.moving.Bomber;
 import bomberman.entities.tile.TileEntity;
 import bomberman.managers.MapManager;
-import bomberman.managers.SoundEffect;
+import bomberman.sounds.SoundEffect;
+import bomberman.sounds.SoundManager;
 
 /**
  * Items that can have effect on bomber who walks on this item.
@@ -15,7 +16,7 @@ public abstract class Item extends TileEntity {
 
     @Override
     public boolean handleOtherBomberCollision(Bomber bomber) {
-        SoundEffect.playSE(SoundEffect.collectingItem);
+        SoundManager.soundEffect.play(SoundEffect.collectingItem);
         mapManager.getGamePlay().getMapManager().getTilesAt(getXUnit(), getYUnit()).remove(this);
         return true;
     }
