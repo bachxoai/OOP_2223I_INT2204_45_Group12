@@ -90,7 +90,7 @@ public class Bomb extends TileEntity implements DynamicEntity {
 
         // UP
         for (int i = 1; i <= range; i++) {
-            if (getMapManager().getTopTileAt(getXUnit(), getYUnit() - 1).blockFlame()) {
+            if (getMapManager().getTopTileAt(getXUnit(), getYUnit() - i).blockFlame()) {
                 break;
             }
             if (i == range) {
