@@ -25,7 +25,6 @@ public class Oneal extends Enemy {
         img = Sprite.oneal_left1.getFxImage();
         velocity = ONEAL_VELOCITY;
 
-        // Create sprite.
         Sprite[] right = new Sprite[3];
         right[0] = Sprite.oneal_right1;
         right[1] = Sprite.oneal_right2;

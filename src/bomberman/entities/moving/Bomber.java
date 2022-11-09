@@ -13,8 +13,6 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 
-import static bomberman.sounds.SoundEffect.plantingBomb;
-
 /**
  * Class bomber.
  */
@@ -27,7 +25,6 @@ public class Bomber extends MovingEntity {
     boolean canDetonate;
     boolean isImmortal;
     int immortalTime;
-    //Kiểm tra xem nút Up có đang được bấm hay không? Các nút còn lại tương tự.
     private boolean upPressed = false;
     private boolean downPressed = false;
     private boolean rightPressed = false;
@@ -118,8 +115,6 @@ public class Bomber extends MovingEntity {
      * @param event the key event.
      */
     public void handleEvent(KeyEvent event) {
-        //Handle Event nhận vào, bấm W thì đi lên, S đi xuống, A sang trái, D sang phải
-        //Nhân vật chỉ có thể được đi một hướng duy nhất
         switch (event.getCode()) {
             case W:  {
                 upPressed = true;
@@ -167,10 +162,7 @@ public class Bomber extends MovingEntity {
      * @param event key event.
      */
     public void handleReleasedEvent(KeyEvent event) {
-        //Khi thả nút ra thì hướng di chuyển sẽ = none
         state = NORMAL_STATE;
-
-        //Handle sự kiện thả phím, thả phím nào thì img sẽ đứng yên theo hướng đó.
         switch (event.getCode()) {
             case W: {
                 upPressed = false;

@@ -10,7 +10,7 @@ public class Music extends Sound{
 
     @Override
     public void play(URL url) {
-        if (SoundManager.hasMusic) {
+        if (SoundManager.hasSound) {
             setFile(url);
             clip.start();
             loop();

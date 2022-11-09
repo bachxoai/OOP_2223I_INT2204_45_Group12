@@ -11,7 +11,6 @@ import bomberman.managers.MapManager;
  * Class dành cho các đối tượng có thể di chuyển. Liên quan đến toạ độ pixel.
  */
 public abstract class MovingEntity extends Entity implements DynamicEntity {
-    //Các trạng thái của Moving Entity
     public static final int NORMAL_STATE = 0;
     public static final int DEAD_STATE = 1;
     public static final int UP_STATE = 2;
@@ -19,9 +18,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     public static final int LEFT_STATE = 4;
     public static final int RIGHT_STATE = 5;
     public static final int DEAD_TIME = 20;
-    //Trạng thái của Moving Entity
     protected int state;
-    //Các Sprite lưu animation của Entity.
     protected Sprite[] up;
     protected Sprite[] down;
     protected Sprite[] left;
@@ -29,18 +26,14 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
     protected Sprite[] dead;
     //Vận tốc
     protected double velocity;
-    //Số khung hình trên giây
     public final int ANIMATED_FRAME = 6;
-    //Thời gian hoạt ảnh animation luc chết
     protected int animationDeadTime = DEAD_TIME;
-    //Biến thể hiện rằng Entity còn sống
     protected boolean isAlive = true;
     protected boolean canWalkThroughBomb;
     protected boolean canWalkThroughBrick;
     protected boolean canWalkThroughFlame;
     protected final TileEntity[] futureTilesCollision = new TileEntity[2];
     protected TileEntity presentTileCollision;
-
     protected final double BOMBER_VELOCITY = 2;
     protected final double BALLOOM_VELOCITY = 1;
     protected final double DOLL_VELOCITY = 2;
@@ -133,8 +126,7 @@ public abstract class MovingEntity extends Entity implements DynamicEntity {
         int rightCol = (int) (getX() + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
         int topRow = (int) getY() / Sprite.SCALED_SIZE;
         int bottomRow = (int) (getY() + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
-        // technically these variable should be ... +- min(velocity, SCALED_SIZE),
-        // but velocity should always be the smaller
+
         int up = (int) (getY() - velocity) / Sprite.SCALED_SIZE;
         int down = (int) (getY() + Sprite.SCALED_SIZE - 1 + velocity) / Sprite.SCALED_SIZE;
         int left = (int) (getX() - velocity) / Sprite.SCALED_SIZE;

@@ -23,7 +23,5 @@ public class HeartPane extends HBox {
         hf3.setFitHeight(MyButton.IMAGE_SIZE);
         hf3.setFitWidth(MyButton.IMAGE_SIZE);
         getChildren().addAll(hf1,hf2,hf3);
-
     }
-
 }

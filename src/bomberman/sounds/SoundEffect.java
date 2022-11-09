@@ -14,7 +14,7 @@ public class SoundEffect extends Sound{
 
     @Override
     public void play(URL url) {
-        if (SoundManager.hasSoundEffect) {
+        if (SoundManager.hasSound) {
             setFile(url);
             clip.start();
         }

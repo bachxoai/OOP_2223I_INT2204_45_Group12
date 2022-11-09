@@ -30,25 +30,12 @@ public class MapManager {
     private final char Oneal = '2';
     private final char Kondoria = '3';
     private final char Doll = '4';
-
     private GamePlay gamePlay;
     private Bomber bomberman;
-
-    //Level, số hàng, cột được đọc vào từ File Level.txt
     private int level, row, col;
-
     public Grass tempGrass;
-
-    // Các đối tượng có thể đè lên nhau
-    // Mảng 3 chiều của các Tile entities
-    // Trong đó 2 chiều đầu là vị trí của entity trong map
-    // Chiều thứ 3 là thứ tự của một entity tại toạ độ trong map
     private ArrayList<ArrayList<ArrayList<TileEntity>>> tileEntitiesMatrix;
-
-    // Mảng gồm các moving entities.
     private ArrayList<MovingEntity> movingEntities;
-
-    //Mảng Enemy chứa các đối tượng quái vật, sử dụng để CheckCollision Bomber và Quái trong CollisionChecker
     private ArrayList<Enemy> enemies;
 
     public MapManager(GamePlay gamePlay) {
@@ -87,7 +74,6 @@ public class MapManager {
             }
             movingEntities = new ArrayList<>();
             enemies = new ArrayList<>();
-            //Đọc file rồi tạo đối tượng trong Map, thêm các đối tượng vào các Array stillObject,...
             for (int j = 0; j < row; j++) {
                 String rowText = bufferedReader.readLine();
                 for (int i = 0; i < col; i++) {

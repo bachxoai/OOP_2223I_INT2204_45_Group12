@@ -26,7 +26,7 @@ public class BackToMenuFromLevel extends SwitchScreenButton {
         s.setWidth(WIDTH_SCREEN_MENU);
         s.setHeight(HEIGHT_SCREEN_MENU);
         levelScreen.getRoot().getChildren().remove(containedPane);
-        if (SoundManager.hasMusic) {
+        if (SoundManager.hasSound) {
             SoundManager.music.continuePlaying();
         }
     }

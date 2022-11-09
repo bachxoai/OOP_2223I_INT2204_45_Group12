@@ -1,5 +1,6 @@
 package bomberman;
 
+import bomberman.UI.Buttons.SwitchScreenButton;
 import bomberman.screen.levelscreen.LevelScreen;
 import bomberman.screen.Menu;
 import bomberman.screen.Screen;
@@ -16,8 +17,8 @@ public class BombermanGame extends Application {
     public void start(Stage stage) throws IOException {
         Screen a = new Menu("Menu");
         new LevelScreen("Map1");
-        stage.setWidth(500);
-        stage.setHeight(800);
+        stage.setWidth(SwitchScreenButton.WIDTH_SCREEN_MENU);
+        stage.setHeight(SwitchScreenButton.HEIGHT_SCREEN_MENU);
         stage.setResizable(false);
         stage.setScene(a.getScene());
         stage.show();

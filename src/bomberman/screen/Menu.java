@@ -21,7 +21,7 @@ public class Menu extends Screen {
     final int X_OF_VBOX_MENU = 150;
     final int Y_OF_VBOX_MENU = 322;
 
-    public Menu(String currentScreen) throws IOException {
+    public Menu(String currentScreen) {
         super(currentScreen);
         optionPanes = new HashMap<>();
         optionPanes.put("Menu", new VBox(MyButton.BUTTON_DISTANCE));
@@ -30,7 +30,7 @@ public class Menu extends Screen {
         createScene();
     }
 
-    public Scene createScene() throws IOException {
+    public Scene createScene() {
         root = new Pane();
         createChooseMapPane();
         createMenuPane();
@@ -59,7 +59,7 @@ public class Menu extends Screen {
         SwitchScreenButton map2 = new SwitchToLevelScreenButton("Map 2", MyButton.MAP, "Menu", "Map1", "Level2");
         SwitchScreenButton map3 = new SwitchToLevelScreenButton("Map 3", MyButton.MAP, "Menu", "Map1", "Level3");
         SwitchScreenButton mapRandom = new SwitchToLevelScreenButton("Random", MyButton.MAP, "Menu", "Map1", "RandomMap");
-        SwitchPaneButton back = new SwitchPaneButton("Back", "/images/icons/back.png", optionPanes.get("ChooseMap"), optionPanes.get("Menu"), root);
+        SwitchPaneButton back = new SwitchPaneButton("Back", MyButton.BACK, optionPanes.get("ChooseMap"), optionPanes.get("Menu"), root);
 
         p.getChildren().addAll(map1, map2, map3, mapRandom, back);
     }
@@ -79,16 +79,14 @@ public class Menu extends Screen {
             chooseMusic.getChildren().removeAll(musicOff, feed, sines, back);
             chooseMusic.getChildren().addAll(musicOn,feed,sines,back);
             SoundManager.music.stop();
-            SoundManager.hasSoundEffect = false;
-            SoundManager.hasMusic = false;
+            SoundManager.hasSound = false;
         });
 
         musicOn.setOnAction(actionEvent -> {
             chooseMusic.getChildren().removeAll(musicOn, feed, sines, back);
             chooseMusic.getChildren().addAll(musicOff,feed,sines,back);
             SoundManager.music.continuePlaying();
-            SoundManager.hasSoundEffect = true;
-            SoundManager.hasMusic = true;
+            SoundManager.hasSound = true;
         });
 
         chooseMusic.getChildren().addAll(musicOff,feed,sines,back);

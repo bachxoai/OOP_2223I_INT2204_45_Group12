@@ -12,8 +12,6 @@ import javafx.scene.canvas.Canvas;
 
 public class GamePlay {
     AnimationTimer timer;
-
-    //Một biến đếm số frame của từng giây, sẽ sử dụng kết hợp với MovingEntity để tạo Animation
     public static int frameCount = 0;
     public static double playedTime = 0;
     LevelScreen containedLevelScreen;
@@ -26,9 +24,7 @@ public class GamePlay {
     public static final int gameplayScreenHeight = 640;
     private GraphicsContext gc;
     private Canvas canvas;
-
-    //Quản lý các đối tượng trong map + đọc map
-    private MapManager mapManager;// = new TileEntityManager(this);
+    private MapManager mapManager;
 
     public GamePlay(LevelScreen containedLevelScreen) {
         this.containedLevelScreen = containedLevelScreen;
@@ -120,7 +116,6 @@ public class GamePlay {
         }
     }
 
-    //Phương thức handleEvent cho người chơi.
     public void handleEvent() {
         containedLevelScreen.getScene().setOnKeyPressed(keyEvent -> {
             mapManager.getBomberman().handleEvent(keyEvent);

@@ -63,7 +63,6 @@ public class Bomb extends TileEntity implements DynamicEntity {
         int addedBombNums = mapManager.getBomberman().getBombNums() + 1;
         mapManager.getBomberman().setBombNums(addedBombNums);
         mapManager.getGamePlay().getContainedLevelScreen().setBomberStat(InformationPane.BOMB_NO, addedBombNums);
-//        SoundEffect.playSE(SoundEffect.bombExplosion);
         SoundManager.soundEffect.play(SoundEffect.bombExplosion);
     }
 
@@ -71,10 +70,6 @@ public class Bomb extends TileEntity implements DynamicEntity {
      * Tạo ra các đối tượng Explosion khi hết thời gian charge của bomb.
      */
     private void createExplosion() {
-        // nếu muốn cho bom phá xuyên tường thì chỉ cần thêm đk ở
-//        if (getMapManager().getTopTileAt(getXUnit(), getYUnit() + i).blockFlame() && bomber.canPierce()) {
-//            break;
-//        }
         // DOWN
         for (int i = 1; i <= range; i++) {
             if (getMapManager().getTopTileAt(getXUnit(), getYUnit() + i).blockFlame()) {
